@@ -1,0 +1,30 @@
+.title {
+	font-size: 10em;
+}
+
+.undertitle {
+	font-size: 4em;
+}
+
+.button {
+	font-size: 8em;
+	font-weight: bold;
+	margin-top: 5em;
+}
+
+#login {
+	margin-top: 4em;
+}
+
+#register {
+	margin-top: 4em;
+	margin-bottom: 4em;
+}
+
+#login-background {
+	background-color: #FAF2AD;
+}
+
+body {
+	background-color: #E6DEDC;
+}
