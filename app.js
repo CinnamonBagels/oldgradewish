@@ -15,6 +15,7 @@ var homepage = require('./routes/homepage');
 var register = require('./routes/register');
 var classes = require('./routes/classes');
 
+
 var express = require('express');
 var http = require('http');
 var path = require('path');
@@ -43,6 +44,7 @@ app.get('/classes', classes.viewClasses);
 
 // Start the server
 var port = process.env.PORT || PORT; // 80 for web, 3000 for development
+
 app.listen(port, function() {
 	console.log("Node.js server running on port %s", port);
 });

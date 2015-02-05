@@ -4,10 +4,10 @@ body {
 
 .title {
 	font-weight: bold;
-	/* font-family: 'Shadows Into Light', cursive; */
-	/* font-family: 'Lobster', cursive; */
-	/* font-family: 'Indie Flower', cursive; */
-	font-family: 'Pacifico', cursive;
+	 /*font-family: 'Shadows Into Light', cursive; */
+	 /*font-family: 'Lobster', cursive; */
+	 /*font-family: 'Indie Flower', cursive; */
+	 font-family: 'Pacifico', cursive; 
 	font-size: 7em;
 	text-decoration: underline;
 }
@@ -16,4 +16,10 @@ body {
 	min-height: 40%;
 }
 
-
+.button.large {
+    padding-top: 3.375rem;
+    padding-right: 6.75rem;
+    padding-bottom: 3.5625rem;
+    padding-left: 6.75rem;
+    font-size: 3.75rem; 
+}
