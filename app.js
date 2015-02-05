@@ -12,7 +12,8 @@ var PORT = 3000;
 
 var login = require('./routes/login');
 var homepage = require('./routes/homepage');
-var register = require('./routes/register')
+var register = require('./routes/register');
+var classes = require('./routes/classes');
 
 var express = require('express');
 var http = require('http');
@@ -38,6 +39,7 @@ app.use(express.static(__dirname + '/static'));
 app.get('/', login.viewLogin);
 app.get('/home', homepage.viewHome);
 app.get('/register', register.viewRegister);
+app.get('/classes', classes.viewClasses);
 
 // Start the server
 var port = process.env.PORT || PORT; // 80 for web, 3000 for development
