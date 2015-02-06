@@ -1,11 +1,12 @@
 exports.viewClasses = function(req, res) {
-	/*if (req.query)
+	if (req.query.class)
 	{
-		res.render('classPage');
+		res.render('class', {
+			'className' : req.query.class
+		});
 	}
-	else */
+	else 
 	{
-		console.log(req);
 		res.render('classes', {
 			class : [
 				{className : 'CSE170'},
