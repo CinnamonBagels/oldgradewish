@@ -15,6 +15,7 @@ var homepage = require('./routes/homepage');
 var register = require('./routes/register');
 var classes = require('./routes/classes');
 var settings = require('./routes/settings');
+var help = require('./routes/help');
 
 
 var express = require('express');
@@ -106,6 +107,7 @@ app.post('/register', function(req, res) {
 
 app.get('/classes', classes.viewClasses);
 app.get('/settings', settings.viewSettings);
+app.get('/help', help.helpScreen);
 
 function validateLogin(req, res) {
 	var fields = req.body;
