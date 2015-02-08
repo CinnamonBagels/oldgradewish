@@ -21,6 +21,33 @@ var express = require('express');
 var http = require('http');
 var path = require('path');
 var handlebars = require('express3-handlebars');
+var mongoose = require('mongoose');
+
+var User = require('./Schemas/users');
+
+var Connection = mongoose.connect('mongodb://samko:huehuehue@kahana.mongohq.com:10089/TritonSX', function(err) {
+	if(err) {
+		console.log(err);
+	} else {
+		console.log('connected to database');
+	}
+});
+
+var Schema = mongoose.Schema;
+
+var instance = new User();
+
+instance.email = 'samuelsko@gmail.com';
+instance.password = '1234';
+instance.classes = ['cse170', 'cse150'];
+
+instance.save(function(err) {
+	if(err) {
+		console.log(err);
+	} else {
+		console.log('instance saved');
+	}
+});
 
 // Create the server instance
 var app = express();
