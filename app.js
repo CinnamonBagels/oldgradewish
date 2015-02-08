@@ -15,6 +15,7 @@ var homepage = require('./routes/homepage');
 var register = require('./routes/register');
 var classes = require('./routes/classes');
 var settings = require('./routes/settings');
+var help = require('./routes/help');
 
 
 var express = require('express');
@@ -70,6 +71,7 @@ app.get('/home', homepage.viewHome);
 app.get('/register', register.viewRegister);
 app.get('/classes', classes.viewClasses);
 app.get('/settings', settings.viewSettings);
+app.get('/help', help.helpScreen);
 
 // Start the server
 var port = process.env.PORT || PORT; // 80 for web, 3000 for development
