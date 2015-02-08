@@ -112,7 +112,7 @@ app.get('/help', help.helpScreen);
 function validateLogin(req, res) {
 	var fields = req.body;
 
-	Users.findOne({ email : fields.email, password : fields.password }, function(err, data) {
+	User.findOne({ email : fields.email, password : fields.password }, function(err, data) {
 		if(data) {
 			res.render('homepage');
 		} else {
