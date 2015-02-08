@@ -6,13 +6,78 @@
 <div class="row">
 	<div class="row text-center">
 		<div class="columns large-8 medium-8 small-8 large-centered small-centered medium-centered">
-			<a href="/home" class="button info expand radius large"><span class="button-text">Login</span></a>
+			<a class="button info expand radius large" data-reveal-id="loginModal"><span class="button-text">Login</span></a>
 		</div>
 	</div>
 	<div class="row text-center">
 		<div class="columns large-8 medium-8 small-8 large-centered medium-centered small-centered">
-			<a href="/register" class="button alert expand radius large"><span class="button-text">Register</span></a>
+			<a data-reveal-id="registerModal" class="button alert expand radius large"><span class="button-text">Register</span></a>
 		</div>
 	</div>
-
 </div>
+
+<div id="registerModal" class="reveal-modal" data-reveal>
+	<form id="register-form" action="/register" method="post">
+	  <div class="row">
+	  	<div class="row text-center">
+	  		<div class="columns large-6 small-6 medium-6 small-centered medium-centered large-centered">
+	  			<input type="text" placeholder="Name" name="name">
+	  		</div>
+	  	</div>
+	  	<div class="row text-center">
+	  		<div class="columns large-6 small-6 medium-6 small-centered medium-centered large-centered">
+	  			<input type="text" placeholder="E-mail" name="email">
+	  		</div>
+	  	</div>
+	  	<div class="row text-center">
+	  		<div class="columns large-6 small-6 medium-6 small-centered medium-centered large-centered">
+	  			<input type="password" placeholder="Password" name="password">
+	  		</div>
+	  	</div>
+	  	<div class="row text-center">
+	  		<div class="columns large-6 small-6 medium-6 small-centered medium-centered large-centered">
+	  			<input type="password" placeholder="Re-enter Password" name="verifypassword">
+	  		</div>
+	  	</div>
+	  	<div class="row text-center">
+	  		<div class="columns large-6 small-6 medium-6 small-centered medium-centered large-centered">
+	  			<a id="register-button" class="button success expand">Register</a>
+	  		</div>
+	  	</div>
+	  </div>
+	</form>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<div id="loginModal" class="reveal-modal" data-reveal>
+	<form id="login-form" action="/login" method="post">
+	  <div class="row">
+	  	<div class="row text-center">
+	  		<div class="columns large-6 small-6 medium-6 small-centered medium-centered large-centered">
+	  			<input type="text" placeholder="e-mail" name="email">
+	  		</div>
+	  	</div>
+	  	<div class="row text-center">
+	  		<div class="columns large-6 small-6 medium-6 small-centered medium-centered large-centered">
+	  			<input type="password" placeholder="password" name="password">
+	  		</div>
+	  	</div>
+	  	<div class="row text-center">
+	  		<div class="columns large-6 small-6 medium-6 small-centered medium-centered large-centered">
+	  			<a id="login-button" class="button success expand">Login</a>
+	  		</div>
+	  	</div>
+	  </div>
+	</form>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<script>
+	$('#login-button').on('click', function(event) {
+		$('#login-form').submit();
+	});
+
+	$('#register-button').on('click', function(event) {
+		$('#register-form').submit();
+	});
+</script>

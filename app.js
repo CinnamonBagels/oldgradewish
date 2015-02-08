@@ -22,8 +22,12 @@ var http = require('http');
 var path = require('path');
 var handlebars = require('express3-handlebars');
 var mongoose = require('mongoose');
+var session = require('express-session');
+var bodyparser = require('body-parser');
+var Schema = mongoose.Schema;
 
 var User = require('./Schemas/users');
+var Class = require('./Schemas/class');
 
 var Connection = mongoose.connect('mongodb://samko:huehuehue@kahana.mongohq.com:10089/TritonSX', function(err) {
 	if(err) {
@@ -33,27 +37,15 @@ var Connection = mongoose.connect('mongodb://samko:huehuehue@kahana.mongohq.com:
 	}
 });
 
-var Schema = mongoose.Schema;
-
-var instance = new User();
-
-instance.email = 'samuelsko@gmail.com';
-instance.password = '1234';
-instance.classes = ['cse170', 'cse150'];
-
-instance.save(function(err) {
-	if(err) {
-		console.log(err);
-	} else {
-		console.log('instance saved');
-	}
-});
-
 // Create the server instance
 var app = express();
 
 app.engine('handlebars', handlebars({defaultLayout : 'master'}));
 app.set('view engine', 'handlebars');
+app.use( bodyparser.json() );       // to support JSON-encoded bodies
+app.use(bodyparser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+})); 
 
 app.set('views', path.join(__dirname, 'views'));
 
@@ -65,11 +57,67 @@ app.set('views', path.join(__dirname, 'views'));
 // maps to /static/index.html on this machine
 app.use(express.static(__dirname + '/static'));
 
-app.get('/', login.viewLogin);
+app.get('/', function(req, res) {
+	//for sessions later
+	/*if(req.session.user) {
+		res.render('homepage');
+	} else {
+		res.render('login');
+	}*/
+
+	res.render('login');
+});
+
+app.get('/login', function(req, res) {
+	
+});
+
+app.post('/login', function(req, res) {
+	validateLogin(req, res);
+});
 app.get('/home', homepage.viewHome);
-app.get('/register', register.viewRegister);
+app.post('/register', function(req, res) {
+	var fields = req.body;
+
+	//if user already exists
+	User.findOne({ email : fields.email }, function(err, data) {
+		if(data) {
+			res.send('already registered');
+		} else {
+
+			if(fields.password == fields.verifypassword) {
+				var userObject = {
+					name : fields.name,
+					email : fields.email,
+					password : fields.password,
+					classes : []
+				}
+				var newUser = new User(userObject);
+				newUser.save();
+				res.send('registered');
+			} else {
+				res.send('passwords dont match');
+			}
+
+			
+		}
+	});
+});
+
 app.get('/classes', classes.viewClasses);
 app.get('/settings', settings.viewSettings);
+
+function validateLogin(req, res) {
+	var fields = req.body;
+
+	Users.findOne({ email : fields.email, password : fields.password }, function(err, data) {
+		if(data) {
+			res.render('homepage');
+		} else {
+			res.send('wrong password/email');
+		}
+	})
+}
 
 // Start the server
 var port = process.env.PORT || PORT; // 80 for web, 3000 for development
