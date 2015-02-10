@@ -4,7 +4,7 @@
 	</div>
 </div>
 
-{{#each class}}
+{{#each classes}}
 <div class="row">
 	<div class="row text-center">
 		<div class="columns large-8 medium-8 small-8 large-centered small-centered medium-centered">
@@ -13,3 +13,27 @@
 	</div>
 </div>
 {{/each}}
+<form id="addClassForm" action="/addClass" method="post">
+	<div class="row">
+	    <div class="columns large-8 medium-8 small-8">
+            <select name="class" id="classSelect">
+                <option name="CSE170" value="CSE170">CSE170</option>
+                <option name="CSE150" value="CSE150">CSE150</option>
+            </select>
+	    </div>
+	    <div class="columns large-4 medium-4 small-4">
+	    	<a id="addclassbutton" class="button success">Add Class</a>
+	    </div>
+	</div>
+</form>
+
+<script>
+	$('#addclassbutton').click(function(event) {
+		console.log($('#classSelect option:selected').text());
+		event.preventDefault();
+		$.post('/addClass', { className : $('#classSelect option:selected').text() }, function(data) {
+			console.log(data);
+		});
+	})
+</script>
+

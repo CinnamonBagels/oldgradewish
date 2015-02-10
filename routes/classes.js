@@ -1,4 +1,7 @@
 exports.viewClasses = function(req, res) {
+	if(!req.session.email) {
+		return res.redirect('/login');
+	}
 	if (req.query.class)
 	{
 		res.render('class', {
@@ -8,7 +11,7 @@ exports.viewClasses = function(req, res) {
 	else 
 	{
 		res.render('classes', {
-			class : [
+			classes : [
 				{className : 'CSE170'},
 				{className : 'CSE120'}
 			]

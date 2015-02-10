@@ -26,18 +26,23 @@
 	    <!-- Right Nav Section -->
 	    <ul class="right">
 	      <li class="active"><a href="classes">My Classes</a></li>
-	      <li class="has-dropdown">
-	        <a href="#">Hello, User</a>
-	        <ul class="dropdown">
-	          <li><a href="/settings">Settings</a></li>
-	          <li><a href="/help">Help</a></li>
-	        </ul>
-	      </li>
+          <li><a href="/settings">Settings</a></li>
+          <li><a href="/help">Help</a></li>
+          <li><a data-reveal-id="logoutModal">Logout</a></li>	
 	    </ul>
 	  </section>
 	</nav>
 
 	{{{body}}}
+
+	<div id="logoutModal" class="reveal-modal" data-reveal>
+		<div class="row">
+			<div class="columns large-12">
+				stuff
+			</div>
+		</div>
+  		<a class="close-reveal-modal">&#215;</a>
+	</div>
 
 	<script src="js/modernizr.js"></script>
 	<script src="js/foundation.min.js"></script>

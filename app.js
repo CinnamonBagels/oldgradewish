@@ -25,6 +25,7 @@ var handlebars = require('express3-handlebars');
 var mongoose = require('mongoose');
 var session = require('express-session');
 var bodyparser = require('body-parser');
+var cookieParser = require('cookie-parser');
 var Schema = mongoose.Schema;
 
 var User = require('./Schemas/users');
@@ -43,6 +44,12 @@ var app = express();
 
 app.engine('handlebars', handlebars({defaultLayout : 'master'}));
 app.set('view engine', 'handlebars');
+app.use(cookieParser('huehue'));
+app.use(session({
+	secret : 'huehue',
+	resave : false,
+	saveUninitialized : false
+}));
 app.use( bodyparser.json() );       // to support JSON-encoded bodies
 app.use(bodyparser.urlencoded({     // to support URL-encoded bodies
   extended: true
@@ -59,18 +66,21 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(__dirname + '/static'));
 
 app.get('/', function(req, res) {
+	if(req.session.email) {
+		res.redirect('/home');
+	} else {
+		res.redirect('/login');
+	}
 	//for sessions later
 	/*if(req.session.user) {
 		res.render('homepage');
 	} else {
 		res.render('login');
 	}*/
-
-	res.render('login');
 });
 
 app.get('/login', function(req, res) {
-	
+	res.render('login');
 });
 
 app.post('/login', function(req, res) {
@@ -95,12 +105,10 @@ app.post('/register', function(req, res) {
 				}
 				var newUser = new User(userObject);
 				newUser.save();
-				res.send('registered');
+				res.redirect('/login');
 			} else {
-				res.send('passwords dont match');
-			}
-
-			
+				res.redirect('/login');
+			}	
 		}
 	});
 });
@@ -109,16 +117,45 @@ app.get('/classes', classes.viewClasses);
 app.get('/settings', settings.viewSettings);
 app.get('/help', help.helpScreen);
 
+app.post('/addClass', function(req, res) {
+	var email = req.session.email;
+	console.log(email);
+	var fields = req.body;
+	console.log(fields);
+	var className = fields.className;
+	var newClasses = []
+
+	User.findOne({ email : req.session.email }, function(err, data) {
+		if(data) {
+			newClasses = data.classes;
+			newClasses.push(className);
+			User.where({ email : req.session.email }).update({ classes : newClasses }, function(err) {
+				if(err) {
+					console.log(err);
+				} else {
+					res.end();
+				}
+			});
+			
+		} else {
+			console.log('where is the user?');
+			res.end();
+		}
+		
+	});
+})
+
 function validateLogin(req, res) {
 	var fields = req.body;
 
 	User.findOne({ email : fields.email, password : fields.password }, function(err, data) {
 		if(data) {
-			res.render('homepage');
+			req.session.email = data.email;
+			res.redirect('/home');
 		} else {
-			res.send('wrong password/email');
+			res.render('login');
 		}
-	})
+	});
 }
 
 // Start the server

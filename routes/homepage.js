@@ -1,4 +1,5 @@
+var session = require('express-session');
+
 exports.viewHome = function(req, res) {
-	console.log(req.query);
 	res.render('homepage');
 }
