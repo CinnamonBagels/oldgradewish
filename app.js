@@ -66,6 +66,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(__dirname + '/static'));
 
 app.get('/', function(req, res) {
+	console.log(req.session);
 	if(req.session.email) {
 		res.redirect('/home');
 	} else {
@@ -118,8 +119,6 @@ app.get('/settings', settings.viewSettings);
 app.get('/help', help.helpScreen);
 
 app.post('/addClass', function(req, res) {
-	var email = req.session.email;
-	console.log(email);
 	var fields = req.body;
 	console.log(fields);
 	var className = fields.className;
@@ -132,8 +131,9 @@ app.post('/addClass', function(req, res) {
 			User.where({ email : req.session.email }).update({ classes : newClasses }, function(err) {
 				if(err) {
 					console.log(err);
+					res.send('ERROR');
 				} else {
-					res.end();
+					res.send('OK');
 				}
 			});
 			
@@ -143,6 +143,8 @@ app.post('/addClass', function(req, res) {
 		}
 		
 	});
+
+
 })
 
 function validateLogin(req, res) {
