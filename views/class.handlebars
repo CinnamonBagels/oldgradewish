@@ -1,6 +1,6 @@
 <div class="row text-center" id="title">
 	<div class="columns large-12 medium-12 small-12">
-		<span class="title">{{className}}</span>
+		<span class="title" id="className">{{className}}</span>
 	</div>
 </div>
 
@@ -25,3 +25,47 @@
 		</div>
 	</div>
 </div>
+
+<form id="addAssignmentForm">
+	<div class="row">
+		<div class="columns small-12">
+			<input type="text" name="assignmentName" placeholder="Assignmet Name">
+		</div>
+	</div>
+	<div class="row">
+		<div class="columns small-12">
+			<input type="text" name="assignmentWeight" placeholder="Assignment Weight">
+		</div>
+	</div>
+	<div class="row">
+		<div class="columns small-12">
+			<input type="text" name="assignmentPercentage" placeholder="Percent Given">
+		</div>
+	</div>
+	<div class="row">
+		<div class="columns small-12">
+			<a id="addAssignmentSubmit">Submit</a>
+		</div>
+	</div>
+</form>
+
+<script>
+	$('#addAssignmentSubmit').click(function(event) {
+		event.preventDefault();
+		var assignmentFields = [];
+		var $input = $('#addAssignmentForm').find(':input').each(function() {
+			assignmentFields.push($(this).val());
+		})
+
+		$.post('/addAssignment', { className : $('#className').text(),
+								   assignmentName : assignmentFields[0],
+								   assignmentWeight : assignmentFields[1],
+								   assignmentPercentage : assignmentFields[2] }, function(data) {
+			if(data) {
+				console.log('woo!');
+			} else {
+				console.log('awww :(');
+			}
+		});
+	});
+</script>

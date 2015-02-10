@@ -6,6 +6,8 @@ var assignmentSchema = new Schema({
 	email : String,
 	assignment : String,
 	percentage : Number,
+	weight : Number,
+	goal : Number
 });
 
 module.exports = mongoose.model('Class', assignmentSchema);

@@ -29,7 +29,7 @@ var cookieParser = require('cookie-parser');
 var Schema = mongoose.Schema;
 
 var User = require('./Schemas/users');
-var Class = require('./Schemas/class');
+var Assignment = require('./Schemas/assignment');
 
 var Connection = mongoose.connect('mongodb://samko:huehuehue@kahana.mongohq.com:10089/TritonSX', function(err) {
 	if(err) {
@@ -145,6 +145,26 @@ app.post('/addClass', function(req, res) {
 	});
 
 
+});
+
+app.post('/addAssignment' , function(req, res) {
+	
+	var fields = req.body;
+	//email = req.session.email
+	//form fields = req.body = {}
+	console.log(req.body);
+
+	var assignmentObject = {
+		className : fields.className,
+		email : req.session.email
+		//percentage
+		//weight
+	}
+
+	var assignment = new Assignment(assignmentObject);
+	//saving
+
+	res.send('OK');
 })
 
 function validateLogin(req, res) {
