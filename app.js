@@ -156,13 +156,14 @@ app.post('/addAssignment' , function(req, res) {
 
 	var assignmentObject = {
 		className : fields.className,
-		email : req.session.email
-		//percentage
-		//weight
+		email : req.session.email,
+		assignment : fields.assignmentName,
+		percentage : fields.assignmentPercentage,
+		weight : fields.assignmentWeight
 	}
 
-	var assignment = new Assignment(assignmentObject);
-	//saving
+	var newAssignment = new Assignment(assignmentObject);
+	newAssignment.save();
 
 	res.send('OK');
 })
@@ -173,7 +174,7 @@ function validateLogin(req, res) {
 	User.findOne({ email : fields.email, password : fields.password }, function(err, data) {
 		if(data) {
 			req.session.email = data.email;
-			res.redirect('/home');
+			res.redirect('/classes');
 		} else {
 			res.render('login');
 		}

@@ -10,3 +10,42 @@
 		</h3>
 	</div>
 </div>
+
+<br>
+
+<div class="row text-center">
+	<div class="columns large-4 medium-4 small-4 large-centered medium-centered small-centered">
+		<a class="button info expand radius" data-reveal-id="reportModal">
+			<h3><span class="button-text">Report a Problem</span></h3>
+		</a>
+	</div>
+</div>
+
+<div id="reportModal" class="reveal-modal" data-reveal>
+	<form id="report-form" action="/help" method="get">
+	  <div class="row">
+	  	<div class="row text-center">
+	  		<div class="columns large-6 small-6 medium-6 small-centered medium-centered large-centered">
+	  			<input type="text" placeholder="subject" name="subject">
+	  		</div>
+	  	</div>
+	  	<div class="row text-center">
+	  		<div class="columns large-6 small-6 medium-6 small-centered medium-centered large-centered">
+	  			<input type="text" placeholder="description" name="description">
+	  		</div>
+	  	</div>
+	  	<div class="row text-center">
+	  		<div class="columns large-6 small-6 medium-6 small-centered medium-centered large-centered">
+	  			<a id="submit-button" class="button">Submit</a>
+	  		</div>
+	  	</div>
+	  </div>
+	</form>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<script>
+	$('#submit-button').on('click', function(event) {
+		$('#report-form').submit();
+	});
+</script>
