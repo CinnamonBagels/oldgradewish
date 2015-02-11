@@ -9,13 +9,15 @@ var PORT = 3000;
 
 // Express is a web framework for node.js
 // that makes nontrivial applications easier to build
+var status = require('./status');
 
-var login = require('./routes/login');
-var homepage = require('./routes/homepage');
-var register = require('./routes/register');
-var classes = require('./routes/classes');
-var settings = require('./routes/settings');
-var help = require('./routes/help');
+var loginController = require('./routes/login');
+var homeController = require('./routes/homepage');
+var registerController = require('./routes/register');
+var classesController = require('./routes/classes');
+var settingsController = require('./routes/settings');
+var helpController = require('./routes/help');
+var assignmentController = require('./routes/assignments');
 
 
 var express = require('express');
@@ -80,106 +82,18 @@ app.get('/', function(req, res) {
 	}*/
 });
 
-app.get('/login', function(req, res) {
-	res.render('login');
-});
+app.get('/login', loginController.viewLogin);
+app.post('/login', loginController.validateLogin);
+app.get('/home', homeController.viewHome);
+app.post('/register', registerController.addUser);
 
-app.post('/login', function(req, res) {
-	validateLogin(req, res);
-});
-app.get('/home', homepage.viewHome);
-app.post('/register', function(req, res) {
-	var fields = req.body;
+app.get('/classes', classesController.viewClasses);
+app.get('/settings', settingsController.viewSettings);
+app.get('/help', helpController.helpScreen);
 
-	//if user already exists
-	User.findOne({ email : fields.email }, function(err, data) {
-		if(data) {
-			res.send('already registered');
-		} else {
+app.post('/addClass', classesController.addClass);
 
-			if(fields.password == fields.verifypassword) {
-				var userObject = {
-					name : fields.name,
-					email : fields.email,
-					password : fields.password,
-					classes : []
-				}
-				var newUser = new User(userObject);
-				newUser.save();
-				res.redirect('/login');
-			} else {
-				res.redirect('/login');
-			}	
-		}
-	});
-});
-
-app.get('/classes', classes.viewClasses);
-app.get('/settings', settings.viewSettings);
-app.get('/help', help.helpScreen);
-
-app.post('/addClass', function(req, res) {
-	var fields = req.body;
-	console.log(fields);
-	var className = fields.className;
-	var newClasses = []
-
-	User.findOne({ email : req.session.email }, function(err, data) {
-		if(data) {
-			newClasses = data.classes;
-			newClasses.push(className);
-			User.where({ email : req.session.email }).update({ classes : newClasses }, function(err) {
-				if(err) {
-					console.log(err);
-					res.send('ERROR');
-				} else {
-					res.send('OK');
-				}
-			});
-			
-		} else {
-			console.log('where is the user?');
-			res.end();
-		}
-		
-	});
-
-
-});
-
-app.post('/addAssignment' , function(req, res) {
-	
-	var fields = req.body;
-	//email = req.session.email
-	//form fields = req.body = {}
-	console.log(req.body);
-
-	var assignmentObject = {
-		className : fields.className,
-		email : req.session.email,
-		assignment : fields.assignmentName,
-		percentage : fields.assignmentPercentage,
-		weight : fields.assignmentWeight
-	}
-
-	var newAssignment = new Assignment(assignmentObject);
-	newAssignment.save();
-
-	res.send('OK');
-})
-
-function validateLogin(req, res) {
-	var fields = req.body;
-
-	User.findOne({ email : fields.email, password : fields.password }, function(err, data) {
-		if(data) {
-			req.session.email = data.email;
-			res.redirect('/classes');
-		} else {
-			res.render('login');
-		}
-	});
-}
+app.post('/addAssignment', assignmentController.addAssignment);
 
 // Start the server
 var port = process.env.PORT || PORT; // 80 for web, 3000 for development
