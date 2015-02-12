@@ -46,21 +46,36 @@ exports.viewClasses = function(req, res) {
 exports.addClass = function(req, res) {
 	var fields = req.body;
 	console.log(fields);
-	var className = fields.className;
-	var newClasses = [];
+	var newClass = fields.className;
+	var currentClasses = [];
+	var classExists = false;
 
 	User.findOne({ email : req.session.email }, function(err, data) {
 		if(data) {
-			newClasses = data.classes;
-			newClasses.push(className);
-			User.where({ email : req.session.email }).update({ classes : newClasses }, function(err) {
-				if(err) {
-					console.log(err);
-					res.send(status.error);
-				} else {
-					res.send(status.ok);
+			currentClasses = data.classes;
+			currentClasses.forEach(function(element) {
+				if(element == newClass) {
+					classExists = true;
 				}
 			});
+			if(classExists == false) {
+				currentClasses.push(newClass);
+				User.where({ email : req.session.email }).update({ classes : currentClasses }, function(err) {
+					if(err) {
+						console.log(err);
+						res.send(status.error);
+					} else {
+						res.send({
+							status : status.ok,
+							className : newClass
+						});
+					}
+				});
+			} else {
+				res.send({
+					status : status.error
+				})
+			}
 			
 		} else {
 			res.end();

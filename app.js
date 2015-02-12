@@ -9,7 +9,8 @@ var PORT = 3000;
 
 // Express is a web framework for node.js
 // that makes nontrivial applications easier to build
-var status = require('./status');
+var messages = require('./status');
+console.log(messages);
 
 var loginController = require('./routes/login');
 var homeController = require('./routes/homepage');
@@ -74,12 +75,6 @@ app.get('/', function(req, res) {
 	} else {
 		res.redirect('/login');
 	}
-	//for sessions later
-	/*if(req.session.user) {
-		res.render('homepage');
-	} else {
-		res.render('login');
-	}*/
 });
 
 app.get('/login', loginController.viewLogin);

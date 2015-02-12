@@ -1,6 +1,11 @@
 var session = require('express-session');
 var status = require('../status');
 
+var mongoose = require('mongoose'),
+	Schema = mongoose.Schema;
+
+var User = require('../Schemas/users');
+
 exports.viewLogin = function(req, res) {
 	res.render('login');
 }

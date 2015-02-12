@@ -4,15 +4,16 @@
 	</div>
 </div>
 
-{{#each classes}}
-<div class="row">
+<div class="row" id="classes">
+	{{#each classes}}
 	<div class="row text-center">
 		<div class="columns large-8 medium-8 small-8 large-centered small-centered medium-centered">
-			<a href="./classes?class={{className}}" class="button large info expand radius"><span class="button-text"></span>{{className}}</a>
+			<a href="./classes?class={{className}}" class="button large info expand radius"><span class="button-text">{{className}}</span></a>
 		</div>
 	</div>
+	{{/each}}	
 </div>
-{{/each}}
+
 <form id="addClassForm" action="/addClass" method="post">
 	<div class="row">
 	    <div class="columns large-8 medium-8 small-8">
@@ -33,6 +34,9 @@
 		event.preventDefault();
 		$.post('/addClass', { className : $('#classSelect option:selected').text() }, function(data) {
 			console.log(data);
+			if(data.status === 'OK') {
+				$('#classes').append('<div class="row text-center"><div class="columns small-8 medium-8 large-8 large-centered small-centered medium-centered"><a href="./classes?class=' + data.className + '" class="button large info expand radius"><span class="button-text">' + data.className + '</span></a></div></div>')
+			}
 		});
 	})
 </script>
