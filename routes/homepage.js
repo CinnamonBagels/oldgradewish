@@ -1,5 +1,5 @@
 var session = require('express-session');
-var status = require('../status');
+var systemMessages = require('../systemMessages');
 
 exports.viewHome = function(req, res) {
 	console.log(req.session);

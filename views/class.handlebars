@@ -3,30 +3,54 @@
 		<span class="title" id="className">{{className}}</span>
 	</div>
 </div>
-
 <div class="row text-center">
-	<div class="columns large-6 medium-6 small-6">
-		<span>Assignment 1</span>
-		<span>Grade:</span>
-		<input type="text">
+	<div class="columns large-8 medium-8 small-8">
+		Desired Percentage
 	</div>
-
-	<div class="columns large-6 medium-6 small-6">
-		<span>Minimum percentage needed on ungraded Assignments for a C</span>
-		<div class="row text-center">
-			<div class="columns large-12 small-12 medium-12">
-				Assignment 1 : 75%
-			</div>
-		</div>
-		<div class="row text-center">
-			<div class="columns large-12 small-12 medium-12">
-				Assignment 2 : 75%
-			</div>
-		</div>
+	<div class="columns large-4 medium-4 small-4">
+		<input id="desiredPercentageInput" type="text" Placeholder="Desired Percentage" name="desiredPercentage">
+	</div>
+</div>
+<div class="row">
+	<div class="columns large-12 small-12 medium-12">
+		<table>
+		  <thead>
+		    <tr>
+		      <th>Assignments</th>
+		      <th>Weight (in %)</th>
+		      <th>Grade Given (in %)</th>
+		      <th>Goal</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		      {{#each assignments}}
+		      <tr>
+		      	<td>
+		      		<span class="assignmentName">
+		      			{{assignment}}
+		      		</span>
+		      	</td>
+		      	<td>
+		      		<span class="assignmentWeight">
+		      			<input class="assignmentWeightInput" type="text" Placeholder="Assignment Weight" for-assignment="{{assignment}}" for-class="{{className}}" value="{{weight}}">
+		      		</span>
+		      	</td>
+		      	<td>
+		      		<input class="gradeGivenInput" type="text" Placeholder="Grade given" for-assignment="{{assignment}}" for-class="{{className}}" value="{{percentage}}">
+		      	</td>
+		      	<td>
+		      	</td>
+		      </tr>
+		      {{/each}}
+		  </tbody>
+		</table>
 	</div>
 </div>
 
-<form id="addAssignmentForm">
+<a data-reveal-id="addAssignmentModal" class="button info expand radius large"><span class="button-text">Add a Assignment</span></a>
+
+<div id="addAssignmentModal" class="reveal-modal" data-reveal>
+	<form id="addAssignmentForm">
 	<div class="row">
 		<div class="columns small-12">
 			<input type="text" name="assignmentName" placeholder="Assignment Name">
@@ -44,10 +68,12 @@
 	</div>
 	<div class="row">
 		<div class="columns small-12">
-			<a id="addAssignmentSubmit">Submit</a>
+			<a class="button success expand radius large" id="addAssignmentSubmit">Submit</a>
 		</div>
 	</div>
 </form>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
 
 <script>
 	$('#addAssignmentSubmit').click(function(event) {
@@ -68,4 +94,33 @@
 			}
 		});
 	});
+
+	$('.gradeGivenInput').bind("enterKey", function(e) {
+	   var percentage = $(this).val();
+	   var assignment = $(this).attr('for-assignment');
+	   var className = $(this).attr('for-class');
+	   var textbox = $(this);
+
+	   $.post('/updateAssignmentPercentage', { className : className, assignmentPercentage: percentage, assignmentName : assignment}, function(data) {
+	   	console.log(data);
+	   	if(data === 'OK') {
+	   		console.log('uhhhh');
+	   		textbox.replaceWith(percentage);
+	   	}
+	   });
+	});
+
+	$('#desiredPercentageInput').bind('enterKey', function(e) {
+		
+	});
+
+	$('.gradeGivenInput, #desiredPercentageInput').keyup(function(e){
+	    if(e.keyCode == 13)
+	    {
+	        $(this).trigger("enterKey");
+	    }
+	});
 </script>
+
+1 == "1"
+1 === "1"

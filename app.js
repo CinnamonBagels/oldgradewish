@@ -9,8 +9,7 @@ var PORT = 3000;
 
 // Express is a web framework for node.js
 // that makes nontrivial applications easier to build
-var messages = require('./status');
-console.log(messages);
+var messages = require('./systemMessages');
 
 var loginController = require('./routes/login');
 var homeController = require('./routes/homepage');
@@ -89,6 +88,7 @@ app.get('/help', helpController.helpScreen);
 app.post('/addClass', classesController.addClass);
 
 app.post('/addAssignment', assignmentController.addAssignment);
+app.post('/updateAssignmentPercentage', assignmentController.updateAssignmentPercentage);
 
 // Start the server
 var port = process.env.PORT || PORT; // 80 for web, 3000 for development

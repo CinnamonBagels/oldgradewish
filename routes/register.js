@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
 
 var User = require('../Schemas/users');
 
-var status = require('../status');
+var systemMessages = require('../systemMessages');
 
 exports.viewRegister = function(req, res) {
 	res.send('no');

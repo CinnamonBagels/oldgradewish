@@ -7,7 +7,8 @@ var assignmentSchema = new Schema({
 	assignment : String,
 	percentage : Number,
 	weight : Number,
-	goal : Number
+	goal : Number,
+	desiredPercentage : Number
 });
 
 module.exports = mongoose.model('Class', assignmentSchema);
