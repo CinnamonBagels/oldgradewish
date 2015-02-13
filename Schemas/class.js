@@ -3,7 +3,8 @@ var mongoose = require('mongoose'),
 
 var classSchema = new Schema({
 	className : String,
-	email : String
+	email : String,
+	desiredGrade : Number
 });
 
 module.exports = mongoose.model('Class', classSchema);

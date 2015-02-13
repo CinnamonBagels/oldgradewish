@@ -5,10 +5,9 @@ var mongoose = require('mongoose'),
 
 var User = require('../Schemas/users');
 var Assignment = require('../Schemas/assignment');
+var Class = require('../Schemas/class');
 
-var classes = [];
 var classObject;
-var assignments = [];
 var classPageObject;
 
 exports.viewClasses = function(req, res) {
@@ -17,21 +16,38 @@ exports.viewClasses = function(req, res) {
 	}
 	if (req.query.class)
 	{	
+		var assignments = [];
 		Assignment.find({ email : req.session.email, className : req.query.class }, function(err, data) {
 			if(err) {
 				console.log(err);
 				res.send(err);
 			} else {
-				classPageObject = {
-					'className' : req.query.class,
-					'assignments' : data
-				};
-				res.render('class', classPageObject);
+				var assignments = data;
+				console.log(assignments);
+				Class.findOne({ email : req.session.email, className : req.query.class }, function(err, classObj) {
+					if(err) {
+						console.log(err);
+						res.send(err);
+					} else {
+						if(classObj) {
+							var desiredGrade = classObj.desiredGrade;
+							classPageObject = {
+								'className' : req.query.class,
+								'assignments' : assignments,
+								'desiredGrade' : desiredGrade
+							};
+
+							res.render('class', classPageObject);
+						}
+					}
+				});
+				
 			}
 		});
 	}
 	else 
 	{	
+		var classes = [];
 		User.findOne({ email : req.session.email }, function(err, data) {
 			if(err) {
 				console.log(err);
@@ -54,29 +70,41 @@ exports.viewClasses = function(req, res) {
 
 exports.addClass = function(req, res) {
 	var fields = req.body;
-	console.log(fields);
 	var newClass = fields.className;
 	var currentClasses = [];
 	var classExists = false;
+	var classObject;
 
 	User.findOne({ email : req.session.email }, function(err, data) {
 		if(data) {
-			currentClasses = data.classes;
-			currentClasses.forEach(function(element) {
-				if(element == newClass) {
+			data.classes.forEach(function(element) {
+				if(element === newClass) {
 					classExists = true;
 				}
 			});
-			if(classExists == false) {
-				currentClasses.push(newClass);
-				User.where({ email : req.session.email }).update({ classes : currentClasses }, function(err) {
+			if(classExists === false) {
+				data.classes.push(newClass);
+				data.save(function(err) {
 					if(err) {
 						console.log(err);
-						res.send(systemMessages.status.error);
+						res.send(err);
+					}
+				});
+
+				classObject = new Class({
+					className : newClass,
+					email : req.session.email,
+					desiredGrade : fields.desiredGrade
+				});
+
+				classObject.save(function(err) {
+					if(err) {
+						console.log(err);
+						res.send(err);
 					} else {
 						res.send(systemMessages.status.ok);
 					}
-				});
+				})
 			} else {
 				res.send(systemMessages.status.error);
 			}
@@ -84,7 +112,73 @@ exports.addClass = function(req, res) {
 		} else {
 			res.end();
 		}
-		
 	});
+}
+
+exports.updateDesiredGrade = function(req, res) {
+	var fields = req.body;
+
+	Class.findOne({ email : req.session.email, className : fields.className }, function(err, data) {
+		if(err) {
+			console.log(err);
+			res.send(err);
+		} else {
+			if(data) {
+				data.desiredGrade = fields.desiredGrade;
+				data.save(function(err) {
+					if(err) {
+						console.log(err);
+						res.send(err);
+					} else {
+						res.send(systemMessages.status.ok);
+					}
+				});
+			}
+		}
+	});
+}
+
+exports.deleteClass = function(req, res) {
+	var fields = req.body;
+	var classes = [];
+
+	Class.findOneAndRemove({ email : req.session.email, className : fields.className }, function(err) {
+		if(err) {
+			console.log(err);
+			res.send(err);
+		} else {
+			Assignment.remove( { email : req.session.email, className : fields.className}, function(err) {
+				if(err) {
+					console.log(err);
+					res.send(err);
+				} else {
+					User.findOne({ email : req.session.email }, function(err, data) {
+						if(err) {
+							console.log(err);
+							res.send(err);
+						} else {
+							if(data) {
+								data.classes.forEach(function(element) {
+									if((element === fields.className) == false) {
+										classes.push(element);
+									}
+								});
+
+								data.classes = classes;
+								data.save(function(err) {
+									if(err) {
+										console.log(err);
+										res.send(err);
+									} else {
+										res.send(systemMessages.status.ok);
+									}
+								});
+							}
+						}
+					});
+				}
+			})
+		}
+	})
 }
 

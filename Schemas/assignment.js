@@ -11,4 +11,4 @@ var assignmentSchema = new Schema({
 	desiredPercentage : Number
 });
 
-module.exports = mongoose.model('Class', assignmentSchema);
+module.exports = mongoose.model('Assignment', assignmentSchema);

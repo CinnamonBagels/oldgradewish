@@ -8,7 +8,7 @@
 		Desired Percentage
 	</div>
 	<div class="columns large-4 medium-4 small-4">
-		<input id="desiredPercentageInput" type="text" Placeholder="Desired Percentage" name="desiredPercentage">
+		<input id="desiredPercentageInput" type="text" name="desiredPercentage" value="{{desiredGrade}}">
 	</div>
 </div>
 <div class="row">
@@ -20,6 +20,7 @@
 		      <th>Weight (in %)</th>
 		      <th>Grade Given (in %)</th>
 		      <th>Goal</th>
+		      <th></th>
 		    </tr>
 		  </thead>
 		  <tbody>
@@ -39,6 +40,10 @@
 		      		<input class="gradeGivenInput" type="text" Placeholder="Grade given" for-assignment="{{assignment}}" for-class="{{className}}" value="{{percentage}}">
 		      	</td>
 		      	<td>
+		      		{{desiredPercentage}}
+		      	</td>
+		      	<td>
+		      		<a class="button alert radius deleteAssignmentButton" for-assignment="{{assignment}}" for-class="{{className}}">Delete</a>
 		      	</td>
 		      </tr>
 		      {{/each}}
@@ -47,7 +52,7 @@
 	</div>
 </div>
 
-<a data-reveal-id="addAssignmentModal" class="button info expand radius large"><span class="button-text">Add a Assignment</span></a>
+<a data-reveal-id="addAssignmentModal" class="button info expand radius large"><span class="button-text">Add an Assignment</span></a>
 
 <div id="addAssignmentModal" class="reveal-modal" data-reveal>
 	<form id="addAssignmentForm">
@@ -63,12 +68,12 @@
 	</div>
 	<div class="row">
 		<div class="columns small-12">
-			<input type="text" name="assignmentPercentage" placeholder="Percent Given">
+			<input type="text" name="assignmentPercentage" placeholder="Percent Given (Leave blank if no grade given yet)">
 		</div>
 	</div>
 	<div class="row">
 		<div class="columns small-12">
-			<a class="button success expand radius large" id="addAssignmentSubmit">Submit</a>
+			<a class="button success expand radius large" id="addAssignmentSubmit">Add Assignment</a>
 		</div>
 	</div>
 </form>
@@ -76,6 +81,15 @@
 </div>
 
 <script>
+	$('.deleteAssignmentButton').click(function(event) {
+		var assignment = $(this).attr('for-assignment');
+		var className = $(this).attr('for-class');
+
+		$.post('/deleteAssignment', { assignmentName : assignment, className : className }, function(data) {
+			console.log(data);
+		});
+	});
+
 	$('#addAssignmentSubmit').click(function(event) {
 		event.preventDefault();
 		var assignmentFields = [];
@@ -111,16 +125,28 @@
 	});
 
 	$('#desiredPercentageInput').bind('enterKey', function(e) {
-		
+		var desiredGrade = $(this).val();
+
+		$.post('/updateDesiredGrade', { desiredGrade : desiredGrade, className : $('#className').text() }, function(data) {
+			console.log(data);
+		})
 	});
 
-	$('.gradeGivenInput, #desiredPercentageInput').keyup(function(e){
+	$('.assignmentWeightInput').bind('enterKey', function(e) {
+		var assignment = $(this).attr('for-assignment');
+		var className = $(this).attr('for-class');
+		var weight = $(this).val();
+		console.log(assignment, className, weight);
+
+		$.post('/updateAssignmentWeight', { assignmentName : assignment, className : className, weight : weight }, function(data) {
+			console.log(data);
+		})
+	});
+
+	$('.gradeGivenInput, #desiredPercentageInput, .assignmentWeightInput').keyup(function(e){
 	    if(e.keyCode == 13)
 	    {
 	        $(this).trigger("enterKey");
 	    }
 	});
 </script>
-
-1 == "1"
-1 === "1"
