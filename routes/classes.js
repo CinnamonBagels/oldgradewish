@@ -7,46 +7,12 @@ var User = require('../Schemas/users');
 var Assignment = require('../Schemas/assignment');
 var Class = require('../Schemas/class');
 
-var classObject;
-var classPageObject;
-
 exports.viewClasses = function(req, res) {
+	var classObject;
+	var classPageObject;
 	if(!req.session.email) {
 		return res.redirect('/login');
-	}
-	if (req.query.class)
-	{	
-		var assignments = [];
-		Assignment.find({ email : req.session.email, className : req.query.class }, function(err, data) {
-			if(err) {
-				console.log(err);
-				res.send(err);
-			} else {
-				var assignments = data;
-				console.log(assignments);
-				Class.findOne({ email : req.session.email, className : req.query.class }, function(err, classObj) {
-					if(err) {
-						console.log(err);
-						res.send(err);
-					} else {
-						if(classObj) {
-							var desiredGrade = classObj.desiredGrade;
-							classPageObject = {
-								'className' : req.query.class,
-								'assignments' : assignments,
-								'desiredGrade' : desiredGrade
-							};
-
-							res.render('class', classPageObject);
-						}
-					}
-				});
-				
-			}
-		});
-	}
-	else 
-	{	
+	} else {
 		var classes = [];
 		User.findOne({ email : req.session.email }, function(err, data) {
 			if(err) {
@@ -64,7 +30,42 @@ exports.viewClasses = function(req, res) {
 					'classes' : classes
 				});
 			}
-		})
+		});
+	}
+}
+
+exports.viewClass = function(req, res) {
+	if(!req.session.email) {
+		res.redirect('/login');
+	} else {
+		var assignments = [];
+		Assignment.find({ email : req.session.email, className : req.params.classID }, function(err, data) {
+			if(err) {
+				console.log(err);
+				res.send(err);
+			} else {
+				var assignments = data;
+				console.log(assignments);
+				Class.findOne({ email : req.session.email, className : req.params.classID }, function(err, classObj) {
+					if(err) {
+						console.log(err);
+						res.send(err);
+					} else {
+						if(classObj) {
+							var desiredGrade = classObj.desiredGrade;
+							classPageObject = {
+								'className' : req.params.classID,
+								'assignments' : assignments,
+								'desiredGrade' : desiredGrade
+							};
+
+							res.render('class', classPageObject);
+						}
+					}
+				});
+				
+			}
+		});
 	}
 }
 
@@ -83,7 +84,7 @@ exports.addClass = function(req, res) {
 				}
 			});
 			if(classExists === false) {
-				data.classes.push(newClass);
+				data.classes.unshift(newClass);
 				data.save(function(err) {
 					if(err) {
 						console.log(err);

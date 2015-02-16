@@ -82,6 +82,7 @@ app.get('/home', homeController.viewHome);
 app.post('/register', registerController.addUser);
 
 app.get('/classes', classesController.viewClasses);
+app.get('/classes/:classID', classesController.viewClass);
 app.get('/settings', settingsController.viewSettings);
 app.get('/help', helpController.helpScreen);
 
@@ -93,6 +94,7 @@ app.post('/updateAssignmentPercentage', assignmentController.updateAssignmentPer
 app.post('/updateDesiredGrade', classesController.updateDesiredGrade);
 app.post('/updateAssignmentWeight', assignmentController.updateAssignmentWeight);
 app.post('/deleteAssignment', assignmentController.deleteAssignment);
+app.post('/updateAssignmentGoal', assignmentController.updateAssignmentGoal);
 
 // Start the server
 var port = process.env.PORT || PORT; // 80 for web, 3000 for development

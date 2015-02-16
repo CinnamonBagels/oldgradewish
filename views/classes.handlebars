@@ -8,7 +8,7 @@
 	{{#each classes}}
 	<div id="{{className}}" class="row text-center">
 		<div class="columns large-8 medium-8 small-8">
-			<a href="./classes?class={{className}}" class="button large info expand radius"><span class="button-text">{{className}}</span></a>
+			<a href="/classes/{{className}}" class="button large info expand radius"><span class="button-text">{{className}}</span></a>
 		</div>
 		<div class="columns large-4 medium-4 small-4">
 			<a id="deleteClassButton" for-class="{{className}}" data-reveal-id="deleteClassModal" class="button alert expand radius large"><span class="button-text">Delete</span></a>
@@ -66,6 +66,7 @@
 		$.post('/deleteClass', { className : classToBeDeleted }, function(data) {
 			if(data === 'OK') {
 				$('#' + classToBeDeleted).remove();
+				$('a.close-reveal-modal').trigger('click');
 			}
 		});
 	});
@@ -83,6 +84,7 @@
 			<a id="deleteClassButton" for-class="' + className + '" data-reveal-id="deleteClassModal" class="button alert expand radius large"><span class="button-text">Delete</span></a>\
 		</div>\
 	</div>');
+				$('a.close-reveal-modal').trigger('click');
 			}
 		});
 	})

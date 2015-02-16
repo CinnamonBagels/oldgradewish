@@ -91,21 +91,43 @@ exports.updateAssignmentPercentage = function(req, res) {
 }
 
 exports.updateAssignmentGoal = function(req, res) {
-	var pointsBurned;
-	var totalPoints;
-	var currentGrade;
-	var undoneWeight = 100 - pointsBurned;
-	var desiredGrade;
-	var assignmentGoal;
-	var pointsOfTotal;
-	var goalTotal;
-	//totalpoints = sum(assignmentPercent * assignmentWeight)
-	//currentGrade = totalPoints / pointBurned
-	//pointsOfTotal = totalPoints / 100
-	//desiredGrade - pointsOfTotal = goalTotal;
-	//if(goalTotal < 0) { goal is already met }
-	//if(goalTotal > undoneWeight) { they need to acheive extra credit / impossible without extra credit }
-	//goalTotal / undoneWeight == goal
+	var fields = req.body;
+	console.log(fields);
+	var desiredGrade = +fields.desiredGrade / 100;
+	var pointsBurned = 0;
+	var totalPoints = 0;
+	var currentGrade = 0;
+	var undoneWeight = 0;
+	var goalTotal = 0;
+	var necessaryPoints = 0;
+
+	for(var i = 0; i < fields.assignmentWeights.length; i++) {
+		if(fields.assignmentWeights[i] === '') {
+			totalPoints += fields.assignmentPercentages[i] / 100;
+		} else if(fields.assignmentPercentages[i] !== '' && fields.assignmentWeights[i] !== '') {
+			totalPoints += (+fields.assignmentPercentages[i] / 100) * (+fields.assignmentWeights[i] / 100);
+			pointsBurned += (+fields.assignmentWeights[i] / 100);
+		} 
+	}
+
+	currentGrade = totalPoints / pointsBurned;
+
+	undoneWeight = 1 - pointsBurned;
+
+	goalTotal = desiredGrade - totalPoints;
+
+	necessaryPoints = goalTotal / undoneWeight;
+
+	console.log(necessaryPoints);
+
+	fields.assignmentPercentages.forEach(function(percentage) {
+		totalPoints = percentage
+	});
+
+	res.send({
+		currentGrade : currentGrade * 100,
+		goal : necessaryPoints * 100
+	});
 }
 
 /*{ assignmentName : assignment, className : className, weight : weight }*/
