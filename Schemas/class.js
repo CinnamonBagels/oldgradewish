@@ -4,7 +4,9 @@ var mongoose = require('mongoose'),
 var classSchema = new Schema({
 	className : String,
 	email : String,
-	desiredGrade : Number
+	desiredGrade : Number,
+	currentGrade : Number,
+	assignmentGoal : Number
 });
 
 module.exports = mongoose.model('Class', classSchema);

@@ -17,10 +17,11 @@
 		  <thead>
 		    <tr>
 		      <th>Assignments</th>
+		      <th>Extra Credit</th>
 		      <th>Weight (in %)</th>
 		      <th>Grade Given (in %)</th>
 		      <th>Goal</th>
-		      <th></th>
+		      <th>Actions</th>
 		    </tr>
 		  </thead>
 		  <tbody>
@@ -30,6 +31,9 @@
 		      		<span class="assignmentName">
 		      			{{assignment}}
 		      		</span>
+		      	</td>
+		      	<td>
+		      		<input type="checkbox" name="extraCredit">
 		      	</td>
 		      	<td>
 		      		<span class="assignmentWeight">
@@ -105,6 +109,7 @@
 		$.post('/deleteAssignment', { assignmentName : assignmentToBeDeleted, className : forClass }, function(data) {
 			console.log(data);
 			$('a.close-reveal-modal').trigger('click');
+			console.log($('tr[for-assignment="' + assignmentToBeDeleted + '"]'));
 			$('tr[for-assignment="' + assignmentToBeDeleted + '"]').remove();
 		});
 	})
@@ -131,6 +136,9 @@
 		      		<span class="assignmentName">\
 		      			' + assignmentName + '\
 		      		</span>\
+		      	</td>\
+		      	<td>\
+		      		<input type="checkbox" name="extraCredit">\
 		      	</td>\
 		      	<td>\
 		      		<span class="assignmentWeight">\
@@ -176,7 +184,7 @@
 	   	if(data === 'OK') {
 	   		console.log('uhhhh');
 	   		textbox.val(percentage);
-	   		$.post('/updateAssignmentGoal', { assignmentPercentages : assignmentPercentages, assignmentWeights : assignmentWeights, desiredGrade : desiredGrade }, function(data) {
+	   		$.post('/updateAssignmentGoal', { className : className, assignmentPercentages : assignmentPercentages, assignmentWeights : assignmentWeights, desiredGrade : desiredGrade }, function(data) {
 	   			console.log(data);
 	   		})
 	   	}

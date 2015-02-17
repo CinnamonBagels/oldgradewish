@@ -38,8 +38,7 @@ exports.addAssignment = function(req, res) {
 								email : req.session.email,
 								assignment : fields.assignmentName,
 								percentage : fields.assignmentPercentage,
-								weight : fields.assignmentWeight,
-								desiredPercentage : classDoc.desiredGrade
+								weight : fields.assignmentWeight
 							}
 
 							var newAssignment = new Assignment(assignmentObject);
@@ -124,9 +123,30 @@ exports.updateAssignmentGoal = function(req, res) {
 		totalPoints = percentage
 	});
 
-	res.send({
-		currentGrade : currentGrade * 100,
-		goal : necessaryPoints * 100
+	Class.findOne({ email : req.session.email, className : fields.className }, function(err, data) {
+		if(err) {
+			console.log(err);
+			res.send(err);
+		} else {
+			if(data) {
+				data.currentGrade = currentGrade;
+				data.assignmentGoal = necessaryPoints;
+				data.save(function(err) {
+					if(err) {
+						console.log(err);
+						res.send(err);
+					} else {
+						res.send({
+							currentGrade : currentGrade * 100,
+							goal : necessaryPoints * 100
+						});
+					}
+				})
+			} else {
+				console.log('cannot find data');
+				res.send(systemMessages.status.error);
+			}
+		}
 	});
 }
 
