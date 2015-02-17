@@ -38,3 +38,10 @@ input {
 input[type="text"], input[type="password"] {
 	font-size: 2em;
 }
+
+/*.appendBottom {
+	position: fixed;
+	margin-bottom: 0px;
+	padding-bottom: 0px;
+	width: 100%;
+}*/

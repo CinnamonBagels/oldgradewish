@@ -4,6 +4,15 @@
 	</div>
 </div>
 <div class="row text-center">
+	<div class="columns large-8 medium-8 small-8 large-centered small-centered medium-centered">
+	{{#if currentGrade}}
+		<span>Your current grade is {{currentGrade}}</span>
+	{{else}}
+		<span>You have not entered enough information for us to calculate your grade</span>
+	{{/if}}
+	</div>
+</div>
+<div class="row text-center">
 	<div class="columns large-8 medium-8 small-8">
 		Desired Percentage
 	</div>
@@ -13,6 +22,7 @@
 </div>
 <div class="row">
 	<div class="columns large-12 small-12 medium-12">
+		{{#if assignments}}
 		<table>
 		  <thead>
 		    <tr>
@@ -53,6 +63,9 @@
 		      {{/each}}
 		  </tbody>
 		</table>
+		{{else}}
+			<span>You have no assignments!</span>
+		{{/if}}
 	</div>
 </div>
 
@@ -186,28 +199,57 @@
 	   		textbox.val(percentage);
 	   		$.post('/updateAssignmentGoal', { className : className, assignmentPercentages : assignmentPercentages, assignmentWeights : assignmentWeights, desiredGrade : desiredGrade }, function(data) {
 	   			console.log(data);
-	   		})
+
+	   		});
 	   	}
 	   });
 	});
 
 	$('#desiredPercentageInput').bind('enterKey', function(e) {
 		var desiredGrade = $(this).val();
+		var assignmentPercentages = [];
+	   var assignmentWeights = [];
+
+	   for(var i = 0; i < $('.assignmentWeightInput').length; i++) {
+	   	assignmentWeights.push($('.assignmentWeightInput')[i].value);
+	   }
+
+	   for(var i = 0; i < $('.gradeGivenInput').length; i++) {
+		assignmentPercentages.push($('.gradeGivenInput')[i].value);
+	   }
 
 		$.post('/updateDesiredGrade', { desiredGrade : desiredGrade, className : $('#className').text() }, function(data) {
 			console.log(data);
-		})
+			$.post('/updateAssignmentGoal', { className : className, assignmentPercentages : assignmentPercentages, assignmentWeights : assignmentWeights, desiredGrade : desiredGrade }, function(data) {
+				console.log(data);
+
+			});
+		});
 	});
 
 	$('.assignmentWeightInput').bind('enterKey', function(e) {
+		var desiredGrade = $('#desiredPercentageInput').val();
 		var assignment = $(this).attr('for-assignment');
 		var className = $(this).attr('for-class');
 		var weight = $(this).val();
-		console.log(assignment, className, weight);
+		var assignmentPercentages = [];
+	    var assignmentWeights = [];
+
+	    for(var i = 0; i < $('.assignmentWeightInput').length; i++) {
+	   		assignmentWeights.push($('.assignmentWeightInput')[i].value);
+	    }
+
+	    for(var i = 0; i < $('.gradeGivenInput').length; i++) {
+			assignmentPercentages.push($('.gradeGivenInput')[i].value);
+	    }
 
 		$.post('/updateAssignmentWeight', { assignmentName : assignment, className : className, weight : weight }, function(data) {
 			console.log(data);
-		})
+			$.post('/updateAssignmentGoal', { className : className, assignmentPercentages : assignmentPercentages, assignmentWeights : assignmentWeights, desiredGrade : desiredGrade }, function(data) {
+				console.log(data);
+
+			});
+		});
 	});
 
 	$('.gradeGivenInput, #desiredPercentageInput, .assignmentWeightInput').keyup(function(e){

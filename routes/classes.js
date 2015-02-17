@@ -44,7 +44,7 @@ exports.viewClass = function(req, res) {
 				console.log(err);
 				res.send(err);
 			} else {
-				var assignments = data;
+				assignments = data;
 				console.log(assignments);
 				Class.findOne({ email : req.session.email, className : req.params.classID }, function(err, classObj) {
 					if(err) {
@@ -56,7 +56,8 @@ exports.viewClass = function(req, res) {
 							classPageObject = {
 								'className' : req.params.classID,
 								'assignments' : assignments,
-								'desiredGrade' : desiredGrade
+								'desiredGrade' : desiredGrade,
+								'currentGrade' : classObj.currentGrade
 							};
 
 							res.render('class', classPageObject);

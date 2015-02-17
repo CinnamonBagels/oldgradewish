@@ -1,23 +1,28 @@
-<div class="row text-center" id="title">
+<div class="row fullWidth text-center" id="title">
 	<div class="columns large-12 medium-12 small-12">
 		<span class="title">Classes</span>
 	</div>
 </div>
 
-<div class="row fullWidth" id="classes">
+<div class="row fullWidth text-center" id="classes">
+	{{#if classes}}
 	{{#each classes}}
 	<div id="{{className}}" class="row text-center">
 		<div class="columns large-8 medium-8 small-8">
 			<a href="/classes/{{className}}" class="button large info expand radius"><span class="button-text">{{className}}</span></a>
 		</div>
-		<div class="columns large-4 medium-4 small-4">
-			<a id="deleteClassButton" for-class="{{className}}" data-reveal-id="deleteClassModal" class="button alert expand radius large"><span class="button-text">Delete</span></a>
+		<div class="columns large-2 medium-2 small-2 end">
+			<a id="deleteClassButton" for-class="{{className}}" data-reveal-id="deleteClassModal" class="button alert expand radius large"><span class="button-text">X</span></a>
 		</div>
 	</div>
 	{{/each}}	
+	{{else}}
+	<div class="columns large-12 small-12 medium-12 large-centered medium-centered small-centered">
+		<span>You currently have no classes</span>
+	</div>
 </div>
 
-<a data-reveal-id="addClassModal" class="button info expand radius large"><span class="button-text">Add a Class</span></a>
+<a data-reveal-id="addClassModal" class="button info expand radius large appendBottom"><span class="button-text">Add a Class</span></a>
 
 <div id="deleteClassModal" class="reveal-modal" data-reveal>
 	<div class="row text-center">
