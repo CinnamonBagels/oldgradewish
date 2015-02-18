@@ -12,12 +12,12 @@ body {
 	 /*font-family: 'Lobster', cursive; */
 	 /*font-family: 'Indie Flower', cursive; */
 	font-family: 'Pacifico', cursive; 
-	font-size: 7em;
+	font-size: 5em;
 	color: #E7E3E8;
 }
 
 #title {
-	min-height: 40%;
+	min-height: 30%;
 }
 
 .button.large {
