@@ -89,7 +89,9 @@ exports.addClass = function(req, res) {
 				data.save(function(err) {
 					if(err) {
 						console.log(err);
-						res.send(err);
+						res.send({
+							err : systemMessages.status.error
+						});
 					}
 				});
 
@@ -102,17 +104,25 @@ exports.addClass = function(req, res) {
 				classObject.save(function(err) {
 					if(err) {
 						console.log(err);
-						res.send(err);
+						res.send({
+							err : systemMessages.status.error
+						});
 					} else {
-						res.send(systemMessages.status.ok);
+						res.send({
+							ok : systemMessages.status.ok
+						});
 					}
 				})
 			} else {
-				res.send(systemMessages.status.error);
+				res.send({
+					err : systemMessages.status.error
+				});
 			}
 			
 		} else {
-			res.end();
+			res.send({
+				err : systemMessages.status.error
+			});
 		}
 	});
 }
@@ -123,16 +133,22 @@ exports.updateDesiredGrade = function(req, res) {
 	Class.findOne({ email : req.session.email, className : fields.className }, function(err, data) {
 		if(err) {
 			console.log(err);
-			res.send(err);
+			res.send({
+				err : systemMessages.status.error
+			});
 		} else {
 			if(data) {
 				data.desiredGrade = fields.desiredGrade;
 				data.save(function(err) {
 					if(err) {
 						console.log(err);
-						res.send(err);
+						res.send({
+							err : systemMessages.status.error
+						});
 					} else {
-						res.send(systemMessages.status.ok);
+						res.send({
+							ok : systemMessages.status.ok
+						});
 					}
 				});
 			}
@@ -147,7 +163,9 @@ exports.deleteClass = function(req, res) {
 	Class.findOneAndRemove({ email : req.session.email, className : fields.className }, function(err) {
 		if(err) {
 			console.log(err);
-			res.send(err);
+			res.send({
+				err : systemMessages.status.error
+			});
 		} else {
 			Assignment.remove( { email : req.session.email, className : fields.className}, function(err) {
 				if(err) {

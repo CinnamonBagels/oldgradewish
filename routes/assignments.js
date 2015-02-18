@@ -15,7 +15,9 @@ exports.addAssignment = function(req, res) {
 	Assignment.find({ email : req.session.email, className : fields.className }, function(err, data) {
 		if(err) {
 			console.log(err);
-			res.send(err);
+			res.send({
+				err : systemMessages.status.error
+			});
 		} else {
 			var totalWeight = 0;
 			data.forEach(function(entry) {
@@ -25,12 +27,16 @@ exports.addAssignment = function(req, res) {
 			console.log(Math.floor(totalWeight) !== 100);
 			if(Math.floor(totalWeight) > 100) {
 				console.log('Weight cannot exceed 100');
-				res.send(systemMessages.status.error);
+				res.send({
+					err : systemMessages.status.error
+				});
 			} else {
 				Class.findOne({ email : req.session.email, className : fields.className }, function(err, classDoc) {
 					if(err) {
 						console.log(err);
-						res.send(err);
+						res.send({
+							err : systemMessages.status.error
+						});
 					} else {
 						if(classDoc) {
 							var assignmentObject = {
@@ -46,14 +52,20 @@ exports.addAssignment = function(req, res) {
 							newAssignment.save(function(err) {
 								if(err) {
 									console.log(err);
-									res.send(systemMessages.status.error);
+									res.send({
+										err : systemMessages.status.error
+									});
 								} else {
-									res.send(systemMessages.status.ok);
+									res.send({
+										ok : systemMessages.status.ok
+									});
 								}
 							});
 						} else {
 							console.log('cannot find classDoc');
-							res.send(systemMessages.status.error);
+							res.send({
+								err : systemMessages.status.error
+							});
 						}
 					}
 				});
@@ -73,16 +85,22 @@ exports.updateAssignmentPercentage = function(req, res) {
 	Assignment.findOne({ email : req.session.email, className : fields.className, assignment : fields.assignmentName }, function(err, data) {
 		if(err) {
 			console.log(err);
-			res.send(err);
+			res.send({
+				err : systemMessages.status.error
+			});
 		} else {
 			data.percentage = fields.assignmentPercentage;
 			data.save(function(err) {
 				if(err) {
 					console.log(err);
-					res.send(err);
+					res.send({
+						err : systemMessages.status.error
+					});
 				} else {
 					console.log(systemMessages.status.ok);
-					res.send(systemMessages.status.ok);
+					res.send({
+						ok : systemMessages.status.ok
+					});
 				}
 			});
 		}
@@ -126,17 +144,22 @@ exports.updateAssignmentGoal = function(req, res) {
 	Class.findOne({ email : req.session.email, className : fields.className }, function(err, data) {
 		if(err) {
 			console.log(err);
-			res.send(err);
+			res.send({
+				err : systemMessages.status.error
+			});
 		} else {
 			if(data) {
-				data.currentGrade = currentGrade;
+				data.currentGrade = Math.floor(currentGrade * 100);
 				data.assignmentGoal = necessaryPoints;
 				data.save(function(err) {
 					if(err) {
 						console.log(err);
-						res.send(err);
+						res.send({
+							err : systemMessages.status.error
+						});
 					} else {
 						res.send({
+							ok : systemMessages.status.ok,
 							currentGrade : currentGrade * 100,
 							goal : necessaryPoints * 100
 						});
@@ -144,7 +167,9 @@ exports.updateAssignmentGoal = function(req, res) {
 				})
 			} else {
 				console.log('cannot find data');
-				res.send(systemMessages.status.error);
+				res.send({
+					err : systemMessages.status.error
+				});
 			}
 		}
 	});
@@ -157,13 +182,17 @@ exports.updateAssignmentWeight = function(req, res) {
 	Assignment.find({ email : req.session.email, className : fields.className }, function(err, data) {
 		if(err) {
 			console.log(err);
-			res.send(err);
+			res.send({
+				err : systemMessages.status.error
+			});
 		} else {
 			if(data) {
 				Assignment.findOne({email : req.session.email, assignment : fields.assignmentName, className : fields.className }, function(err, assignment) {
 					if(err) {
 						console.log(err);
-						res.send(err);
+						res.send({
+							err : systemMessages.status.error
+						});
 					} else {
 						if(assignment) {
 							//calculate whether assignment + total weight > 100
@@ -177,27 +206,37 @@ exports.updateAssignmentWeight = function(req, res) {
 							totalWeight = +totalWeight + +fields.weight;
 							if(Math.floor(totalWeight) > 100) {
 								console.log('Weight cannot exceed 100');
-								res.send(systemMessages.status.error);
+								res.send({
+									err : systemMessages.status.error
+								});
 							} else {
 								assignment.weight = fields.weight;
 								assignment.save(function(err) {
 									if(err) {
 										console.log(err);
-										res.send(err);
+										res.send({
+											err : systemMessages.status.error
+										});
 									} else {
-										res.send(systemMessages.status.ok);
+										res.send({
+											ok : systemMessages.status.ok
+										});
 									}
 								});
 							}
 						} else {
 							console.log('assignment not found');
-							res.end();
+							res.send({
+								err : systemMessages.status.error
+							});
 						}
 					}
 				});
 			} else {
 				console.log('data not found');
-				res.end();
+				res.send({
+					err : systemMessages.status.error
+				});
 			}
 		}
 	})
@@ -210,9 +249,13 @@ exports.deleteAssignment = function(req, res) {
 	Assignment.findOneAndRemove({ assignment : fields.assignmentName, email : req.session.email, className : fields.className }, function(err) {
 		if(err) {
 			console.log(err);
-			res.send(err);
+			res.send({
+				err : systemMessages.status.error
+			});
 		} else {
-			res.send(systemMessages.status.ok);
+			res.send({
+				ok : systemMessages.status.ok
+			});
 		}
 	});
 }
