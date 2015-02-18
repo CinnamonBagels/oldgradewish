@@ -19,6 +19,8 @@ exports.addAssignment = function(req, res) {
 				err : systemMessages.status.error
 			});
 		} else {
+
+			if(fields.extraCredit)
 			var totalWeight = 0;
 			data.forEach(function(entry) {
 				totalWeight = +totalWeight + +entry.weight;
@@ -133,6 +135,12 @@ exports.updateAssignmentGoal = function(req, res) {
 
 	goalTotal = desiredGrade - totalPoints;
 
+	if(goalTotal < 0) {
+		//user is chill
+	} else if(goalTotal > undoneWeight) {
+		//user is fucked. unless extra credit.
+	}
+
 	necessaryPoints = goalTotal / undoneWeight;
 
 	console.log(necessaryPoints);
@@ -200,7 +208,9 @@ exports.updateAssignmentWeight = function(req, res) {
 
 							data.forEach(function(entry) {
 								console.log(entry);
-								totalWeight = totalWeight + entry.weight;
+								if(entry.extraCredit == false) {
+									totalWeight = totalWeight + entry.weight;
+								}
 							});
 							totalWeight = +totalWeight - +assignment.weight;
 							totalWeight = +totalWeight + +fields.weight;
