@@ -11,10 +11,10 @@
 	{{#each classes}}
 	<div id="{{className}}" class="row text-center">
 		<div class="columns large-10 medium-10 small-10">
-			<a href="/classes/{{className}}" class="button large info expand radius"><span class="button-text">{{className}}</span></a>
+			<a href="/classes/{{className}}" class="button info expand radius"><span class="button-text">{{className}}</span></a>
 		</div>
 		<div class="columns large-2 medium-2 small-2 end">
-			<a id="deleteClassButton" for-class="{{className}}" data-reveal-id="deleteClassModal" class="button alert expand radius large"><span class="button-text">X</span></a>
+			<a id="deleteClassButton" for-class="{{className}}" data-reveal-id="deleteClassModal" class="button alert expand radius"><span class="button-text">X</span></a>
 		</div>
 	</div>
 	{{/each}}	
@@ -25,7 +25,7 @@
 	{{/if}}
 </div>
 
-<a data-reveal-id="addClassModal" class="button info expand radius large appendBottom"><span class="button-text">Add a Class</span></a>
+<a data-reveal-id="addClassModal" class="button info expand radius appendBottom"><span class="button-text">Add a Class</span></a>
 
 <div id="deleteClassModal" class="reveal-modal" data-reveal>
 	<div class="row text-center">
