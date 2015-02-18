@@ -70,7 +70,7 @@
 
 	$('#confirmDeleteClassButton').click(function(event) {
 		$.post('/deleteClass', { className : classToBeDeleted }, function(data) {
-			if(data === 'OK') {
+			if(data.ok) {
 				$('#' + classToBeDeleted).remove();
 				$('a.close-reveal-modal').trigger('click');
 			}
@@ -81,7 +81,7 @@
 		event.preventDefault();
 		var className = $('#classSelect option:selected').text()
 		$.post('/addClass', { className : className, desiredGrade : $('#desiredGradeInput').val() }, function(data) {
-			if(data === 'OK') {
+			if(data.ok) {
 				$('#classes').prepend('<div id="' + className + '" class="row text-center">\
 		<div class="columns large-8 medium-8 small-8">\
 			<a href="./classes?class=' + className + '" class="button large info expand radius"><span class="button-text">' + className + '</span></a>\

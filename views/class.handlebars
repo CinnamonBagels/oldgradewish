@@ -120,10 +120,11 @@
 
 	$('#confirmDeleteAssignmentButton').click(function(event) {
 		$.post('/deleteAssignment', { assignmentName : assignmentToBeDeleted, className : forClass }, function(data) {
-			console.log(data);
-			$('a.close-reveal-modal').trigger('click');
-			console.log($('tr[for-assignment="' + assignmentToBeDeleted + '"]'));
-			$('tr[for-assignment="' + assignmentToBeDeleted + '"]').remove();
+			if(data.ok) {
+				$('a.close-reveal-modal').trigger('click');
+				console.log($('tr[for-assignment="' + assignmentToBeDeleted + '"]'));
+				$('tr[for-assignment="' + assignmentToBeDeleted + '"]').remove();
+			}
 		});
 	})
 
@@ -142,7 +143,7 @@
 								   assignmentName : assignmentFields[0],
 								   assignmentWeight : assignmentFields[1],
 								   assignmentPercentage : assignmentFields[2] }, function(data) {
-			if(data === 'OK') {
+			if(data.ok) {
 				console.log('woo!');
 				$('tbody').append('<tr for-assignment="' + assignmentName + '">\
 		      	<td>\
@@ -194,7 +195,7 @@
 
 	   console.log(assignmentPercentages, assignmentWeights);
 	   $.post('/updateAssignmentPercentage', { className : className, assignmentPercentage: percentage, assignmentName : assignment}, function(data) {
-	   	if(data === 'OK') {
+	   	if(data.ok) {
 	   		console.log('uhhhh');
 	   		textbox.val(percentage);
 	   		$.post('/updateAssignmentGoal', { className : className, assignmentPercentages : assignmentPercentages, assignmentWeights : assignmentWeights, desiredGrade : desiredGrade }, function(data) {
@@ -219,11 +220,12 @@
 	   }
 
 		$.post('/updateDesiredGrade', { desiredGrade : desiredGrade, className : $('#className').text() }, function(data) {
-			console.log(data);
-			$.post('/updateAssignmentGoal', { className : className, assignmentPercentages : assignmentPercentages, assignmentWeights : assignmentWeights, desiredGrade : desiredGrade }, function(data) {
-				console.log(data);
+			if(data.ok) {
+				$.post('/updateAssignmentGoal', { className : className, assignmentPercentages : assignmentPercentages, assignmentWeights : assignmentWeights, desiredGrade : desiredGrade }, function(data) {
+					console.log(data);
 
-			});
+				});
+			}
 		});
 	});
 
@@ -244,11 +246,12 @@
 	    }
 
 		$.post('/updateAssignmentWeight', { assignmentName : assignment, className : className, weight : weight }, function(data) {
-			console.log(data);
-			$.post('/updateAssignmentGoal', { className : className, assignmentPercentages : assignmentPercentages, assignmentWeights : assignmentWeights, desiredGrade : desiredGrade }, function(data) {
-				console.log(data);
+			if(data.ok) {
+				$.post('/updateAssignmentGoal', { className : className, assignmentPercentages : assignmentPercentages, assignmentWeights : assignmentWeights, desiredGrade : desiredGrade }, function(data) {
+					console.log(data);
 
-			});
+				});
+			}
 		});
 	});
 

@@ -170,12 +170,16 @@ exports.deleteClass = function(req, res) {
 			Assignment.remove( { email : req.session.email, className : fields.className}, function(err) {
 				if(err) {
 					console.log(err);
-					res.send(err);
+					res.send({
+						err : systemMessages.status.error
+					});
 				} else {
 					User.findOne({ email : req.session.email }, function(err, data) {
 						if(err) {
 							console.log(err);
-							res.send(err);
+							res.send({
+								err : systemMessages.status.error
+							});
 						} else {
 							if(data) {
 								data.classes.forEach(function(element) {
@@ -188,9 +192,13 @@ exports.deleteClass = function(req, res) {
 								data.save(function(err) {
 									if(err) {
 										console.log(err);
-										res.send(err);
+										res.send({
+											err : systemMessages.status.error
+										});
 									} else {
-										res.send(systemMessages.status.ok);
+										res.send({
+											ok : systemMessages.status.ok
+										});
 									}
 								});
 							}
