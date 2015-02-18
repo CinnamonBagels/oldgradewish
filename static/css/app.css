@@ -35,13 +35,13 @@ body {
    max-width: initial;
 }
 
-input {
+/*input {
 	min-height: 75px;
 }
 
 input[type="text"], input[type="password"] {
 	font-size: 2em;
-}
+}*/
 
 /*.appendBottom {
 	position: fixed;
@@ -60,7 +60,16 @@ input[type=checkbox]
   padding: 10px;
 }
 
-.row {
-	margin-right: 0;
-	margin-left: 0;
+.btn-xlarge {
+    padding: 18px 28px;
+    font-size: 22px; //change this to your desired size
+    line-height: normal;
+    -webkit-border-radius: 8px;
+       -moz-border-radius: 8px;
+            border-radius: 8px;
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
 }

@@ -3,33 +3,52 @@
 <head>
 	<title> | Gradewish</title>
 	<link rel="stylesheet" href="/css/normalize.css">
-	<link rel="stylesheet" href="/css/foundation.css">
+	{{!-- <link rel="stylesheet" href="/css/foundation.css"> --}}
 	<link rel="stylesheet" href="/css/app.css">
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
 	<link href='http://fonts.googleapis.com/css?family=Shadows+Into+Light' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
 
 	<script src="/js/jquery.js"></script>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 	{{{body}}}
 
-	<div id="logoutModal" class="reveal-modal" data-reveal>
-		<div class="row">
-			<div class="columns large-12">
-				stuff
-			</div>
-		</div>
-  		<a class="close-reveal-modal">&#215;</a>
-	</div>
+	<!-- Button trigger modal -->
+	<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#logoutModal">
+	  Launch demo modal
+	</button>
 
-	<script src="/js/modernizr.js"></script>
-	<script src="/js/foundation.min.js"></script>
+	<!-- Modal -->
+	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+	      </div>
+	      <div class="modal-body">
+	        ...
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary">Save changes</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<script src="/js/bootstrap.min.js"></script>
+	<!-- <script src="/js/modernizr.js"></script> -->
+	<!--<script src="/js/foundation.min.js"></script> -->
 	<script>
-	$(document).ready(function() {
-		$(document).foundation();
-	});
+	// $(document).ready(function() {
+	// 	$(document).foundation();
+	// });
 	</script>
 </body>
 </html>
