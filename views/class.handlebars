@@ -59,7 +59,7 @@
 		      		<span class="desiredGrade">{{desiredPercentage}}</span>
 		      	</td>
 		      	<td>
-		      		<a class="button alert radius deleteAssignmentButton" data-reveal-id="deleteAssignmentModal" for-assignment="{{assignment}}" for-class="{{className}}">Delete</a>
+		      		<a class="button alert radius deleteAssignmentButton" data-reveal-id="deleteAssignmentModal" for-assignment="{{assignment}}" for-class="{{className}}">x</a>
 		      	</td>
 		      </tr>
 		      {{/each}}
@@ -82,7 +82,8 @@
 	</div>
   <a class="close-reveal-modal">&#215;</a>
 </div>
-<a data-reveal-id="addAssignmentModal" class="button info expand radius large"><span class="button-text">Add an Assignment</span></a>
+
+<a data-reveal-id="addAssignmentModal" class="button info expand radius"><span class="button-text">Add an Assignment</span></a>
 
 <div id="addAssignmentModal" class="reveal-modal" data-reveal>
 	<form id="addAssignmentForm">
