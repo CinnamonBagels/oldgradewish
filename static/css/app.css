@@ -1,15 +1,19 @@
 body {
 	background-color: #065E54;
+	max-height: 100%;
 }
 
+@font-face {
+	font-family : huehue;
+	src : url('./fonts/PermanentMarker-webfont.ttf');
+}
 .title {
-	font-weight: bold;
 	 /*font-family: 'Shadows Into Light', cursive; */
 	 /*font-family: 'Lobster', cursive; */
 	 /*font-family: 'Indie Flower', cursive; */
-	 font-family: 'Pacifico', cursive; 
+	font-family: 'Pacifico', cursive; 
 	font-size: 7em;
-	text-decoration: underline;
+	color: #E7E3E8;
 }
 
 #title {
@@ -45,3 +49,17 @@ input[type="text"], input[type="password"] {
 	padding-bottom: 0px;
 	width: 100%;
 }*/
+
+input[type=checkbox]
+{
+  /* Double-sized Checkboxes */
+  -ms-transform: scale(2); /* IE */
+  -moz-transform: scale(2); /* FF */
+  -webkit-transform: scale(2); /* Safari and Chrome */
+  -o-transform: scale(2); /* Opera */
+  padding: 10px;
+}
+
+table {
+	width: 100%;
+}

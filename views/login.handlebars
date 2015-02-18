@@ -36,7 +36,7 @@
 	  	</div>
 	  	<div class="row text-center">
 	  		<div class="columns large-10 small-10 medium-10 small-centered medium-centered large-centered">
-	  			<input type="password" placeholder="Re-enter Password" name="verifypassword">
+	  			<input id="registerEnter" type="password" placeholder="Re-enter Password" name="verifypassword">
 	  		</div>
 	  	</div>
 	  	<div class="row text-center">
@@ -59,7 +59,7 @@
 	  	</div>
 	  	<div class="row text-center">
 	  		<div class="columns large-10 small-10 medium-10 small-centered medium-centered large-centered">
-	  			<input type="password" placeholder="password" name="password">
+	  			<input id="loginEnter" type="password" placeholder="password" name="password">
 	  		</div>
 	  	</div>
 	  	<div class="row text-center">
@@ -79,5 +79,20 @@
 
 	$('#register-button').on('click', function(event) {
 		$('#register-form').submit();
+	});
+
+	$('#reenterpassword').bind('enterKey', function(event) {
+		$('#register-form').submit();
+	});
+
+	$('#loginEnter').bind('enterKey', function(event) {
+		$('#login-form').submit();
+	});
+
+	$('#reenterpassword, #loginEnter').keyup(function(e){
+	    if(e.keyCode == 13)
+	    {
+	        $(this).trigger("enterKey");
+	    }
 	});
 </script>
