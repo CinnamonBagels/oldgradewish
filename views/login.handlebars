@@ -27,38 +27,26 @@
 	      </div>
 	      <div class="modal-body">
 	        <form id="register-form" action="/register" method="post">
-	          <div class="row fullWidth">
-	          	<div class="row ">
-	          		<div class=" col-lg-10 col-sm-10 col-md-10 ">
-	          			<input type="text" placeholder="Name" name="name">
-	          		</div>
+				<div class="form-group">
+					<label for="inputName">Name</label>
+					<input id="inputName" class="form-control" type="text" placeholder="Name" name="name">
+				</div>
+				<div class="form-group">
+					<label for="inputEmail">Email address</label>
+	          		<input id="inputEmail" class="form-control" type="text" placeholder="Email" name="email">
+				</div>
+	          	<div class="form-group">
+	          		<label for="inputPassword">Password</label>
+	          		<input id="inputPassword" class="form-control" type="password" placeholder="Password" name="password">
 	          	</div>
-	          	<div class="row ">
-	          		<div class=" col-lg-10 col-sm-10 col-md-10 ">
-	          			<input type="text" placeholder="E-mail" name="email">
-	          		</div>
+	          	<div class="form-group">
+	          		<label for="registerEnter">Re-enter Password</label>
+	          		<input id="registerEnter" class="form-control" type="password" placeholder="Re-enter Password" name="verifypassword">
 	          	</div>
-	          	<div class="row ">
-	          		<div class=" col-lg-10 col-sm-10 col-md-10 ">
-	          			<input type="password" placeholder="Password" name="password">
-	          		</div>
-	          	</div>
-	          	<div class="row ">
-	          		<div class=" col-lg-10 col-sm-10 col-md-10 ">
-	          			<input id="registerEnter" type="password" placeholder="Re-enter Password" name="verifypassword">
-	          		</div>
-	          	</div>
-	          	<div class="row ">
-	          		<div class=" col-lg-10 col-sm-10 col-md-10 ">
-	          			<a id="register-button" class="btn btn-primary btn-lg">Register</a>
-	          		</div>
-	          	</div>
-	          </div>
 	        </form>
 	      </div>
 	      <div class="modal-footer">
-	        <a href="">Register</a>
-	        <a href="">Back</a>
+	        <a id="register-button" class="btn btn-primary btn-lg">Register</a>
 	      </div>
 	    </div>
 	  </div>
@@ -74,28 +62,18 @@
 	      </div>
 	      <div class="modal-body">
 	      	<form id="login-form" action="/login" method="post">
-	      	  <div class="row">
-	      	  	<div class="row ">
-	      	  		<div class=" col-lg-10 col-sm-10 col-md-10 ">
-	      	  			<input type="text" placeholder="e-mail" name="email">
-	      	  		</div>
-	      	  	</div>
-	      	  	<div class="row ">
-	      	  		<div class=" col-lg-10 col-sm-10 col-md-10 ">
-	      	  			<input id="loginEnter" type="password" placeholder="password" name="password">
-	      	  		</div>
-	      	  	</div>
-	      	  	<div class="row ">
-	      	  		<div class=" col-lg-10 col-sm-10 col-md-10 ">
-	      	  			<a id="login-button" class="btn btn-primary btn-lg">Login</a>
-	      	  		</div>
-	      	  	</div>
-	      	  </div>
+	      		<div class="form-group">
+	      			<label for="loginEmail">Email</label>
+	      			<input type="text" class="form-control" placeholder="Email" name="email">
+	      		</div>
+				<div class="form-group">
+					<label for="loginPassword">Password</label>
+					<input id="loginEnter" type="password" class="form-control" placeholder="password" name="password">
+				</div>
 	      	</form>
 	      </div>
 	      <div class="modal-footer">
-	        <a href="">Login</a>
-	        <a href="">Back</a>
+	        <a id="login-button" class="btn btn-primary btn-lg">Login</a>
 	      </div>
 	    </div>
 	  </div>

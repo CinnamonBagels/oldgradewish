@@ -1,97 +1,114 @@
-<div class="row fullWidth text-center" id="title">
-	<div class="columns large-12 medium-12 small-12">
-		<span class="title">Classes</span>
-	</div>
-</div>
 
-<div class="row fullWidth text-center" id="classes">
-	{{#if classes}}
-	{{#each classes}}
-	<div id="{{className}}" class="row text-center">
-		<div class="columns large-10 medium-10 small-10">
-			<a href="/classes/{{className}}" class="button info expand radius"><span class="button-text">{{className}}</span></a>
-		</div>
-		<div class="columns large-2 medium-2 small-2 end">
-			<a id="deleteClassButton" for-class="{{className}}" data-reveal-id="deleteClassModal" class="button alert expand radius"><span class="button-text">X</span></a>
+<div class="container-fluid">
+	<div class="row" id="title">
+		<div class="col-lg-12 col-md-12 col-sm-12 text-center">
+			<span class="title">Classes</span>
 		</div>
 	</div>
-	{{/each}}	
-	{{else}}
-	<div class="columns large-12 small-12 medium-12 large-centered medium-centered small-centered">
-		<span>You currently have no classes</span>
-	</div>
-	{{/if}}
-</div>
 
-<a data-reveal-id="addClassModal" class="button info expand radius"><span class="button-text">Add a Class</span></a>
-
-<div id="deleteClassModal" class="reveal-modal" data-reveal>
-	<div class="row text-center">
-		<div class="columns large-12 small-12 medium-12">
-			Are you sure you want to delete this class? It cannot be undone.
-		</div>
-	</div>
-	<div class="row text-center">
-		<div class="columns large-12 small-12 medium-12"><a id="confirmDeleteClassButton" class="button alert expand radius">Yes, Delete</a></div>
-	</div>
-  <a class="close-reveal-modal">&#215;</a>
-</div>
-
-<div id="addClassModal" class="reveal-modal" data-reveal>
-	<form id="addClassForm" action="/addClass" method="post">
-		<div class="row text-center">
-		    <div class="columns large-8 medium-8 small-8 small-centered medium-centered large-centered">
-	            <select name="class" id="classSelect">
-	                <option name="CSE170" value="CSE170">CSE170</option>
-	                <option name="CSE150" value="CSE150">CSE150</option>
-	            </select>
-		    </div>
-		</div>
-		<div class="row text-center">
-			<div class="columns large-8 medium-8 small-8 small-centered medium-centered large-centered">
-				<input id="desiredGradeInput" type="text" placeholder="Desired Grade (in %)">
+	<div class="row" id="classes">
+		{{#if classes}}
+		{{#each classes}}
+		<div id="{{className}}" class="row">
+			<div class=" col-lg-6 col-md-6 col-sm-6 col-lg-offset-3 col-md-offset-3 col-sm-offset-3">
+				<a href="/classes/{{className}}" class="btn btn-primary btn-block"><span class="button-text">{{className}}</span></a>
+			</div>
+			<div class=" col-lg-2 col-md-2 col-sm-2">
+				<a for-class="{{className}}" class="btn btn-danger deleteClassButton" data-toggle="modal" data-target="#deleteClassModal"><span class="button-text">X</span></a>
 			</div>
 		</div>
-		<div class="row text-center">
-			<div class="columns large-8 medium-8 small-8 small-centered medium-centered large-centered">
-		    	<a id="addclassbutton" class="button success expand radius">Add Class</a>
-		    </div>
+		{{/each}}	
+		{{else}}
+		<div class="col-lg-12 col-sm-12 col-md-12">
+			<span>You currently have no classes</span>
 		</div>
-	</form>
-  <a class="close-reveal-modal">&#215;</a>
+		{{/if}}
+	</div>
+
+	<div class="row">
+		<div class="col-lg-8 col-md-8 col-sm-8 col-lg-offset-2 col-md-offset-2 col-sm-offset-2">
+			<a data-toggle="modal" data-target="#addClassModal" class="btn btn-primary btn-block">Add a class</a>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="deleteClassModal" tabindex="-1" role="dialog" aria-labelledby="deleteClass" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="deleteClass">Delete Class</h4>
+	      </div>
+	      <div class="modal-body">
+	        Are you sure? This cannot be undone and all associated assignments will be deleted.
+	      </div>
+	      <div class="modal-footer">
+	        <a id="confirmDeleteClassButton" class="button alert expand radius">Yes, Delete</a>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<div class="modal fade" id="addClassModal" tabindex="-1" role="dialog" aria-labelledby="addClass" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="addClass">Add Class</h4>
+	      </div>
+	      <div class="modal-body">
+	        <form id="addClassForm" action="/addClass" method="post">
+        	    <div class="form-group">
+        	    	<label for="classSelect">Class Name</label>
+                    <select class="form-control" name="class" id="classSelect">
+                        <option name="CSE170" value="CSE170">CSE170</option>
+                        <option name="CSE150" value="CSE150">CSE150</option>
+                    </select>
+        	    </div>
+        		<div class="form-group">
+        			<label for="desiredGradeInput">Desired Percentage</label>
+        			<input class="form-control" id="desiredGradeInput" type="text" placeholder="Desired Grade">
+        		</div>      	
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <a id="addclassbutton" class="button success expand radius">Add Class</a> 
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<script>
+		var classToBeDeleted;
+
+		$('#deleteClassButton').click(function(event) {
+			classToBeDeleted = $(this).attr('for-class');
+		});
+
+		$('#confirmDeleteClassButton').click(function(event) {
+			$.post('/deleteClass', { className : classToBeDeleted }, function(data) {
+				if(data.ok) {
+					$('#' + classToBeDeleted).remove();
+					$('a.close-reveal-modal').trigger('click');
+				}
+			});
+		});
+
+		$('#addclassbutton').click(function(event) {
+			event.preventDefault();
+			var className = $('#classSelect option:selected').text()
+			$.post('/addClass', { className : className, desiredGrade : $('#desiredGradeInput').val() }, function(data) {
+				if(data.ok) {
+					$('#classes').prepend('<div id="' + className + '" class="row text-center">\
+			<div class=" col-lg-8 col-sm-8 col-md-8 col-lg-offset-2 col-md-offset-2 col-sm-offset-2">\
+				<a href="./classes?class=' + className + '" class="button large info expand radius"><span class="button-text">' + className + '</span></a>\
+			</div>\
+			<div class=" large-4 medium-4 small-4">\
+				<a id="deleteClassButton" for-class="' + className + '" data-reveal-id="deleteClassModal" class="button alert expand radius large"><span class="button-text">Delete</span></a>\
+			</div>\
+		</div>');
+					$('a.close-reveal-modal').trigger('click');
+				}
+			});
+		});
+	</script>	
 </div>
-
-<script>
-	var classToBeDeleted;
-
-	$('#deleteClassButton').click(function(event) {
-		classToBeDeleted = $(this).attr('for-class');
-	});
-
-	$('#confirmDeleteClassButton').click(function(event) {
-		$.post('/deleteClass', { className : classToBeDeleted }, function(data) {
-			if(data.ok) {
-				$('#' + classToBeDeleted).remove();
-				$('a.close-reveal-modal').trigger('click');
-			}
-		});
-	});
-
-	$('#addclassbutton').click(function(event) {
-		event.preventDefault();
-		var className = $('#classSelect option:selected').text()
-		$.post('/addClass', { className : className, desiredGrade : $('#desiredGradeInput').val() }, function(data) {
-			if(data.ok) {
-				$('#classes').prepend('<div id="' + className + '" class="row text-center">\
-		<div class="columns large-8 medium-8 small-8">\
-			<a href="./classes?class=' + className + '" class="button large info expand radius"><span class="button-text">' + className + '</span></a>\
-		</div>\
-		<div class="columns large-4 medium-4 small-4">\
-			<a id="deleteClassButton" for-class="' + className + '" data-reveal-id="deleteClassModal" class="button alert expand radius large"><span class="button-text">Delete</span></a>\
-		</div>\
-	</div>');
-				$('a.close-reveal-modal').trigger('click');
-			}
-		});
-	});
-</script>
