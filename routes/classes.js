@@ -41,6 +41,7 @@ exports.viewClass = function(req, res) {
 	var assignments;
 	var desiredGrade;
 	var classPageObject;
+	var classObject;
 	if(!req.session.email) {
 		res.redirect('/login');
 	} else {
@@ -53,7 +54,14 @@ exports.viewClass = function(req, res) {
 				});
 			} else {
 				if(user) {
-					classes = user.classes;
+
+					user.classes.forEach(function(element) {
+						classObject = {
+							'className' : element
+						};
+						classes.push(classObject);
+						console.log(classes)
+					});
 					Assignment.find({ email : req.session.email, className : req.params.classID }, function(err, data) {
 						if(err) {
 							console.log(err);
@@ -74,7 +82,7 @@ exports.viewClass = function(req, res) {
 											'desiredGrade' : desiredGrade,
 											'currentGrade' : classObj.currentGrade,
 											'session' : {
-												sessionClasses : classes
+												'sessionClasses' : classes
 											}
 										};
 

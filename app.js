@@ -70,7 +70,7 @@ app.use(express.static(__dirname + '/static'));
 app.get('/', function(req, res) {
 	console.log(req.session);
 	if(req.session.email) {
-		res.redirect('/home');
+		res.redirect('/classes');
 	} else {
 		res.redirect('/login');
 	}
@@ -95,6 +95,7 @@ app.post('/updateDesiredGrade', classesController.updateDesiredGrade);
 app.post('/updateAssignmentWeight', assignmentController.updateAssignmentWeight);
 app.post('/deleteAssignment', assignmentController.deleteAssignment);
 app.post('/updateAssignmentGoal', assignmentController.updateAssignmentGoal);
+app.get('/logout', loginController.logout);
 
 // Start the server
 var port = process.env.PORT || PORT; // 80 for web, 3000 for development
