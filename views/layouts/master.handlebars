@@ -53,7 +53,7 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+	        <h4 class="modal-title" id="myModalLabel">Logout</h4>
 	      </div>
 	      <div class="modal-body">
 	        Are you sure you want to logout?
@@ -83,7 +83,7 @@
 	      return $("nav.sidebar ul a span.expanded-element, nav.sidebar a span.expanded-element").show();
 	    };
 	    hideMenuTexts = function() {
-	      return $("nav.sidebar ul a span.expanded-element").hide();
+	      return $("nav.sidebar ul a span.expanded-element, nav.sidebar a span.expanded-element").hide();
 	    };
 	    return $("#justify-icon").click(function(e) {
 	      if ($(this).parent("nav.sidebar").hasClass("sidebar-menu-collapsed")) {
