@@ -20,19 +20,7 @@ exports.addAssignment = function(req, res) {
 			});
 		} else {
 
-			if(fields.extraCredit)
-			var totalWeight = 0;
-			data.forEach(function(entry) {
-				totalWeight = +totalWeight + +entry.weight;
-			});
-			totalWeight = +totalWeight + +fields.assignmentWeight;
-			console.log(Math.floor(totalWeight) !== 100);
-			if(Math.floor(totalWeight) > 100) {
-				console.log('Weight cannot exceed 100');
-				res.send({
-					err : systemMessages.status.error
-				});
-			} else {
+			if(fields.extraCredit) {
 				Class.findOne({ email : req.session.email, className : fields.className }, function(err, classDoc) {
 					if(err) {
 						console.log(err);
@@ -46,7 +34,8 @@ exports.addAssignment = function(req, res) {
 								email : req.session.email,
 								assignment : fields.assignmentName,
 								percentage : fields.assignmentPercentage,
-								weight : fields.assignmentWeight
+								weight : fields.assignmentWeight,
+								extraCredit : true
 							}
 
 							var newAssignment = new Assignment(assignmentObject);
@@ -63,15 +52,62 @@ exports.addAssignment = function(req, res) {
 									});
 								}
 							});
-						} else {
-							console.log('cannot find classDoc');
-							res.send({
-								err : systemMessages.status.error
-							});
 						}
 					}
 				});
-				
+			} else {
+				var totalWeight = 0;
+				data.forEach(function(entry) {
+					totalWeight = +totalWeight + +entry.weight;
+				});
+				totalWeight = +totalWeight + +fields.assignmentWeight;
+				console.log(Math.floor(totalWeight) !== 100);
+				if(Math.floor(totalWeight) > 100) {
+					console.log('Weight cannot exceed 100');
+					res.send({
+						err : systemMessages.status.error
+					});
+				} else {
+					Class.findOne({ email : req.session.email, className : fields.className }, function(err, classDoc) {
+						if(err) {
+							console.log(err);
+							res.send({
+								err : systemMessages.status.error
+							});
+						} else {
+							if(classDoc) {
+								var assignmentObject = {
+									className : fields.className,
+									email : req.session.email,
+									assignment : fields.assignmentName,
+									percentage : fields.assignmentPercentage,
+									weight : fields.assignmentWeight,
+									extraCredit : false
+								}
+
+								var newAssignment = new Assignment(assignmentObject);
+
+								newAssignment.save(function(err) {
+									if(err) {
+										console.log(err);
+										res.send({
+											err : systemMessages.status.error
+										});
+									} else {
+										res.send({
+											ok : systemMessages.status.ok
+										});
+									}
+								});
+							} else {
+								console.log('cannot find classDoc');
+								res.send({
+									err : systemMessages.status.error
+								});
+							}
+						}
+					});
+				}
 			}
 		}
 	})

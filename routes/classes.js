@@ -10,10 +10,10 @@ var Class = require('../Schemas/class');
 exports.viewClasses = function(req, res) {
 	var classObject;
 	var classPageObject;
+	var classes = [];
 	if(!req.session.email) {
 		return res.redirect('/login');
 	} else {
-		var classes = [];
 		User.findOne({ email : req.session.email }, function(err, data) {
 			if(err) {
 				console.log(err);
@@ -25,9 +25,11 @@ exports.viewClasses = function(req, res) {
 					};
 					classes.push(classObject);
 				});
-				console.log(classes);
 				res.render('classes', {
-					'classes' : classes
+					'classes' : classes,
+					'session' : {
+						'sessionClasses' : classes
+					}
 				});
 			}
 		});
@@ -35,36 +37,60 @@ exports.viewClasses = function(req, res) {
 }
 
 exports.viewClass = function(req, res) {
+	var classes = [];
+	var assignments;
+	var desiredGrade;
+	var classPageObject;
 	if(!req.session.email) {
 		res.redirect('/login');
 	} else {
-		var assignments = [];
-		Assignment.find({ email : req.session.email, className : req.params.classID }, function(err, data) {
+		assignments = [];
+		User.findOne({ email : req.session.email }, function(err, user) {
 			if(err) {
 				console.log(err);
-				res.send(err);
-			} else {
-				assignments = data;
-				console.log(assignments);
-				Class.findOne({ email : req.session.email, className : req.params.classID }, function(err, classObj) {
-					if(err) {
-						console.log(err);
-						res.send(err);
-					} else {
-						if(classObj) {
-							var desiredGrade = classObj.desiredGrade;
-							classPageObject = {
-								'className' : req.params.classID,
-								'assignments' : assignments,
-								'desiredGrade' : desiredGrade,
-								'currentGrade' : classObj.currentGrade
-							};
-
-							res.render('class', classPageObject);
-						}
-					}
+				res.send({
+					err : systemMessages.status.error
 				});
-				
+			} else {
+				if(user) {
+					classes = user.classes;
+					Assignment.find({ email : req.session.email, className : req.params.classID }, function(err, data) {
+						if(err) {
+							console.log(err);
+							res.send(err);
+						} else {
+							assignments = data;
+							console.log(assignments);
+							Class.findOne({ email : req.session.email, className : req.params.classID }, function(err, classObj) {
+								if(err) {
+									console.log(err);
+									res.send(err);
+								} else {
+									if(classObj) {
+										desiredGrade = classObj.desiredGrade;
+										classPageObject = {
+											'className' : req.params.classID,
+											'assignments' : assignments,
+											'desiredGrade' : desiredGrade,
+											'currentGrade' : classObj.currentGrade,
+											'session' : {
+												sessionClasses : classes
+											}
+										};
+
+										res.render('class', classPageObject);
+									}
+								}
+							});
+							
+						}
+					});
+				} else {
+					console.log('cannot find user');
+					res.send({
+						err : systemMessages.status.error
+					});
+				}
 			}
 		});
 	}

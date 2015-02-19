@@ -16,7 +16,36 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-	{{{body}}}
+	{{#if session}}
+	<div class="container-fluid">
+		
+		<nav class='sidebar sidebar-menu-collapsed'>
+		      <a id='justify-icon'>
+		        <span class='glyphicon glyphicon-align-justify'></span>
+		      </a>
+		      <ul>
+		        <li>
+		          <a class='expandable' href='/classes' title='Dashboard'>
+		            <span class='glyphicon glyphicon-home collapsed-element'></span>
+		            <span class='expanded-element'>Classes</span>
+		          </a>
+		        </li>
+		        {{#each session.sessionClasses}}
+		        <li>
+		        	<a title="{{className}}" href="/classes/{{className}}" class="expandable">
+		        		<span class="expanded-element">{{className}}</span>
+		        	</a>
+		        </li>
+		        {{/each}}
+		      </ul>
+		      <a class='expandable' id='logout-icon' title='Logout'>
+		        <span class='glyphicon glyphicon-off'></span>
+		        <span class="expanded-element">Logout</span>
+		      </a>
+		</nav>
+		{{/if}}
+		{{{body}}}
+	</div>
 
 	{{!-- <!-- Button trigger modal -->
 	<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#logoutModal">
@@ -46,9 +75,40 @@
 	<!-- <script src="/js/modernizr.js"></script> -->
 	<!--<script src="/js/foundation.min.js"></script> -->
 	<script>
-	// $(document).ready(function() {
-	// 	$(document).foundation();
-	// });
+	(function() {
+	  $(function() {
+	    var collapseMyMenu, expandMyMenu, hideMenuTexts, showMenuTexts;
+	    expandMyMenu = function() {
+	      return $("nav.sidebar").removeClass("sidebar-menu-collapsed").addClass("sidebar-menu-expanded");
+	    };
+	    collapseMyMenu = function() {
+	      return $("nav.sidebar").removeClass("sidebar-menu-expanded").addClass("sidebar-menu-collapsed");
+	    };
+	    showMenuTexts = function() {
+	      return $("nav.sidebar ul a span.expanded-element, nav.sidebar a span.expanded-element").show();
+	    };
+	    hideMenuTexts = function() {
+	      return $("nav.sidebar ul a span.expanded-element").hide();
+	    };
+	    return $("#justify-icon").click(function(e) {
+	      if ($(this).parent("nav.sidebar").hasClass("sidebar-menu-collapsed")) {
+	        expandMyMenu();
+	        showMenuTexts();
+	        $(this).css({
+	          color: "#000"
+	        });
+	      } else if ($(this).parent("nav.sidebar").hasClass("sidebar-menu-expanded")) {
+	        collapseMyMenu();
+	        hideMenuTexts();
+	        $(this).css({
+	          color: "#FFF"
+	        });
+	      }
+	      return false;
+	    });
+	  });
+
+	}).call(this);
 	</script>
 </body>
 </html>

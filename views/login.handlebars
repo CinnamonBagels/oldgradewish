@@ -1,113 +1,112 @@
-<div class="container-fluid">
-	<div class="row" id="title">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<div class="row">
-				<div class=" text-center col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<span class="title">Gradewish</span>
-				</div>
-			</div>
-			<div class="row">
-				<div class="text-center col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<h4 class="subtitle">Helping you give a f*** about your grades.</h4>
-				</div>
+
+<div class="row" id="title">
+	<div class="col-lg-12 col-md-12 col-sm-12">
+		<div class="row">
+			<div class=" text-center col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<span class="title">Gradewish</span>
 			</div>
 		</div>
-	</div>
-	<div class="row">
-		<div class="col-lg-offset-2 col-sm-offset-2 col-md-offset-2 col-xs-offset-2 col-lg-8 col-md-8 col-sm-8 col-xs-8">
-			<a class="btn btn-primary btn-block btn-spaced" data-toggle="modal" data-target="#loginModal">Login</a>
+		<div class="row">
+			<div class="text-center col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<h4 class="subtitle">Helping you give a f*** about your grades.</h4>
+			</div>
 		</div>
 	</div>
-	<div class="row ">
-		<div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2 col-lg-8 col-md-8 col-sm-8 col-xs-8">
-			<a class="btn btn-primary btn-block btn-spaced" data-toggle="modal" data-target="#registerModal">Register</a>
-		</div>
-	</div>
-
-	<!-- Modal -->
-	<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="register" aria-hidden="true">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="register">Register</h4>
-	      </div>
-	      <div class="modal-body">
-	        <form id="register-form" action="/register" method="post">
-				<div class="form-group">
-					<label for="inputName">Name</label>
-					<input id="inputName" class="form-control" type="text" placeholder="Name" name="name">
-				</div>
-				<div class="form-group">
-					<label for="inputEmail">Email address</label>
-	          		<input id="inputEmail" class="form-control" type="text" placeholder="Email" name="email">
-				</div>
-	          	<div class="form-group">
-	          		<label for="inputPassword">Password</label>
-	          		<input id="inputPassword" class="form-control" type="password" placeholder="Password" name="password">
-	          	</div>
-	          	<div class="form-group">
-	          		<label for="registerEnter">Re-enter Password</label>
-	          		<input id="registerEnter" class="form-control" type="password" placeholder="Re-enter Password" name="verifypassword">
-	          	</div>
-	        </form>
-	      </div>
-	      <div class="modal-footer">
-	        <a id="register-button" class="btn btn-primary btn-lg">Register</a>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-
-	<!-- Modal -->
-	<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="true">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="login">Login</h4>
-	      </div>
-	      <div class="modal-body">
-	      	<form id="login-form" action="/login" method="post">
-	      		<div class="form-group">
-	      			<label for="loginEmail">Email</label>
-	      			<input type="text" class="form-control" placeholder="Email" name="email">
-	      		</div>
-				<div class="form-group">
-					<label for="loginPassword">Password</label>
-					<input id="loginEnter" type="password" class="form-control" placeholder="password" name="password">
-				</div>
-	      	</form>
-	      </div>
-	      <div class="modal-footer">
-	        <a id="login-button" class="btn btn-primary btn-lg">Login</a>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-
-	<script>
-		$('#login-button').on('click', function(event) {
-			$('#login-form').submit();
-		});
-
-		$('#register-button').on('click', function(event) {
-			$('#register-form').submit();
-		});
-
-		$('#reenterpassword').bind('enterKey', function(event) {
-			$('#register-form').submit();
-		});
-
-		$('#loginEnter').bind('enterKey', function(event) {
-			$('#login-form').submit();
-		});
-
-		$('#reenterpassword, #loginEnter').keyup(function(e){
-		    if(e.keyCode == 13)
-		    {
-		        $(this).trigger("enterKey");
-		    }
-		});
-	</script>
 </div>
+<div class="row">
+	<div class="col-lg-offset-2 col-sm-offset-2 col-md-offset-2 col-xs-offset-2 col-lg-8 col-md-8 col-sm-8 col-xs-8">
+		<a class="btn btn-primary btn-block btn-spaced" data-toggle="modal" data-target="#loginModal">Login</a>
+	</div>
+</div>
+<div class="row ">
+	<div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2 col-lg-8 col-md-8 col-sm-8 col-xs-8">
+		<a class="btn btn-primary btn-block btn-spaced" data-toggle="modal" data-target="#registerModal">Register</a>
+	</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="register" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="register">Register</h4>
+      </div>
+      <div class="modal-body">
+        <form id="register-form" action="/register" method="post">
+			<div class="form-group">
+				<label for="inputName">Name</label>
+				<input id="inputName" class="form-control" type="text" placeholder="Name" name="name">
+			</div>
+			<div class="form-group">
+				<label for="inputEmail">Email address</label>
+          		<input id="inputEmail" class="form-control" type="text" placeholder="Email" name="email">
+			</div>
+          	<div class="form-group">
+          		<label for="inputPassword">Password</label>
+          		<input id="inputPassword" class="form-control" type="password" placeholder="Password" name="password">
+          	</div>
+          	<div class="form-group">
+          		<label for="registerEnter">Re-enter Password</label>
+          		<input id="registerEnter" class="form-control" type="password" placeholder="Re-enter Password" name="verifypassword">
+          	</div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a id="register-button" class="btn btn-primary btn-lg">Register</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="login">Login</h4>
+      </div>
+      <div class="modal-body">
+      	<form id="login-form" action="/login" method="post">
+      		<div class="form-group">
+      			<label for="loginEmail">Email</label>
+      			<input type="text" class="form-control" placeholder="Email" name="email">
+      		</div>
+			<div class="form-group">
+				<label for="loginPassword">Password</label>
+				<input id="loginEnter" type="password" class="form-control" placeholder="password" name="password">
+			</div>
+      	</form>
+      </div>
+      <div class="modal-footer">
+        <a id="login-button" class="btn btn-primary btn-lg">Login</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+	$('#login-button').on('click', function(event) {
+		$('#login-form').submit();
+	});
+
+	$('#register-button').on('click', function(event) {
+		$('#register-form').submit();
+	});
+
+	$('#reenterpassword').bind('enterKey', function(event) {
+		$('#register-form').submit();
+	});
+
+	$('#loginEnter').bind('enterKey', function(event) {
+		$('#login-form').submit();
+	});
+
+	$('#reenterpassword, #loginEnter').keyup(function(e){
+	    if(e.keyCode == 13)
+	    {
+	        $(this).trigger("enterKey");
+	    }
+	});
+</script>
