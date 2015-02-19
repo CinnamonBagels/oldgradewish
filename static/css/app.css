@@ -25,6 +25,10 @@ body {
 	min-height: 30%;
 }
 
+.btn-spaced {
+  margin-top: 10px;
+}
+
 .button.large {
     padding-top: 3.375rem;
     padding-right: 6.75rem;
