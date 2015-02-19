@@ -28,51 +28,52 @@
 	<div class="row">
 		<div class="col-lg-8 col-md-8 col-sm-8 col-lg-offset-2 col-md-offset-2 col-sm-offset-2">
 			<a data-toggle="modal" data-target="#addClassModal" class="btn btn-primary btn-block">Add a class</a>
-		</div>
-		<div class="modal fade" id="deleteClassModal" tabindex="-1" role="dialog" aria-labelledby="deleteClass" aria-hidden="true">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title" id="deleteClass">Delete Class</h4>
-		      </div>
-		      <div class="modal-body">
-		        Are you sure? This cannot be undone and all associated assignments will be deleted.
-		      </div>
-		      <div class="modal-footer">
-		        <a id="confirmDeleteClassButton" class="button alert expand radius">Yes, Delete</a>
-		      </div>
-		    </div>
-		  </div>
-		</div>
+			
+			<div class="modal fade" id="deleteClassModal" tabindex="-1" role="dialog" aria-labelledby="deleteClass" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title" id="deleteClass">Delete Class</h4>
+			      </div>
+			      <div class="modal-body">
+			        Are you sure? This cannot be undone and all associated assignments will be deleted.
+			      </div>
+			      <div class="modal-footer">
+			        <a id="confirmDeleteClassButton" class="button alert expand radius">Yes, Delete</a>
+			      </div>
+			    </div>
+			  </div>
+			</div>
 
-		<div class="modal fade" id="addClassModal" tabindex="-1" role="dialog" aria-labelledby="addClass" aria-hidden="true">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title" id="addClass">Add Class</h4>
-		      </div>
-		      <div class="modal-body">
-		        <form id="addClassForm" action="/addClass" method="post">
-	        	    <div class="form-group">
-	        	    	<label for="classSelect">Class Name</label>
-	                    <select class="form-control" name="class" id="classSelect">
-	                        <option name="CSE170" value="CSE170">CSE170</option>
-	                        <option name="CSE150" value="CSE150">CSE150</option>
-	                    </select>
-	        	    </div>
-	        		<div class="form-group">
-	        			<label for="desiredGradeInput">Desired Percentage</label>
-	        			<input class="form-control" id="desiredGradeInput" type="text" placeholder="Desired Grade">
-	        		</div>      	
-		        </form>
-		      </div>
-		      <div class="modal-footer">
-		        <a id="addclassbutton" class="button success expand radius">Add Class</a> 
-		      </div>
-		    </div>
-		  </div>
+			<div class="modal fade" id="addClassModal" tabindex="-1" role="dialog" aria-labelledby="addClass" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title" id="addClass">Add Class</h4>
+			      </div>
+			      <div class="modal-body">
+			        <form id="addClassForm" action="/addClass" method="post">
+		        	    <div class="form-group">
+		        	    	<label for="classSelect">Class Name</label>
+		                    <select class="form-control" name="class" id="classSelect">
+		                        <option name="CSE170" value="CSE170">CSE170</option>
+		                        <option name="CSE150" value="CSE150">CSE150</option>
+		                    </select>
+		        	    </div>
+		        		<div class="form-group">
+		        			<label for="desiredGradeInput">Desired Percentage</label>
+		        			<input class="form-control" id="desiredGradeInput" type="text" placeholder="Desired Grade">
+		        		</div>      	
+			        </form>
+			      </div>
+			      <div class="modal-footer">
+			        <a id="addclassbutton" class="button success expand radius">Add Class</a> 
+			      </div>
+			    </div>
+			  </div>
+			</div>
 		</div>
 	</div>
 
