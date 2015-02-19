@@ -7,28 +7,31 @@
 	</div>
 
 	<div class="row" id="classes">
-		{{#if classes}}
-		{{#each classes}}
-		<div id="{{className}}" class="row">
-			<div class=" col-lg-6 col-md-6 col-sm-6 col-lg-offset-3 col-md-offset-3 col-sm-offset-3">
-				<a href="/classes/{{className}}" class="btn btn-primary btn-block"><span class="button-text">{{className}}</span></a>
+		<div class="col-lg-12 col-md-12 col-sm-12">
+			{{#if classes}}
+			{{#each classes}}
+
+			<div id="{{className}}" class="row">
+				<div class=" col-lg-6 col-md-6 col-sm-6">
+					<a href="/classes/{{className}}" class="btn btn-primary btn-block"><span class="button-text">{{className}}</span></a>
+				</div>
+				<div class=" col-lg-2 col-md-2 col-sm-2">
+					<a for-class="{{className}}" class="btn btn-danger deleteClassButton" data-toggle="modal" data-target="#deleteClassModal"><span class="button-text">X</span></a>
+				</div>
 			</div>
-			<div class=" col-lg-2 col-md-2 col-sm-2">
-				<a for-class="{{className}}" class="btn btn-danger deleteClassButton" data-toggle="modal" data-target="#deleteClassModal"><span class="button-text">X</span></a>
+			{{/each}}	
+			{{else}}
+			<div class="col-lg-12 col-sm-12 col-md-12">
+				<span>You currently have no classes</span>
 			</div>
+			{{/if}}
 		</div>
-		{{/each}}	
-		{{else}}
-		<div class="col-lg-12 col-sm-12 col-md-12">
-			<span>You currently have no classes</span>
-		</div>
-		{{/if}}
 	</div>
 
 	<div class="row">
 		<div class="col-lg-8 col-md-8 col-sm-8 col-lg-offset-2 col-md-offset-2 col-sm-offset-2">
 			<a data-toggle="modal" data-target="#addClassModal" class="btn btn-primary btn-block">Add a class</a>
-			
+
 			<div class="modal fade" id="deleteClassModal" tabindex="-1" role="dialog" aria-labelledby="deleteClass" aria-hidden="true">
 			  <div class="modal-dialog">
 			    <div class="modal-content">

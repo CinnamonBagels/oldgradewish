@@ -16,6 +16,11 @@ body {
 	color: #E7E3E8;
 }
 
+.subtitle {
+  font-family: 'Pacifico', cursive; 
+  color: #E7E3E8;
+}
+
 #title {
 	min-height: 30%;
 }
@@ -72,4 +77,11 @@ input[type=checkbox]
 .col-centered{
     float: none;
     margin: 0 auto;
+}
+
+.container {
+     padding-right: 0; /*15px in bootstrap.css*/
+     padding-left: 0;  /*idem*/
+     margin-right: auto;
+     margin-left: auto;
 }
