@@ -83,9 +83,6 @@
 <script>
 	var classToBeDeleted;
 
-<<<<<<< HEAD
-	$('.deleteClassButton').click(function(event) {
-=======
 	$('#addmultipleclassbutton').click(function(event) {
 		event.preventDefault();
 		var className = $('#classSelect option:selected').text()
@@ -106,8 +103,7 @@
 		});
 	})
 
-	$('#deleteClassButton').click(function(event) {
->>>>>>> 4ba29c586444cdef7bd3009c1eed7c481a17a170
+	$('.deleteClassButton').click(function(event) {
 		classToBeDeleted = $(this).attr('for-class');
 	});
 
