@@ -26,5 +26,5 @@ exports.validateLogin = function(req, res) {
 exports.logout = function(req, res) {
 	console.log('huehue');
 	req.session.email = null;
-	res.redirect('/login');
+	res.redirect('/');
 }

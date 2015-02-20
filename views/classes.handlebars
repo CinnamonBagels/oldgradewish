@@ -4,8 +4,8 @@
 	</div>
 </div>
 
-<div class="row" id="classes">
-	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+<div class="row">
+	<div id="classes" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		{{#if classes}}
 		{{#each classes}}
 
@@ -90,7 +90,7 @@
 		$.post('/addClass', { className : className, desiredGrade : $('#desiredGradeInput').val() }, function(data) {
 			console.log(data);
 			if(data.ok) {
-				$('#classes > div').prepend('<div id="' + className + '" class="row">\
+				$('#classes').prepend('<div id="' + className + '" class="row">\
 			<div class=" col-lg-8 col-md-8 col-sm-8 col-xs-8">\
 				<a href="/classes/' + className + '" class="btn btn-primary btn-block btn-spaced"><span class="button-text">' + className + '</span></a>\
 			</div>\
