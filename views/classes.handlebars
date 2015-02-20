@@ -84,11 +84,13 @@
 	var classToBeDeleted;
 
 	$('#addmultipleclassbutton').click(function(event) {
+		console.log('huehue');
 		event.preventDefault();
 		var className = $('#classSelect option:selected').text()
 		$.post('/addClass', { className : className, desiredGrade : $('#desiredGradeInput').val() }, function(data) {
+			console.log(data);
 			if(data.ok) {
-				$('#classes').prepend('<div id="' + className + '" class="row">\
+				$('#classes > div').prepend('<div id="' + className + '" class="row">\
 			<div class=" col-lg-8 col-md-8 col-sm-8 col-xs-8">\
 				<a href="/classes/' + className + '" class="btn btn-primary btn-block btn-spaced"><span class="button-text">' + className + '</span></a>\
 			</div>\
@@ -125,7 +127,7 @@
 		var className = $('#classSelect option:selected').text()
 		$.post('/addClass', { className : className, desiredGrade : $('#desiredGradeInput').val() }, function(data) {
 			if(data.ok) {
-				$('#classes').prepend('<div id="' + className + '" class="row">\
+				$('#classes').append('<div id="' + className + '" class="row">\
 			<div class=" col-lg-8 col-md-8 col-sm-8 col-xs-8">\
 				<a href="/classes/' + className + '" class="btn btn-primary btn-block btn-spaced"><span class="button-text">' + className + '</span></a>\
 			</div>\

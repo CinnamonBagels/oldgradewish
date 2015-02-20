@@ -126,7 +126,7 @@ exports.addClass = function(req, res) {
 					if(err) {
 						console.log(err);
 						res.send({
-							err : systemMessages.status.error
+							err : err
 						});
 					}
 				});
@@ -141,7 +141,7 @@ exports.addClass = function(req, res) {
 					if(err) {
 						console.log(err);
 						res.send({
-							err : systemMessages.status.error
+							err : err
 						});
 					} else {
 						res.send({
@@ -151,13 +151,13 @@ exports.addClass = function(req, res) {
 				})
 			} else {
 				res.send({
-					err : systemMessages.status.error
+					err : 'class exists'
 				});
 			}
 			
 		} else {
 			res.send({
-				err : systemMessages.status.error
+				err : 'cannot find data'
 			});
 		}
 	});
