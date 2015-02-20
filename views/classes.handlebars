@@ -20,18 +20,20 @@
 			<div class="panel-body">
 				{{#if classes}}
 				{{#each classes}}
-				<div id="{{className}}" class="row">
+				<div id="{{className}}" class="row class">
 					<div class=" col-lg-8 col-md-8 col-sm-8 col-xs-8">
-						<a href="/classes/{{className}}" class="btn btn-primary btn-block btn-spaced"><span class="button-text">{{className}}</span></a>
+						<a href="/classes/{{className}}" class="btn btn-primary btn-block btn-spaced btn-lg"><span class="button-text">{{className}}</span></a>
 					</div>
 					<div class=" col-lg-4 col-md-4 col-sm-4 col-xs-4 text-center">
-						<a for-class="{{className}}" class="btn btn-danger btn-block deleteClassButton btn-spaced" data-toggle="modal" data-target="#deleteClassModal">Delete</a>
+						<a for-class="{{className}}" class="btn btn-danger btn-block deleteClassButton btn-spaced btn-lg" data-toggle="modal" data-target="#deleteClassModal">Delete</a>
 					</div>
 				</div>
 				{{/each}}	
 				{{else}}
-				<div id="no-classes" class="col-lg-12 col-sm-12 col-md-12">
-					<span>You currently have no classes</span>
+				<div class="row " id="no-classes" >
+					<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 text-center">
+						<span>You currently have no classes</span>
+					</div>
 				</div>
 				{{/if}}
 			</div>
@@ -65,6 +67,11 @@
         <h4 class="modal-title" id="addClass">Add Class</h4>
       </div>
       <div class="modal-body">
+      <div class="row">
+      	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alert-box">
+      		
+      	</div>
+      </div>
         <form id="addClassForm" action="/addClass" method="post">
     	    <div class="form-group">
     	    	<label for="classSelect">Class Name</label>
@@ -90,9 +97,13 @@
 <script>
 	var classToBeDeleted;
 
-	$('.deleteClassButton').click(function(event) {
-		classToBeDeleted = $(this).attr('for-class');
-	});
+	function redefineDelete() {
+		$('.deleteClassButton').click(function(event) {
+			classToBeDeleted = $(this).attr('for-class');
+		});
+	}
+
+	redefineDelete();
 
 	$('#confirmDeleteClassButton').click(function(event) {
 		$.post('/deleteClass', { className : classToBeDeleted }, function(data) {
@@ -100,6 +111,13 @@
 			if(data.ok) {
 				console.log(classToBeDeleted);
 				$('#' + classToBeDeleted).remove();
+				if($('.class').length === 0) {
+					$('.panel-body').append('<div class="row " id="no-classes" >\
+					<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 text-center">\
+						<span>You currently have no classes</span>\
+					</div>\
+				</div>');
+				}
 				$('#deleteClassModal').modal('hide');
 			} else if(data.err) {
 				console.log(data.err);
@@ -110,19 +128,32 @@
 	$('#addclassbutton').click(function(event) {
 		event.preventDefault();
 		var className = $('#classSelect option:selected').text()
+
 		$.post('/addClass', { className : className, desiredGrade : $('#desiredGradeInput').val() }, function(data) {
 			if(data.ok) {
-				$('#classes').append('<div id="' + className + '" class="row">\
-			<div class=" col-lg-8 col-md-8 col-sm-8 col-xs-8">\
-				<a href="/classes/' + className + '" class="btn btn-primary btn-block btn-spaced"><span class="button-text">' + className + '</span></a>\
-			</div>\
-			<div class=" col-lg-4 col-md-4 col-sm-4 col-xs-4 text-center">\
-				<a for-class="' + className + '" class="btn btn-danger btn-block deleteClassButton btn-spaced" data-toggle="modal" data-target="#deleteClassModal"><span class="button-text">Delete</span></a>\
-			</div>\
-		</div>');
+
+				if($('#no-classes').length > 0) {
+					$('.panel-body').empty();
+				}
+				$('.panel-body').append('<div id="' + className + '" class="row">\
+					<div class=" col-lg-8 col-md-8 col-sm-8 col-xs-8">\
+						<a href="/classes/' + className + '" class="btn btn-primary btn-lg btn-block btn-spaced"><span class="button-text">' + className + '</span></a>\
+					</div>\
+					<div class=" col-lg-4 col-md-4 col-sm-4 col-xs-4 text-center">\
+						<a for-class="' + className + '" class="btn btn-danger btn-lg btn-block deleteClassButton btn-spaced" data-toggle="modal" data-target="#deleteClassModal">Delete</a>\
+					</div>\
+				</div>');
+				redefineDelete();
 				if($('#no-classes')) {
 					$('#no-classes').remove();
 				}
+				$('#addClassModal').modal('hide');
+			} else if(data.err) {
+				$('.alert-box').prepend('<div class="alert alert-warning alert-dismissible" role="alert">\
+		        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
+		      ' + data.err + '\
+		      </div>');
+				$('#addClassForm').get(0).reset();
 				$('#addClassModal').modal('hide');
 			}
 		});

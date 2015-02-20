@@ -12,13 +12,24 @@ exports.viewLogin = function(req, res) {
 
 exports.validateLogin = function(req, res) {
 	var fields = req.body;
+	console.log(fields);
 
-	User.findOne({ email : fields.email, password : fields.password }, function(err, data) {
-		if(data) {
-			req.session.email = data.email;
-			res.redirect('/classes');
+	User.findOne({ email : fields.email }, function(err, data) {
+		console.log(data, data.email, fields.email, data.email === fields.email, data.password === fields.password);
+		if(data.email === fields.email) {
+			if(data.password === fields.password) {
+				req.session.email = data.email;
+				res.redirect('/classes');
+			} else {
+				res.send({
+					err : 'Invalid Password'
+				})
+			}
 		} else {
-			res.render('login');
+			var output = 'User ' + fields.email + ' does not exist, Register first!'
+			res.send({
+				err : output
+			})
 		}
 	});
 }

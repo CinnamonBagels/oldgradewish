@@ -5,23 +5,42 @@
 	</div>
 </div>
 
+<div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alert-box">
+		
+	</div>
+</div>
 
 <div class="row">
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Overview</div>
-			<div class="row">
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					{{#if currentGrade}}
-						<span>Current grade: {{currentGrade}} %</span>
-					{{else}}
-						<span class="no-assignments">Add assignments below to calculate your grade.</span>
-					{{/if}}
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						{{#if currentGrade}}
+							<span id="current-grade">Current grade: {{currentGrade}} %</span>
+						{{else}}
+							<span id="no-assignments">Add assignments below to calculate your grade. At least one assignment must be graded for us to update your score.</span>
+						{{/if}}
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						{{#if impossible}}
+							<span class="impossible">At your current percentage, you will need extra-credit assignments to acheive your desired grade.</span>
+						{{/if}}
+						{{#if overacheive}}
+						<span class="overacheive">At your current percentage, your grade will not fall below your desired grade.</span>
+						{{/if}}
+					</div>
 				</div>
-			</div>
-			<div class="row">
-				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					Desired Percentage <input id="desiredPercentageInput" type="text" name="desiredPercentage" value="{{desiredGrade}}">
+				<div class="row">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
+						Desired Grade 
+						<div class="input-group">
+							<input id="desiredPercentageInput" type="text" class="form-control" name="desiredPercentage" value="{{desiredGrade}}">
+							<span class="input-group-addon">%</span>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -33,15 +52,15 @@
 		<div class="panel panel-primary">
 			<div class="panel-heading">
 				<div class="row">
-					<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+					<div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
 						Assignments		
 					</div>
-					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
 						<a data-toggle="modal" data-target="#addAssignmentModal" class="btn btn-success btn-block">+</a>
 					</div>
 				</div>
 			</div>
-			<div class="panel-body">
+			<div id="allAssignments" class="panel-body">
 				<div class="row">
 					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
 						<u><span>Name</span></u>
@@ -56,82 +75,44 @@
 						<u><span>Goal(%)</span></u>
 					</div>
 				</div>
+				{{#if assignments}}
+				{{#each assignments}}
+				<div class="assignment row" assignmentName="{{assignment}}">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="row">
+							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+								<span>{{assignment}}</span>
+							</div>
+							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+								<span>{{weight}}</span>
+							</div>
+							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+								<span for-assignment="{{assignment}}" class="grade">{{percentage}}</span>
+							</div>
+							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 goal">
+								{{#if percentage}}
+									<span>Done</span>
+								{{else}}
+								<span>{{../../assignmentPercentage}}</span>
+								{{/if}}
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+								<a data-toggle="modal" data-target="#editAssignmentModal{{this._id}}" class="btn btn-info btn-block">Edit {{assignment}}</a>
+							</div>
+							<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+								<a class="btn btn-danger deleteAssignmentButton" data-toggle="modal" data-target="#deleteAssignmentModal" for-assignment="{{assignment}}" for-class="{{className}}">Delete</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				{{/each}}
+				{{/if}}
 			</div>
-
-			{{#if assignments}}
-			{{#each assignments}}
-			<div class="row">
-				
-				<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-					<span>{{assignment}}</span>
-				</div>
-				<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-					<span>{{weight}}</span>
-				</div>
-				<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-					<span>{{percentage}}</span>
-				</div>
-				<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-					{{#if percentage}}
-						<span>Done</span>
-					{{else}}
-					<span>{{../../assignmentPercentage}}</span>
-					{{/if}}
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-					<a data-toggle="modal" data-target="#editAssignmentModal" class="btn btn-info btn-block btn-spaced">Edit {{assignment}}</a>
-				</div>
-				<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-					<a class="btn btn-danger deleteAssignmentButton" data-toggle="modal" data-target="#deleteAssignmentModal" for-assignment="{{assignment}}" for-class="{{className}}">Delete</a>
-				</div>
-			</div>
-			{{/each}}
-			{{/if}}
 		</div>
 	</div>
 </div>
-
-<div class="row">
-	<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
-		{{#if assignments}}
-		{{#each assignments}}
-		<div class="row">
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs 12">
-				<div class="panel panel-primary">
-					<div class="panel-heading">{{assignment}}</div>
-					<div class="panel-body">
-						<span class="desiredGrade">Your goal for this assignment is {{../assignmentPercentage}}</span>
-					</div>
-					<div class="row">
-						<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-							<label for="assignmentWeightInput">Assignment Weight</label>
-							<div class="input-group">
-								<input class="assignmentWeightInput form-control" type="text" Placeholder="Assignment Weight" for-assignment="{{assignment}}" for-class="{{className}}" value="{{weight}}">
-								<span class="input-group-addon">%</span>
-							</div>	
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-							<label for="gradeGivenInput">Percentage Given</label>
-							<div class="input-group">
-								<input class="gradeGivenInput form-control" type="text" Placeholder="Percentage Given" for-assignment="{{assignment}}" for-class="{{className}}" value="{{percentage}}">
-								<span class="input-group-addon">%</span>
-							</div>	
-						</div>
-					</div>
-					<a class="btn btn-danger deleteAssignmentButton" data-toggle="modal" data-target="#deleteAssignmentModal" for-assignment="{{assignment}}" for-class="{{className}}">Delete</a>
-				</div>
-			</div>
-		</div>
-		{{/each}}
-		{{/if}}
-	</div>
-</div>
-
-
 <!-- Modal -->
 
 <div class="modal fade" id="deleteAssignmentModal" tabindex="-1" role="dialog" aria-labelledby="deleteAssignment" aria-hidden="true">
@@ -161,6 +142,11 @@
         <h4 class="modal-title" id="addAssignment">Add Assignment</h4>
       </div>
       <div class="modal-body">
+      <div class="row">
+      	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 addassignmentalert-box">
+      		
+      	</div>
+      </div>
        	<form id="addAssignmentForm">
 			<div class="input-group">
 				<label for="assignmentName">Assignment Name</label>
@@ -168,12 +154,12 @@
 			</div>
 				<label for="assignmentWeight">Assignment Weight</label>
 			<div class="input-group">
-   				<input id="assignmentWeight" class="form-control" type="text" name="assignmentWeight" placeholder="Assignment Weight">	
+   				<input id="assignmentWeightInput" class="form-control" type="text" name="assignmentWeight" placeholder="Assignment Weight">	
 				<span class="input-group-addon">%</span>
 			</div>
 				<label for="assignmentPercentage">Percentage Given (Optional)</label>
 			<div class="input-group">
-				<input id="assignmentPercentage" class="form-control" type="text" name="assignmentPercentage" placeholder="Percentage Given">
+				<input id="assignmentPercentageInput" class="form-control" type="text" name="assignmentPercentage" placeholder="Percentage Given">
 				<span class="input-group-addon">%</span>
 			</div>
        	</form>
@@ -186,56 +172,71 @@
   </div>
 </div>
 
-{{#if assignments}}
-{{#each assignments}}
-<div class="modal fade" id="editAssignmentModal" tabindex="-1" role="dialog" aria-labelledby="editAssignment" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="editAssignment">Edit Assignment</h4>
-      </div>
-      <div class="modal-body">
-       	<form id="addAssignmentForm">
-       		<label for="assignmentName">Assignment Name</label>
-			<div class="input-group">
-       			<input id="assignmentName" class="form-control" type="text" name="assignmentName" placeholder="Assignment Name">
+<div id="allModals">
+	{{#if assignments}}
+	{{#each assignments}}
+	<div class="modal fade" id="editAssignmentModal{{this._id}}" tabindex="-1" role="dialog" aria-labelledby="editAssignment{{this._id}}" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="editAssignment{{this._id}}">Edit Assignment</h4>
+	      </div>
+	      <div class="modal-body">
+	      <div class="row">
+	      	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alert-box">
+	      		
+	      	</div>
+	      </div>
+	       	<form class="editAssignmentForm" for-assignment={{assignment}}>
+	       	<div class="row">
+	       		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		       		<label for="assignmentName">Assignment Name</label>
+					<div class="input-group">
+		       			<input id="assignmentName" class="form-control" type="text" name="assignmentName" placeholder="Assignment Name" value="{{assignment}}">
+					</div>
+	       		</div>
+	       	</div>
+	       	<div class="row">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<label for="assignmentWeightInput">Assignment Weight</label>
+					<div class="input-group">
+						<input class="assignmentWeightInput form-control" type="text" Placeholder="Assignment Weight" for-assignment="{{assignment}}" for-class="{{className}}" value="{{weight}}">
+						<span class="input-group-addon">%</span>
+					</div>	
+				</div>
 			</div>
-       	</form>
-       	<div class="row">
-			<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-				<label for="assignmentWeightInput">Assignment Weight</label>
-				<div class="input-group">
-					<input class="assignmentWeightInput form-control" type="text" Placeholder="Assignment Weight" for-assignment="{{assignment}}" for-class="{{className}}" value="{{weight}}">
-					<span class="input-group-addon">%</span>
-				</div>	
+			<div class="row">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<label for="gradeGivenInput">Percentage Given</label>
+					<div class="input-group">
+						<input class="gradeGivenInput form-control" type="text" Placeholder="Percentage Given" for-assignment="{{assignment}}" for-class="{{className}}" value="{{percentage}}">
+						<span class="input-group-addon">%</span>
+					</div>	
+				</div>
 			</div>
-		</div>
-		<div class="row">
-			<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-				<label for="gradeGivenInput">Percentage Given</label>
-				<div class="input-group">
-					<input class="gradeGivenInput form-control" type="text" Placeholder="Percentage Given" for-assignment="{{assignment}}" for-class="{{className}}" value="{{percentage}}">
-					<span class="input-group-addon">%</span>
-				</div>	
-			</div>
-		</div>
-		
-      </div>
-      <div class="modal-footer">
-       	 <a class="btn btn-success" id="editAssignmentSubmit">Edit Assignment</a>
-       	 <a class="btn btn-danger" data-dismiss="modal" aria-label="Close">Back</a>
-      </div>
-    </div>
-  </div>
+	       	</form>
+			
+	      </div>
+	      <div class="modal-footer">
+	       	 <a class="btn btn-success editAssignmentSubmit" for-assignment="{{assignment}}">Edit Assignment</a>
+	       	 <a class="btn btn-danger" data-dismiss="modal" aria-label="Close">Back</a>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	{{/each}}
+	{{/if}}
 </div>
-{{/each}}
-{{/if}}
 
 <script>
 
 	var assignmentToBeDeleted;
 	var forClass;
+
+	$('.editAssignmentSubmit').click(function(event) {
+		$(this).closest('.gradeGivenInput').trigger('enterKey');
+	});
 
 	$('.deleteAssignmentButton').click(function(event) {
 		assignmentToBeDeleted = $(this).attr('for-assignment');
@@ -243,17 +244,46 @@
 	});
 
 	$('#confirmDeleteAssignmentButton').click(function(event) {
+		var desiredGrade = $('#desiredPercentageInput').val();
+	   var assignmentPercentages = [];
+	   var assignmentWeights = [];
+	   var className = $('#className').text();
+
+	   for(var i = 0; i < $('.assignmentWeightInput').length; i++) {
+	   	assignmentWeights.push($('.assignmentWeightInput')[i].value);
+	   }
+
+	   for(var i = 0; i < $('.gradeGivenInput').length; i++) {
+		assignmentPercentages.push($('.gradeGivenInput')[i].value);
+	   }
+
 		$.post('/deleteAssignment', { assignmentName : assignmentToBeDeleted, className : forClass }, function(data) {
 			if(data.ok) {
-				$('a.close-reveal-modal').trigger('click');
-				console.log($('tr[for-assignment="' + assignmentToBeDeleted + '"]'));
-				$('tr[for-assignment="' + assignmentToBeDeleted + '"]').remove();
+				$('.assignment[assignmentName="' + assignmentToBeDeleted + '"]').remove();
+				console.log($('.assignment'));
+				if($('.assignment').length === 0) {
+					$('#current-grade').replaceWith('<span id="no-assignments">Add assignments below to calculate your grade. At least one assignment must be graded for us to update your score.</span>');
+				} else {
+					$.post('/updateAssignmentGoal', { className : className, assignmentPercentages : assignmentPercentages, assignmentWeights : assignmentWeights, desiredGrade : desiredGrade }, function(data) {
+						console.log(data);
+						var grades = $('.grade');
+						var goals = $('.goal');
+
+						for(var i = 0; i < grades.length; i++) {
+							if($(grades[i]).text() === '') {
+								$(goals[i]).empty();
+								$(goals[i]).append('<span>' + data.goal + '</span>')
+							}
+						}
+					});
+				}
+				$('#deleteAssignmentModal').modal('hide');
 			}
 		});
 	})
 
 	$('#addAssignmentSubmit').click(function(event) {
-		event.preventDefault();
+		var modal = $(this);
 		var assignmentFields = [];
 		var $input = $('#addAssignmentForm').find(':input').each(function() {
 			assignmentFields.push($(this).val());
@@ -262,45 +292,133 @@
 		var assignmentWeight = assignmentFields[1];
 		var assignmentPercentage = assignmentFields[2];
 		var className = $('#className').text();
+		var desiredGrade = $('#desiredPercentageInput').val();
 
 		$.post('/addAssignment', { className : $('#className').text(),
-								   assignmentName : assignmentFields[0],
-								   assignmentWeight : assignmentFields[1],
-								   assignmentPercentage : assignmentFields[2] }, function(data) {
+								   assignmentName : assignmentName,
+								   assignmentWeight : assignmentWeight,
+								   assignmentPercentage : assignmentPercentage }, function(data) {
 			if(data.ok) {
-				console.log(data);
-				$('tbody').append('<tr for-assignment="' + assignmentName + '">\
-		      	<td>\
-		      		<span class="assignmentName">\
-		      			' + assignmentName + '\
-		      		</span>\
-		      	</td>\
-		      	<td>\
-		      		<input type="checkbox" name="extraCredit">\
-		      	</td>\
-		      	<td>\
-		      		<span class="assignmentWeight">\
-		      			<input class="assignmentWeightInput" type="text" Placeholder="Assignment Weight" for-assignment="' + assignmentName + '" for-class="' + className + '" value="' + assignmentWeight + '">\
-		      		</span>\
-		      	</td>\
-		      	<td>\
-		      		<input class="gradeGivenInput" type="text" Placeholder="Grade given" for-assignment="' + assignmentName + '" for-class="' + className + '" value="' + assignmentPercentage + '">\
-		      	</td>\
-		      	<td>\
-		      		stub\
-		      	</td>\
-		      	<td>\
-		      		<a class="button alert radius deleteAssignmentButton" data-reveal-id="deleteAssignmentModal" for-assignment="' + assignmentName + '" for-class="' + className + '">Delete</a>\
-		      	</td>\
-		      </tr>')
-				$('a.close-reveal-modal').trigger('click');
-			} else {
-				console.log('awww :(');
+				console.log('added class');
+				var assignmentPercentages = [];
+			   var assignmentWeights = [];
+			   assignmentPercentages.push(assignmentPercentage);
+			   assignmentWeights.push(assignmentWeight);
+			   console.log(assignmentPercentages);
+			   for(var i = 0; i < $('.assignmentWeightInput').length; i++) {
+			   	assignmentWeights.push($('.assignmentWeightInput')[i].value);
+			   }
+
+			   for(var i = 0; i < $('.gradeGivenInput').length; i++) {
+				assignmentPercentages.push($('.gradeGivenInput')[i].value);
+			   }
+				$.post('/updateAssignmentGoal', { className : className, assignmentPercentages : assignmentPercentages, assignmentWeights : assignmentWeights, desiredGrade : desiredGrade }, function(data) {
+	   			if(data.ok) {
+	   				console.log(data);
+	   				var goal;
+	   				if(data.goal && assignmentPercentage === '') {
+	   					goal = data.goal;
+	   				} else {
+	   					goal = 'Done.'
+	   				}
+	   				console.log('updated assignment goal');
+	   				$('#allAssignments').append('<div assignmentName="' + assignmentName + '" class="row">\
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">\
+						<div class="row">\
+							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">\
+								<span>' + assignmentName + '</span>\
+							</div>\
+							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">\
+								<span>' + assignmentWeight + '</span>\
+							</div>\
+							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">\
+								<span>' + assignmentPercentage + '</span>\
+							</div>\
+							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">\
+								' + goal + '\
+							</div>\
+						</div>\
+						<div class="row">\
+							<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">\
+								<a data-toggle="modal" data-target="#editAssignmentModal' + assignmentPercentage + '" class="btn btn-info btn-block">Edit ' + assignmentName + '</a>\
+							</div>\
+							<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">\
+								<a class="btn btn-danger deleteAssignmentButton" data-toggle="modal" data-target="#deleteAssignmentModal" for-assignment="' + assignmentName + '" for-class="' + className + '">Delete</a>\
+							</div>\
+						</div>\
+					</div>\
+				</div>');
+
+				$('#allModals').append('<div class="modal fade" id="editAssignmentModal' + assignmentPercentage + '" tabindex="-1" role="dialog" aria-labelledby="editAssignment' + assignmentPercentage + '" aria-hidden="true">\
+	  <div class="modal-dialog">\
+	    <div class="modal-content">\
+	      <div class="modal-header">\
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
+	        <h4 class="modal-title" id="editAssignment' + assignmentPercentage + '">Edit Assignment</h4>\
+	      </div>\
+	      <div class="modal-body">\
+	       	<form class="editAssignmentForm">\
+	       		<div class="row">\
+	       		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">\
+		       		<label for="assignmentName">Assignment Name</label>\
+					<div class="input-group">\
+		       			<input id="assignmentName" class="form-control" type="text" name="assignmentName" placeholder="Assignment Name" value="' + assignmentName + '">\
+					</div>\
+	       		</div>\
+	       	</div>\
+	       	<div class="row">\
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">\
+					<label for="assignmentWeightInput">Assignment Weight</label>\
+					<div class="input-group">\
+						<input class="assignmentWeightInput form-control" type="text" Placeholder="Assignment Weight" for-assignment="' + assignmentName + '" for-class="' + className + '" value="' + assignmentWeight + '">\
+						<span class="input-group-addon">%</span>\
+					</div>\
+				</div>\
+			</div>\
+			<div class="row">\
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">\
+					<label for="gradeGivenInput">Percentage Given</label>\
+					<div class="input-group">\
+						<input class="gradeGivenInput form-control" type="text" Placeholder="Percentage Given" for-assignment="' + assignmentName + '" for-class="' + className + '" value="' + assignmentPercentage + '">\
+						<span class="input-group-addon">%</span>\
+					</div>\
+				</div>\
+			</div>\
+	      </div>\
+	      </form>\
+	      <div class="modal-footer">\
+	       	 <a class="btn btn-success editAssignmentSubmit" for-assignment="' + assignmentName + '">Edit Assignment</a>\
+	       	 <a class="btn btn-danger" data-dismiss="modal" aria-label="Close">Back</a>\
+	      </div>\
+	    </div>\
+	  </div>\
+	</div>');
+				if(data.currentGrade) {
+					if($('#no-assignments').length > 0) {
+						$('#no-assignments').empty();
+						$('#no-assignments').append('<span id="current-grade">Current grade:' + data.currentGrade + ' %</span>')
+					} else {
+						$('#current-grade').text(data.currentGrade);
+					}
+				}	
+	   			$('#addAssignmentForm').get(0).reset();
+	   			$('#addAssignmentModal').modal('hide');
+				
+	   			} //end if(data)
+
+	   		}); //end $.post()
+
+			} else if(data.err) {
+				$('.addassignmentalert-box').prepend('<div class="alert alert-warning alert-dismissible" role="alert">\
+		        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
+		      ' + data.err + '\
+		      </div>');
 			}
 		});
 	});
 
 	$('.gradeGivenInput').bind("enterKey", function(e) {
+		var that = $(this);
 	   var percentage = $(this).val();
 	   var assignment = $(this).attr('for-assignment');
 	   var className = $(this).attr('for-class');
@@ -317,15 +435,30 @@
 		assignmentPercentages.push($('.gradeGivenInput')[i].value);
 	   }
 
-	   console.log(assignmentPercentages, assignmentWeights);
+
 	   $.post('/updateAssignmentPercentage', { className : className, assignmentPercentage: percentage, assignmentName : assignment}, function(data) {
 	   	if(data.ok) {
 	   		console.log('uhhhh');
 	   		textbox.val(percentage);
 	   		$.post('/updateAssignmentGoal', { className : className, assignmentPercentages : assignmentPercentages, assignmentWeights : assignmentWeights, desiredGrade : desiredGrade }, function(data) {
 	   			console.log(data);
+	   			var grades = $('.grade');
+	   			var goals = $('.goal');
 
+	   			for(var i = 0; i < grades.length; i++) {
+	   				if($(grades[i]).text() === '') {
+	   					$(goals[i]).empty();
+	   					$(goals[i]).append('<span>' + data.goal + '</span>')
+	   				}
+	   			}
+	   			$('.grade[for-assignment="' + assignment + '"]').text(percentage);
+	   			$(that).closest('.modal').modal('hide');
 	   		});
+	   	} else if(data.err) {
+	   		$(that).closest('.alert-box').prepend('<div class="alert alert-warning alert-dismissible" role="alert">\
+		        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
+		      ' + data.err + '\
+		      </div>');
 	   	}
 	   });
 	});
@@ -345,41 +478,62 @@
 
 		$.post('/updateDesiredGrade', { desiredGrade : desiredGrade, className : $('#className').text() }, function(data) {
 			if(data.ok) {
-				$.post('/updateAssignmentGoal', { className : className, assignmentPercentages : assignmentPercentages, assignmentWeights : assignmentWeights, desiredGrade : desiredGrade }, function(data) {
+				console.log('update desired grade');
+				$.post('/updateAssignmentGoal', { className : $('#className').text(), assignmentPercentages : assignmentPercentages, assignmentWeights : assignmentWeights, desiredGrade : desiredGrade }, function(data) {
 					console.log(data);
+					var grades = $('.grade');
+					var goals = $('.goal');
 
+					for(var i = 0; i < grades.length; i++) {
+						if($(grades[i]).text() === '') {
+							$(goals[i]).empty();
+							$(goals[i]).append('<span>' + data.goal + '</span>')
+						}
+					}
 				});
+			} else {
+				console.log('uh oh');
 			}
 		});
 	});
 
-	$('.assignmentWeightInput').bind('enterKey', function(e) {
-		var desiredGrade = $('#desiredPercentageInput').val();
-		var assignment = $(this).attr('for-assignment');
-		var className = $(this).attr('for-class');
-		var weight = $(this).val();
-		var assignmentPercentages = [];
-	    var assignmentWeights = [];
+	// $('.assignmentWeightInput').bind('enterKey', function(e) {
+	// 	var desiredGrade = $('#desiredPercentageInput').val();
+	// 	var assignment = $(this).attr('for-assignment');
+	// 	var className = $(this).attr('for-class');
+	// 	var weight = $(this).val();
+	// 	var assignmentPercentages = [];
+	//     var assignmentWeights = [];
 
-	    for(var i = 0; i < $('.assignmentWeightInput').length; i++) {
-	   		assignmentWeights.push($('.assignmentWeightInput')[i].value);
-	    }
+	//     for(var i = 0; i < $('.assignmentWeightInput').length; i++) {
+	//    		assignmentWeights.push($('.assignmentWeightInput')[i].value);
+	//     }
 
-	    for(var i = 0; i < $('.gradeGivenInput').length; i++) {
-			assignmentPercentages.push($('.gradeGivenInput')[i].value);
-	    }
+	//     for(var i = 0; i < $('.gradeGivenInput').length; i++) {
+	// 		assignmentPercentages.push($('.gradeGivenInput')[i].value);
+	//     }
 
-		$.post('/updateAssignmentWeight', { assignmentName : assignment, className : className, weight : weight }, function(data) {
-			if(data.ok) {
-				$.post('/updateAssignmentGoal', { className : className, assignmentPercentages : assignmentPercentages, assignmentWeights : assignmentWeights, desiredGrade : desiredGrade }, function(data) {
-					console.log(data);
+	// 	$.post('/updateAssignmentWeight', { assignmentName : assignment, className : className, weight : weight }, function(data) {
+	// 		if(data.ok) {
+	// 			$.post('/updateAssignmentGoal', { className : className, assignmentPercentages : assignmentPercentages, assignmentWeights : assignmentWeights, desiredGrade : desiredGrade }, function(data) {
+	// 				console.log(data);
 
-				});
-			}
-		});
+	// 			});
+	// 		} else if(data.err) {
+	// 			$('.alert-box').prepend('<div class="alert alert-warning alert-dismissible" role="alert">\
+	// 	        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
+	// 	      ' + data.err + '\
+	// 	      </div>');
+	// 			$('#').modal('hide');
+	// 		}
+	// 	});
+	// });
+
+	$('#assignmentPercentageInput').bind('enterKey', function(e) {
+		$('#addAssignmentSubmit').trigger('click');
 	});
 
-	$('.gradeGivenInput, #desiredPercentageInput, .assignmentWeightInput').keyup(function(e){
+	$('#assignmentPercentageInput, #desiredPercentageInput, .gradeGivenInput').keyup(function(e){
 	    if(e.keyCode == 13)
 	    {
 	        $(this).trigger("enterKey");

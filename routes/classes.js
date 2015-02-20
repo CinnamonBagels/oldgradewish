@@ -42,6 +42,8 @@ exports.viewClass = function(req, res) {
 	var desiredGrade;
 	var classPageObject;
 	var classObject;
+	var currentGrade;
+	var assignmentPercentage;
 	if(!req.session.email) {
 		res.redirect('/login');
 	} else {
@@ -74,16 +76,52 @@ exports.viewClass = function(req, res) {
 								} else {
 									if(classObj) {
 										desiredGrade = classObj.desiredGrade;
-										classPageObject = {
-											'className' : req.params.classID,
-											'assignments' : assignments,
-											'desiredGrade' : desiredGrade,
-											'assignmentPercentage' : classObj.assignmentGoal,
-											'currentGrade' : classObj.currentGrade,
-											'session' : {
-												'sessionClasses' : classes
-											}
-										};
+										if(classObj.currentGrade == -1) {
+											currentGrade = null;
+										} else {
+											currentGrade = classObj.currentGrade;
+										}
+
+										assignmentPercentage = classObj.assignmentGoal
+
+										if(assignmentPercentage < 0) {
+											assignmentPercentage = '(' + assignmentPercentage + ')';
+											classPageObject = {
+												'className' : req.params.classID,
+												'assignments' : assignments,
+												'desiredGrade' : desiredGrade,
+												'assignmentPercentage' : assignmentPercentage,
+												'currentGrade' : currentGrade,
+												'session' : {
+													'sessionClasses' : classes
+												},
+												'overacheive' : true
+											};
+										} else if(assignmentPercentage > 100) {
+											assignmentPercentage = '(' + assignmentPercentage + ')';
+											classPageObject = {
+												'className' : req.params.classID,
+												'assignments' : assignments,
+												'desiredGrade' : desiredGrade,
+												'assignmentPercentage' : assignmentPercentage,
+												'currentGrade' : currentGrade,
+												'session' : {
+													'sessionClasses' : classes
+												},
+												'impossible' : true
+											};
+										} else {
+											classPageObject = {
+												'className' : req.params.classID,
+												'assignments' : assignments,
+												'desiredGrade' : desiredGrade,
+												'assignmentPercentage' : assignmentPercentage,
+												'currentGrade' : currentGrade,
+												'session' : {
+													'sessionClasses' : classes
+												}
+											};
+										}
 
 										res.render('class', classPageObject);
 									}
@@ -148,13 +186,13 @@ exports.addClass = function(req, res) {
 				})
 			} else {
 				res.send({
-					err : 'class exists'
+					err : 'You cannot add duplicate classes.'
 				});
 			}
 			
 		} else {
 			res.send({
-				err : 'cannot find data'
+				err : 'User not found, please logout and log back in.'
 			});
 		}
 	});
