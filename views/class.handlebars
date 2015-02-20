@@ -67,7 +67,7 @@
 					{{/if}}
 				</div>
 				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-					<span>Edit</span>
+					<a data-toggle="modal" data-target="#editAssignmentModal" class="btn btn-info btn-block btn-spaced">Edit</a>
 				</div>
 			</div>
 			{{/each}}
@@ -76,7 +76,7 @@
 	</div>
 </div>
 
-
+<!--
 <div class="row">
 	<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
 	{{#if currentGrade}}
@@ -95,6 +95,8 @@
 		<input id="desiredPercentageInput" type="text" name="desiredPercentage" value="{{desiredGrade}}">
 	</div>
 </div>
+-->
+
 <div class="row">
 	<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
 		{{#if assignments}}
@@ -134,7 +136,7 @@
 </div>
 
 <div class="row">
-	<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		<a data-toggle="modal" data-target="#addAssignmentModal" class="btn btn-info btn-block btn-spaced">Add an Assignment</a>
 	</div>
 </div>
@@ -192,7 +194,51 @@
   </div>
 </div>
 
-
+{{#if assignments}}
+{{#each assignments}}
+<div class="modal fade" id="editAssignmentModal" tabindex="-1" role="dialog" aria-labelledby="editAssignment" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="editAssignment">Edit Assignment</h4>
+      </div>
+      <div class="modal-body">
+       	<form id="addAssignmentForm">
+       		<label for="assignmentName">Assignment Name</label>
+			<div class="input-group">
+       			<input id="assignmentName" class="form-control" type="text" name="assignmentName" placeholder="Assignment Name">
+			</div>
+       	</form>
+       	<div class="row">
+			<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+				<label for="assignmentWeightInput">Assignment Weight</label>
+				<div class="input-group">
+					<input class="assignmentWeightInput form-control" type="text" Placeholder="Assignment Weight" for-assignment="{{assignment}}" for-class="{{className}}" value="{{weight}}">
+					<span class="input-group-addon">%</span>
+				</div>	
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+				<label for="gradeGivenInput">Percentage Given</label>
+				<div class="input-group">
+					<input class="gradeGivenInput form-control" type="text" Placeholder="Percentage Given" for-assignment="{{assignment}}" for-class="{{className}}" value="{{percentage}}">
+					<span class="input-group-addon">%</span>
+				</div>	
+			</div>
+		</div>
+		<a class="btn btn-danger deleteAssignmentButton" data-toggle="modal" data-target="#deleteAssignmentModal" for-assignment="{{assignment}}" for-class="{{className}}">Delete</a>
+      </div>
+      <div class="modal-footer">
+       	 <a class="btn btn-success" id="addAssignmentSubmit">Add Assignment</a>
+       	 <a class="btn btn-danger" data-dismiss="modal" aria-label="Close">Back</a>
+      </div>
+    </div>
+  </div>
+</div>
+{{/each}}
+{{/if}}
 
 <script>
 
