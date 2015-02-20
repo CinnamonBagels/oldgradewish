@@ -1,9 +1,82 @@
-
+<!doctype html>
 <div class="row" id="title">
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
 		<span class="title" id="className">{{className}}</span>
 	</div>
 </div>
+
+
+<div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Overview</div>
+			<div class="panel-body">
+				{{#if currentGrade}}
+					<span>Current grade: {{currentGrade}}</span>
+				{{else}}
+					<span>Need more info to calculate your grade</span>
+				{{/if}}
+			</div>
+			<div class="row">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					Desired Percentage <input id="desiredPercentageInput" type="text" name="desiredPercentage" value="{{desiredGrade}}">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-primary">
+			<div class="panel-heading">Assignments</div>
+			
+			<div class="panel-body">
+				<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+					<u><span>Name</span></u>
+				</div>
+				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+					<u><span>Weight(%)</span></u>
+				</div>
+				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+					<u><span>Actual(%)</span></u>
+				</div>
+				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+					<u><span>Goal(%)</span></u>
+				</div>
+			</div>
+
+			{{#if assignments}}
+			{{#each assignments}}
+			<div class="panel-body">
+				
+				<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+					<span>{{assignment}}</span>
+				</div>
+				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+					<span>{{weight}}</span>
+				</div>
+				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+					<span>{{percentage}}</span>
+				</div>
+				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+					{{#if percentage}}
+						<span>Completed</span>
+					{{else}}
+					<span>{{goal}}</span>
+					{{/if}}
+				</div>
+				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+					<span>Edit</span>
+				</div>
+			</div>
+			{{/each}}
+			{{/if}}
+		</div>
+	</div>
+</div>
+
+
 <div class="row">
 	<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
 	{{#if currentGrade}}
@@ -13,6 +86,7 @@
 	{{/if}}
 	</div>
 </div>
+
 <div class="row">
 	<div class="col-lg-8 col-md-8 col-sm-8 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2 col-xs-8">
 		Desired Percentage
@@ -60,6 +134,8 @@
 		<a data-toggle="modal" data-target="#addAssignmentModal" class="btn btn-info btn-block btn-spaced">Add an Assignment</a>
 	</div>
 </div>
+
+
 <!-- Modal -->
 <div class="modal fade" id="deleteAssignmentModal" tabindex="-1" role="dialog" aria-labelledby="deleteAssignment" aria-hidden="true">
   <div class="modal-dialog">
