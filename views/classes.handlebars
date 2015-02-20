@@ -87,9 +87,13 @@
 
 	$('#confirmDeleteClassButton').click(function(event) {
 		$.post('/deleteClass', { className : classToBeDeleted }, function(data) {
+			console.log(data);
 			if(data.ok) {
+				console.log(classToBeDeleted);
 				$('#' + classToBeDeleted).remove();
-				$('a.close-reveal-modal').trigger('click');
+				$('#deleteClassModal').modal('hide');
+			} else if(data.err) {
+				console.log(data.err);
 			}
 		});
 	});
@@ -99,15 +103,16 @@
 		var className = $('#classSelect option:selected').text()
 		$.post('/addClass', { className : className, desiredGrade : $('#desiredGradeInput').val() }, function(data) {
 			if(data.ok) {
-				$('#classes').prepend('<div id="' + className + '" class="row text-center">\
-		<div class=" col-lg-8 col-sm-8 col-md-8 col-lg-offset-2 col-md-offset-2 col-sm-offset-2">\
-			<a href="./classes?class=' + className + '" class="button large info expand radius"><span class="button-text">' + className + '</span></a>\
-		</div>\
-		<div class=" large-4 medium-4 small-4">\
-			<a id="deleteClassButton" for-class="' + className + '" data-reveal-id="deleteClassModal" class="button alert expand radius large"><span class="button-text">Delete</span></a>\
-		</div>\
-	</div>');
-				$('a.close-reveal-modal').trigger('click');
+				$('#classes').prepend('<div id="' + className + '" class="row">\
+			<div class=" col-lg-8 col-md-8 col-sm-8 col-xs-8">\
+				<a href="/classes/' + className + '" class="btn btn-primary btn-block btn-spaced"><span class="button-text">' + className + '</span></a>\
+			</div>\
+			<div class=" col-lg-4 col-md-4 col-sm-4 col-xs-4 text-center">\
+				<a for-class="' + className + '" class="btn btn-danger btn-block deleteClassButton btn-spaced" data-toggle="modal" data-target="#deleteClassModal"><span class="button-text">Delete</span></a>\
+			</div>\
+		</div>');
+
+				$('#addClassModal').modal('hide');
 			}
 		});
 	});

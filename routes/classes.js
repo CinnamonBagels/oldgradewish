@@ -76,10 +76,12 @@ exports.viewClass = function(req, res) {
 								} else {
 									if(classObj) {
 										desiredGrade = classObj.desiredGrade;
+										console.log(classObj.assignmentGoal);
 										classPageObject = {
 											'className' : req.params.classID,
 											'assignments' : assignments,
 											'desiredGrade' : desiredGrade,
+											'assignmentPercentage' : classObj.assignmentGoal,
 											'currentGrade' : classObj.currentGrade,
 											'session' : {
 												'sessionClasses' : classes
@@ -193,8 +195,9 @@ exports.updateDesiredGrade = function(req, res) {
 exports.deleteClass = function(req, res) {
 	var fields = req.body;
 	var classes = [];
+	console.log('I am here');
 
-	Class.findOneAndRemove({ email : req.session.email, className : fields.className }, function(err) {
+	Class.remove({ email : req.session.email, className : fields.className }, function(err) {
 		if(err) {
 			console.log(err);
 			res.send({
