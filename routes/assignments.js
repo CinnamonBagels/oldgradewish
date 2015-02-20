@@ -135,30 +135,35 @@ exports.addAssignment = function(req, res) {
  */
 exports.updateAssignmentPercentage = function(req, res) {
 	var fields = req.body;
-
-	Assignment.findOne({ email : req.session.email, className : fields.className, assignment : fields.assignmentName }, function(err, data) {
-		if(err) {
-			console.log(err);
-			res.send({
-				err : systemMessages.status.error
-			});
-		} else {
-			data.percentage = fields.assignmentPercentage;
-			data.save(function(err) {
-				if(err) {
-					console.log(err);
-					res.send({
-						err : systemMessages.status.error
-					});
-				} else {
-					console.log(systemMessages.status.ok);
-					res.send({
-						ok : systemMessages.status.ok
-					});
-				}
-			});
-		}
-	});
+	if(isNaN(fields.assignmentPercentage)) {
+		res.send({
+			err : systemMessages.error.nonNumeric
+		})
+	} else {
+		Assignment.findOne({ email : req.session.email, className : fields.className, assignment : fields.assignmentName }, function(err, data) {
+			if(err) {
+				console.log(err);
+				res.send({
+					err : systemMessages.status.error
+				});
+			} else {
+				data.percentage = fields.assignmentPercentage;
+				data.save(function(err) {
+					if(err) {
+						console.log(err);
+						res.send({
+							err : systemMessages.status.error
+						});
+					} else {
+						console.log(systemMessages.status.ok);
+						res.send({
+							ok : systemMessages.status.ok
+						});
+					}
+				});
+			}
+		});
+	}
 }
 
 exports.updateAssignmentGoal = function(req, res) {

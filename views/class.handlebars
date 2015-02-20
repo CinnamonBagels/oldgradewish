@@ -441,18 +441,24 @@
 	   		console.log('uhhhh');
 	   		textbox.val(percentage);
 	   		$.post('/updateAssignmentGoal', { className : className, assignmentPercentages : assignmentPercentages, assignmentWeights : assignmentWeights, desiredGrade : desiredGrade }, function(data) {
-	   			console.log(data);
-	   			var grades = $('.grade');
-	   			var goals = $('.goal');
+	   			if(data.ok) {
+	   				var grades = $('.grade');
+	   				var goals = $('.goal');
 
-	   			for(var i = 0; i < grades.length; i++) {
-	   				if($(grades[i]).text() === '') {
-	   					$(goals[i]).empty();
-	   					$(goals[i]).append('<span>' + data.goal + '</span>')
+	   				for(var i = 0; i < grades.length; i++) {
+	   					if($(grades[i]).text() === '') {
+	   						$(goals[i]).empty();
+	   						$(goals[i]).append('<span>' + data.goal + '</span>')
+	   					}
 	   				}
+	   				$('.grade[for-assignment="' + assignment + '"]').text(percentage);
+	   				$(that).closest('.modal').modal('hide');
+	   			} else if(data.err) {
+	   				$(that).closest('.alert-box').prepend('<div class="alert alert-warning alert-dismissible" role="alert">\
+		        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
+		      ' + data.err + '\
+		      </div>');
 	   			}
-	   			$('.grade[for-assignment="' + assignment + '"]').text(percentage);
-	   			$(that).closest('.modal').modal('hide');
 	   		});
 	   	} else if(data.err) {
 	   		$(that).closest('.alert-box').prepend('<div class="alert alert-warning alert-dismissible" role="alert">\
