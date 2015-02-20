@@ -29,7 +29,16 @@
 <div class="row">
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-primary">
-			<div class="panel-heading">Assignments</div>
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+						Assignments		
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+						<a data-toggle="modal" data-target="#addAssignmentModal" class="btn btn-success btn-block">+</a>
+					</div>
+				</div>
+			</div>
 			<div class="panel-body">
 				<div class="row">
 					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
@@ -82,27 +91,6 @@
 	</div>
 </div>
 
-<!--
-<div class="row">
-	<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
-	{{#if currentGrade}}
-		<span>Your current grade is {{currentGrade}}</span>
-	{{else}}
-		<span>Add assignments below to calculate your grade.</span>
-	{{/if}}
-	</div>
-</div>
-
-<div class="row">
-	<div class="col-lg-4 col-md-4 col-sm-4 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2 col-xs-4">
-		Desired Percentage {{assignmentPercentage}}
-	</div>
-	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-		<input id="desiredPercentageInput" type="text" name="desiredPercentage" value="{{desiredGrade}}">
-	</div>
-</div>
-
-
 <div class="row">
 	<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
 		{{#if assignments}}
@@ -140,13 +128,6 @@
 		{{/if}}
 	</div>
 </div>
--->
-
-<div class="row">
-	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-		<a data-toggle="modal" data-target="#addAssignmentModal" class="btn btn-info btn-block btn-spaced">Add an Assignment</a>
-	</div>
-</div>
 
 
 <!-- Modal -->
@@ -168,6 +149,7 @@
     </div>
   </div>
 </div>
+
 
 <div class="modal fade" id="addAssignmentModal" tabindex="-1" role="dialog" aria-labelledby="addAssignment" aria-hidden="true">
   <div class="modal-dialog">
