@@ -10,14 +10,14 @@
 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		<div class="panel panel-primary">
 			<div class="panel-heading">Overview</div>
-			<div class="panel-body">
+			<div class="row">
 				{{#if currentGrade}}
 					<span>Current grade: {{currentGrade}} %</span>
 				{{else}}
 					<span class="no-assignments">Add assignments below to calculate your grade.</span>
 				{{/if}}
 			</div>
-			<div class="panel-body">
+			<div class="row">
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					Desired Percentage <input id="desiredPercentageInput" type="text" name="desiredPercentage" value="{{desiredGrade}}">
 				</div>
@@ -39,7 +39,6 @@
 					</div>
 				</div>
 			</div>
-			
 			<div class="panel-body">
 				<div class="row">
 					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
@@ -49,7 +48,7 @@
 						<u><span>Weight(%)</span></u>
 					</div>
 					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-						<u><span>Actual(%)</span></u>
+						<u><span>Grade(%)</span></u>
 					</div>
 					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
 						<u><span>Goal(%)</span></u>
@@ -59,27 +58,28 @@
 
 			{{#if assignments}}
 			{{#each assignments}}
-			<div class="panel-body">
-				<div class="row">
-					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-						<span>{{assignment}}</span>
-					</div>
-					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-						<span>{{weight}}</span>
-					</div>
-					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-						<span>{{percentage}}</span>
-					</div>
-					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-						{{#if percentage}}
-							<span>Done</span>
-						{{else}}
-						<span>{{../../assignmentPercentage}}</span>
-						{{/if}}
-					</div>
-					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-						<a data-toggle="modal" data-target="#editAssignmentModal" class="btn btn-info btn-block btn-spaced">Edit</a>
-					</div>
+			<div class="row">
+				
+				<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+					<span>{{assignment}}</span>
+				</div>
+				<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+					<span>{{weight}}</span>
+				</div>
+				<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+					<span>{{percentage}}</span>
+				</div>
+				<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+					{{#if percentage}}
+						<span>Done</span>
+					{{else}}
+					<span>{{../../assignmentPercentage}}</span>
+					{{/if}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<a data-toggle="modal" data-target="#editAssignmentModal" class="btn btn-info btn-block btn-spaced">Edit {{assignment}}</a>
 				</div>
 			</div>
 			{{/each}}
@@ -126,14 +126,9 @@
 	</div>
 </div>
 
-<div class="row">
-	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-		<a data-toggle="modal" data-target="#addAssignmentModal" class="btn btn-info btn-block">+</a>
-	</div>
-</div>
-
 
 <!-- Modal -->
+<!--
 <div class="modal fade" id="deleteAssignmentModal" tabindex="-1" role="dialog" aria-labelledby="deleteAssignment" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -151,6 +146,7 @@
     </div>
   </div>
 </div>
+-->
 
 <div class="modal fade" id="addAssignmentModal" tabindex="-1" role="dialog" aria-labelledby="addAssignment" aria-hidden="true">
   <div class="modal-dialog">
@@ -222,7 +218,7 @@
 		<a class="btn btn-danger deleteAssignmentButton" data-toggle="modal" data-target="#deleteAssignmentModal" for-assignment="{{assignment}}" for-class="{{className}}">Delete</a>
       </div>
       <div class="modal-footer">
-       	 <a class="btn btn-success" id="addAssignmentSubmit">Add Assignment</a>
+       	 <a class="btn btn-success" id="editAssignmentSubmit">Edit Assignment</a>
        	 <a class="btn btn-danger" data-dismiss="modal" aria-label="Close">Back</a>
       </div>
     </div>
