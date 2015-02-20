@@ -14,7 +14,7 @@
 				<a href="/classes/{{className}}" class="btn btn-primary btn-block btn-spaced"><span class="button-text">{{className}}</span></a>
 			</div>
 			<div class=" col-lg-4 col-md-4 col-sm-4 col-xs-4 text-center">
-				<a for-class="{{className}}" class="btn btn-danger btn-block deleteClassButton btn-spaced" data-toggle="modal" data-target="#deleteClassModal"><span class="button-text">Delete</span></a>
+				<a for-class="{{className}}" class="btn btn-danger btn-block deleteClassButton btn-spaced" data-toggle="modal" data-target="#deleteClassModal">Delete</a>
 			</div>
 		</div>
 		{{/each}}	
@@ -81,7 +81,7 @@
 <script>
 	var classToBeDeleted;
 
-	$('#deleteClassButton').click(function(event) {
+	$('.deleteClassButton').click(function(event) {
 		classToBeDeleted = $(this).attr('for-class');
 	});
 
