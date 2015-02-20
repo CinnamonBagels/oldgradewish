@@ -70,7 +70,9 @@
 		        </form>
 		      </div>
 		      <div class="modal-footer">
-		        <a id="addclassbutton" class="btn btn-primary">Add Class</a> 
+		        <a id="addclassbutton" class="btn btn-primary">Add Class</a>
+		        <a id="addmultipleclassbutton" class="btn btn-success">Add Another Class</a>
+		        <a class="btn-danger btn">Back</a>
 		      </div>
 		    </div>
 		  </div>
@@ -80,6 +82,26 @@
 
 <script>
 	var classToBeDeleted;
+
+	$('#addmultipleclassbutton').click(function(event) {
+		event.preventDefault();
+		var className = $('#classSelect option:selected').text()
+		$.post('/addClass', { className : className, desiredGrade : $('#desiredGradeInput').val() }, function(data) {
+			if(data.ok) {
+				$('#classes').prepend('<div id="' + className + '" class="row">\
+			<div class=" col-lg-8 col-md-8 col-sm-8 col-xs-8">\
+				<a href="/classes/' + className + '" class="btn btn-primary btn-block btn-spaced"><span class="button-text">' + className + '</span></a>\
+			</div>\
+			<div class=" col-lg-4 col-md-4 col-sm-4 col-xs-4 text-center">\
+				<a for-class="' + className + '" class="btn btn-danger btn-block deleteClassButton btn-spaced" data-toggle="modal" data-target="#deleteClassModal"><span class="button-text">Delete</span></a>\
+			</div>\
+		</div>');
+
+				$('#addClassModal').modal('hide');
+				$('#addClassModal').modal('show');
+			}
+		});
+	})
 
 	$('#deleteClassButton').click(function(event) {
 		classToBeDeleted = $(this).attr('for-class');
