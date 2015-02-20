@@ -11,9 +11,9 @@ exports.addAssignment = function(req, res) {
 	//email = req.session.email
 	//form fields = req.body = {}
 	console.log(req.body);
-	if(!parseInt(fields.assignmentPercentage) || !parseInt(fields.assignmentWeight)) {
+	if(!(!isNaN(parseFloat(fields.assignmentPercentage)) && isFinite(fields.assignmentPercentage)) || !(!isNaN(parseFloat(fields.assignmentWeight)) && isFinite(fields.assignmentWeight))) {
 		res.send({
-			err : systemMessages.error.nonNumeric
+			err : systemMessages.status.error.nonNumeric
 		});
 	} else {
 		Assignment.findOne({ email : req.session.email, className : fields.className, assignment : fields.assignmentName }, function(err, assignment) {
@@ -135,9 +135,9 @@ exports.addAssignment = function(req, res) {
  */
 exports.updateAssignmentPercentage = function(req, res) {
 	var fields = req.body;
-	if(!parseInt(fields.assignmentPercentage)) {
+	if(!(!isNaN(parseFloat(fields.assignmentPercentage)) && isFinite(fields.assignmentPercentage))) {
 		res.send({
-			err : systemMessages.error.nonNumeric
+			err : systemMessages.status.error.nonNumeric
 		})
 	} else {
 		Assignment.findOne({ email : req.session.email, className : fields.className, assignment : fields.assignmentName }, function(err, data) {
