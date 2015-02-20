@@ -62,7 +62,7 @@ exports.addAssignment = function(req, res) {
 						totalWeight = +totalWeight + +entry.weight;
 					}
 				});
-				
+
 				totalWeight = +totalWeight + +fields.assignmentWeight;
 
 				if(Math.floor(totalWeight) > 100) {
@@ -150,7 +150,6 @@ exports.updateAssignmentPercentage = function(req, res) {
 
 exports.updateAssignmentGoal = function(req, res) {
 	var fields = req.body;
-	console.log(fields);
 	var desiredGrade = +fields.desiredGrade / 100;
 	var pointsBurned = 0;
 	var totalPoints = 0;
@@ -181,8 +180,7 @@ exports.updateAssignmentGoal = function(req, res) {
 	}
 
 	necessaryPoints = goalTotal / undoneWeight;
-
-	console.log(necessaryPoints);
+	console.log(Math.round(necessaryPoints * 100));
 
 	fields.assignmentPercentages.forEach(function(percentage) {
 		totalPoints = percentage

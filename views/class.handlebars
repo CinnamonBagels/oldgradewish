@@ -32,42 +32,45 @@
 			<div class="panel-heading">Assignments</div>
 			
 			<div class="panel-body">
-				<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-					<u><span>Name</span></u>
-				</div>
-				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-					<u><span>Weight(%)</span></u>
-				</div>
-				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-					<u><span>Actual(%)</span></u>
-				</div>
-				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-					<u><span>Goal(%)</span></u>
+				<div class="row">
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+						<u><span>Name</span></u>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+						<u><span>Weight(%)</span></u>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+						<u><span>Actual(%)</span></u>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+						<u><span>Goal(%)</span></u>
+					</div>
 				</div>
 			</div>
 
 			{{#if assignments}}
 			{{#each assignments}}
 			<div class="panel-body">
-				
-				<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-					<span>{{assignment}}</span>
-				</div>
-				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-					<span>{{weight}}</span>
-				</div>
-				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-					<span>{{percentage}}</span>
-				</div>
-				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-					{{#if percentage}}
-						<span>Completed</span>
-					{{else}}
-					<span>{{../../assignmentPercentage}}</span>
-					{{/if}}
-				</div>
-				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-					<a data-toggle="modal" data-target="#editAssignmentModal" class="btn btn-info btn-block btn-spaced">Edit</a>
+				<div class="row">
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+						<span>{{assignment}}</span>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+						<span>{{weight}}</span>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+						<span>{{percentage}}</span>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+						{{#if percentage}}
+							<span>Done</span>
+						{{else}}
+						<span>{{../../assignmentPercentage}}</span>
+						{{/if}}
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+						<a data-toggle="modal" data-target="#editAssignmentModal" class="btn btn-info btn-block btn-spaced">Edit</a>
+					</div>
 				</div>
 			</div>
 			{{/each}}

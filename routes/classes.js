@@ -60,7 +60,6 @@ exports.viewClass = function(req, res) {
 							'className' : element
 						};
 						classes.push(classObject);
-						console.log(classes)
 					});
 					Assignment.find({ email : req.session.email, className : req.params.classID }, function(err, data) {
 						if(err) {
@@ -68,7 +67,6 @@ exports.viewClass = function(req, res) {
 							res.send(err);
 						} else {
 							assignments = data;
-							console.log(assignments);
 							Class.findOne({ email : req.session.email, className : req.params.classID }, function(err, classObj) {
 								if(err) {
 									console.log(err);
@@ -76,7 +74,6 @@ exports.viewClass = function(req, res) {
 								} else {
 									if(classObj) {
 										desiredGrade = classObj.desiredGrade;
-										console.log(classObj.assignmentGoal);
 										classPageObject = {
 											'className' : req.params.classID,
 											'assignments' : assignments,
@@ -195,7 +192,6 @@ exports.updateDesiredGrade = function(req, res) {
 exports.deleteClass = function(req, res) {
 	var fields = req.body;
 	var classes = [];
-	console.log('I am here');
 
 	Class.remove({ email : req.session.email, className : fields.className }, function(err) {
 		if(err) {
