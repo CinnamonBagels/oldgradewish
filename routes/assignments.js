@@ -11,7 +11,7 @@ exports.addAssignment = function(req, res) {
 	//email = req.session.email
 	//form fields = req.body = {}
 	console.log(req.body);
-	if(isNaN(parseInt(fields.assignmentPercentage)) || isNaN(parseInt(fields.assignmentWeight))) {
+	if(isNaN(fields.assignmentPercentage) || isNaN(fields.assignmentWeight)) {
 		res.send({
 			err : systemMessages.error.nonNumeric
 		});
