@@ -58,10 +58,13 @@ exports.addAssignment = function(req, res) {
 			} else {
 				var totalWeight = 0;
 				data.forEach(function(entry) {
-					totalWeight = +totalWeight + +entry.weight;
+					if(entry.extraCredit === false) {
+						totalWeight = +totalWeight + +entry.weight;
+					}
 				});
+				
 				totalWeight = +totalWeight + +fields.assignmentWeight;
-				console.log(Math.floor(totalWeight) !== 100);
+
 				if(Math.floor(totalWeight) > 100) {
 					console.log('Weight cannot exceed 100');
 					res.send({
@@ -244,10 +247,11 @@ exports.updateAssignmentWeight = function(req, res) {
 
 							data.forEach(function(entry) {
 								console.log(entry);
-								if(entry.extraCredit == false) {
-									totalWeight = totalWeight + entry.weight;
+								if(entry.extraCredit === false) {
+									totalWeight = +totalWeight + +entry.weight;
 								}
 							});
+
 							totalWeight = +totalWeight - +assignment.weight;
 							totalWeight = +totalWeight + +fields.weight;
 							if(Math.floor(totalWeight) > 100) {

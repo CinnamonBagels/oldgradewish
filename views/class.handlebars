@@ -88,10 +88,10 @@
 </div>
 
 <div class="row">
-	<div class="col-lg-8 col-md-8 col-sm-8 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2 col-xs-8">
-		Desired Percentage
+	<div class="col-lg-4 col-md-4 col-sm-4 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2 col-xs-4">
+		Desired Percentage {{assignmentPercentage}}
 	</div>
-	<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+	<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
 		<input id="desiredPercentageInput" type="text" name="desiredPercentage" value="{{desiredGrade}}">
 	</div>
 </div>
@@ -99,30 +99,34 @@
 	<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
 		{{#if assignments}}
 		{{#each assignments}}
-		<div class="panel panel-primary">
-			<div class="panel-heading">{{assignment}}</div>
-			<div class="panel-body">
-				<span class="desiredGrade">Your goal for this assignment is {{desiredPercentage}}</span>
-			</div>
-			<div class="row">
-				<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-					<label for="assignmentWeightInput">Assignment Weight</label>
-					<div class="input-group">
-						<input class="assignmentWeightInput form-control" type="text" Placeholder="Assignment Weight" for-assignment="{{assignment}}" for-class="{{className}}" value="{{weight}}">
-						<span class="input-group-addon">%</span>
-					</div>	
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs 12">
+				<div class="panel panel-primary">
+					<div class="panel-heading">{{assignment}}</div>
+					<div class="panel-body">
+						<span class="desiredGrade">Your goal for this assignment is {{../assignmentPercentage}}</span>
+					</div>
+					<div class="row">
+						<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+							<label for="assignmentWeightInput">Assignment Weight</label>
+							<div class="input-group">
+								<input class="assignmentWeightInput form-control" type="text" Placeholder="Assignment Weight" for-assignment="{{assignment}}" for-class="{{className}}" value="{{weight}}">
+								<span class="input-group-addon">%</span>
+							</div>	
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+							<label for="gradeGivenInput">Percentage Given</label>
+							<div class="input-group">
+								<input class="gradeGivenInput form-control" type="text" Placeholder="Percentage Given" for-assignment="{{assignment}}" for-class="{{className}}" value="{{percentage}}">
+								<span class="input-group-addon">%</span>
+							</div>	
+						</div>
+					</div>
+					<a class="btn btn-danger deleteAssignmentButton" data-toggle="modal" data-target="#deleteAssignmentModal" for-assignment="{{assignment}}" for-class="{{className}}">Delete</a>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-					<label for="gradeGivenInput">Percentage Given</label>
-					<div class="input-group">
-						<input class="gradeGivenInput form-control" type="text" Placeholder="Percentage Given" for-assignment="{{assignment}}" for-class="{{className}}" value="{{percentage}}">
-						<span class="input-group-addon">%</span>
-					</div>	
-				</div>
-			</div>
-			<a class="btn btn-danger deleteAssignmentButton" data-toggle="modal" data-target="#deleteAssignmentModal" for-assignment="{{assignment}}" for-class="{{className}}">Delete</a>
 		</div>
 		{{/each}}
 		{{/if}}
