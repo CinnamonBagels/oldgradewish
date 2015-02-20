@@ -6,104 +6,89 @@
 
 <div class="row">
 	<div id="classes" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-		{{#if classes}}
-		{{#each classes}}
-
-		<div id="{{className}}" class="row">
-			<div class=" col-lg-8 col-md-8 col-sm-8 col-xs-8">
-				<a href="/classes/{{className}}" class="btn btn-primary btn-block btn-spaced"><span class="button-text">{{className}}</span></a>
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+						Your Classes
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+						<a data-toggle="modal" data-target="#addClassModal" class="btn btn-success btn-block">+</a>
+					</div>
+				</div>
 			</div>
-			<div class=" col-lg-4 col-md-4 col-sm-4 col-xs-4 text-center">
-				<a for-class="{{className}}" class="btn btn-danger btn-block deleteClassButton btn-spaced" data-toggle="modal" data-target="#deleteClassModal">Delete</a>
+			<div class="panel-body">
+				{{#if classes}}
+				{{#each classes}}
+				<div id="{{className}}" class="row">
+					<div class=" col-lg-8 col-md-8 col-sm-8 col-xs-8">
+						<a href="/classes/{{className}}" class="btn btn-primary btn-block btn-spaced"><span class="button-text">{{className}}</span></a>
+					</div>
+					<div class=" col-lg-4 col-md-4 col-sm-4 col-xs-4 text-center">
+						<a for-class="{{className}}" class="btn btn-danger btn-block deleteClassButton btn-spaced" data-toggle="modal" data-target="#deleteClassModal">Delete</a>
+					</div>
+				</div>
+				{{/each}}	
+				{{else}}
+				<div id="no-classes" class="col-lg-12 col-sm-12 col-md-12">
+					<span>You currently have no classes</span>
+				</div>
+				{{/if}}
 			</div>
 		</div>
-		{{/each}}	
-		{{else}}
-		<div class="col-lg-12 col-sm-12 col-md-12">
-			<span>You currently have no classes</span>
-		</div>
-		{{/if}}
 	</div>
 </div>
 
-<div class="row">
-	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-		<a data-toggle="modal" data-target="#addClassModal" class="btn btn-primary btn-block btn-spaced">Add a class</a>
+<div class="modal fade" id="deleteClassModal" tabindex="-1" role="dialog" aria-labelledby="deleteClass" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="deleteClass">Delete Class</h4>
+      </div>
+      <div class="modal-body">
+        Are you sure? This cannot be undone and all associated assignments will be deleted.
+      </div>
+      <div class="modal-footer">
+        <a id="confirmDeleteClassButton" class="btn btn-danger">Yes, Delete</a>
+        <a class="btn btn-primary" data-dismiss="modal" aria-label="Close">Back</a>
+      </div>
+    </div>
+  </div>
+</div>
 
-		<div class="modal fade" id="deleteClassModal" tabindex="-1" role="dialog" aria-labelledby="deleteClass" aria-hidden="true">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title" id="deleteClass">Delete Class</h4>
-		      </div>
-		      <div class="modal-body">
-		        Are you sure? This cannot be undone and all associated assignments will be deleted.
-		      </div>
-		      <div class="modal-footer">
-		        <a id="confirmDeleteClassButton" class="btn btn-danger">Yes, Delete</a>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-
-		<div class="modal fade" id="addClassModal" tabindex="-1" role="dialog" aria-labelledby="addClass" aria-hidden="true">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title" id="addClass">Add Class</h4>
-		      </div>
-		      <div class="modal-body">
-		        <form id="addClassForm" action="/addClass" method="post">
-	        	    <div class="form-group">
-	        	    	<label for="classSelect">Class Name</label>
-	                    <select class="form-control" name="class" id="classSelect">
-	                        <option name="CSE170" value="CSE170">CSE170</option>
-	                        <option name="CSE150" value="CSE150">CSE150</option>
-	                    </select>
-	        	    </div>
-	        		<div class="form-group">
-	        			<label for="desiredGradeInput">Desired Percentage</label>
-	        			<input class="form-control" id="desiredGradeInput" type="text" placeholder="Desired Grade">
-	        		</div>      	
-		        </form>
-		      </div>
-		      <div class="modal-footer">
-		        <a id="addclassbutton" class="btn btn-primary">Add Class</a>
-		        <a id="addmultipleclassbutton" class="btn btn-success">Add Another Class</a>
-		        <a class="btn-danger btn">Back</a>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-	</div>
+<div class="modal fade" id="addClassModal" tabindex="-1" role="dialog" aria-labelledby="addClass" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="addClass">Add Class</h4>
+      </div>
+      <div class="modal-body">
+        <form id="addClassForm" action="/addClass" method="post">
+    	    <div class="form-group">
+    	    	<label for="classSelect">Class Name</label>
+                <select class="form-control" name="class" id="classSelect">
+                    <option name="CSE170" value="CSE170">CSE170</option>
+                    <option name="CSE150" value="CSE150">CSE150</option>
+                </select>
+    	    </div>
+    		<div class="form-group">
+    			<label for="desiredGradeInput">Desired Percentage</label>
+    			<input class="form-control" id="desiredGradeInput" type="text" placeholder="Desired Grade">
+    		</div>      	
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a id="addclassbutton" class="btn btn-primary">Add Class</a>
+        <a data-dismiss="modal" aria-label="Close" class="btn-danger btn">Back</a>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
 	var classToBeDeleted;
-
-	$('#addmultipleclassbutton').click(function(event) {
-		console.log('huehue');
-		event.preventDefault();
-		var className = $('#classSelect option:selected').text()
-		$.post('/addClass', { className : className, desiredGrade : $('#desiredGradeInput').val() }, function(data) {
-			console.log(data);
-			if(data.ok) {
-				$('#classes').prepend('<div id="' + className + '" class="row">\
-			<div class=" col-lg-8 col-md-8 col-sm-8 col-xs-8">\
-				<a href="/classes/' + className + '" class="btn btn-primary btn-block btn-spaced"><span class="button-text">' + className + '</span></a>\
-			</div>\
-			<div class=" col-lg-4 col-md-4 col-sm-4 col-xs-4 text-center">\
-				<a for-class="' + className + '" class="btn btn-danger btn-block deleteClassButton btn-spaced" data-toggle="modal" data-target="#deleteClassModal"><span class="button-text">Delete</span></a>\
-			</div>\
-		</div>');
-
-				$('#addClassModal').modal('hide');
-				$('#addClassModal').modal('show');
-			}
-		});
-	})
 
 	$('.deleteClassButton').click(function(event) {
 		classToBeDeleted = $(this).attr('for-class');
@@ -135,7 +120,9 @@
 				<a for-class="' + className + '" class="btn btn-danger btn-block deleteClassButton btn-spaced" data-toggle="modal" data-target="#deleteClassModal"><span class="button-text">Delete</span></a>\
 			</div>\
 		</div>');
-
+				if($('#no-classes')) {
+					$('#no-classes').remove();
+				}
 				$('#addClassModal').modal('hide');
 			}
 		});
