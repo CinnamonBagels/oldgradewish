@@ -11,7 +11,8 @@ exports.addAssignment = function(req, res) {
 	//email = req.session.email
 	//form fields = req.body = {}
 	console.log(req.body);
-	if(!(!isNaN(parseFloat(fields.assignmentPercentage)) && isFinite(fields.assignmentPercentage)) || !(!isNaN(parseFloat(fields.assignmentWeight)) && isFinite(fields.assignmentWeight))) {
+	if((fields.assignmentPercentage.match(/\D/) || fields.assignmentPercentage.match(/\S/))
+	 && (fields.assignmentWeight.match(/\D/) || fields.assignmentWeight.match(/\S/))) {
 		res.send({
 			err : systemMessages.status.error.nonNumeric
 		});
@@ -135,7 +136,7 @@ exports.addAssignment = function(req, res) {
  */
 exports.updateAssignmentPercentage = function(req, res) {
 	var fields = req.body;
-	if(!(!isNaN(parseFloat(fields.assignmentPercentage)) && isFinite(fields.assignmentPercentage))) {
+	if(fields.assignmentPercentage.match(/\D/) || fields.assignmentPercentage.match(/\S/)) {
 		res.send({
 			err : systemMessages.status.error.nonNumeric
 		})

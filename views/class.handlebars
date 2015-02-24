@@ -423,6 +423,7 @@
 	   var assignment = $(this).attr('for-assignment');
 	   var className = $(this).attr('for-class');
 	   var textbox = $(this);
+	   var assignmentWeight = $(that).closest('.assignmentWeightInput').val();
 	   var desiredGrade = $('#desiredPercentageInput').val();
 	   var assignmentPercentages = [];
 	   var assignmentWeights = [];
@@ -438,26 +439,34 @@
 
 	   $.post('/updateAssignmentPercentage', { className : className, assignmentPercentage: percentage, assignmentName : assignment}, function(data) {
 	   	if(data.ok) {
-	   		console.log('uhhhh');
 	   		textbox.val(percentage);
-	   		$.post('/updateAssignmentGoal', { className : className, assignmentPercentages : assignmentPercentages, assignmentWeights : assignmentWeights, desiredGrade : desiredGrade }, function(data) {
+	   		$.post('/updateAssignmentWeight', { className : className, weight : assignmentWeight, assignmentName : assignmentName }, function(data) {
 	   			if(data.ok) {
-	   				var grades = $('.grade');
-	   				var goals = $('.goal');
+			   		$.post('/updateAssignmentGoal', { className : className, assignmentPercentages : assignmentPercentages, assignmentWeights : assignmentWeights, desiredGrade : desiredGrade }, function(data) {
+			   			if(data.ok) {
+			   				var grades = $('.grade');
+			   				var goals = $('.goal');
 
-	   				for(var i = 0; i < grades.length; i++) {
-	   					if($(grades[i]).text() === '') {
-	   						$(goals[i]).empty();
-	   						$(goals[i]).append('<span>' + data.goal + '</span>')
-	   					}
-	   				}
-	   				$('.grade[for-assignment="' + assignment + '"]').text(percentage);
-	   				$(that).closest('.modal').modal('hide');
+			   				for(var i = 0; i < grades.length; i++) {
+			   					if($(grades[i]).text() === '') {
+			   						$(goals[i]).empty();
+			   						$(goals[i]).append('<span>' + data.goal + '</span>')
+			   					}
+			   				}
+			   				$('.grade[for-assignment="' + assignment + '"]').text(percentage);
+			   				$(that).closest('.modal').modal('hide');
+			   			} else if(data.err) {
+			   				$(that).closest('.alert-box').prepend('<div class="alert alert-warning alert-dismissible" role="alert">\
+				        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
+				      ' + data.err + '\
+				      </div>');
+			   			}
+			   		});
 	   			} else if(data.err) {
-	   				$(that).closest('.alert-box').prepend('<div class="alert alert-warning alert-dismissible" role="alert">\
-		        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
-		      ' + data.err + '\
-		      </div>');
+			   		$(that).closest('.alert-box').prepend('<div class="alert alert-warning alert-dismissible" role="alert">\
+				        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
+				      ' + data.err + '\
+				      </div>');
 	   			}
 	   		});
 	   	} else if(data.err) {
