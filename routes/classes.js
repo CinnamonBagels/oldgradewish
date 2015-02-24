@@ -76,7 +76,7 @@ exports.viewClass = function(req, res) {
 								} else {
 									if(classObj) {
 										desiredGrade = classObj.desiredGrade;
-										if(classObj.currentGrade == -1) {
+										if(classObj.currentGrade < 0) {
 											currentGrade = null;
 										} else {
 											currentGrade = classObj.currentGrade;

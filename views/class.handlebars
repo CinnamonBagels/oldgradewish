@@ -35,10 +35,13 @@
 				</div>
 				<div class="row">
 					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
-						Desired Grade 
-						<div class="input-group">
-							<input id="desiredPercentageInput" type="text" class="form-control" name="desiredPercentage" value="{{desiredGrade}}">
-							<span class="input-group-addon">%</span>
+						<div class="form-inline">
+							Desired Grade 
+							<div class="input-group">
+								<input id="desiredPercentageInput" type="text" class="form-control" name="desiredPercentage" value="{{desiredGrade}}">
+								<span class="input-group-addon">%</span>
+							</div>
+							<a id="updateDesiredPercentageButton" class="btn btn-info btn-block">Update</a>
 						</div>
 					</div>
 				</div>
@@ -91,7 +94,7 @@
 							</div>
 							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 goal">
 								{{#if percentage}}
-									<span>Done</span>
+									<span>Completed</span>
 								{{else}}
 								<span>{{../../assignmentPercentage}}</span>
 								{{/if}}
@@ -233,12 +236,15 @@
 	var originalAssignmentName;
 	var originalDesiredGrade = $('#desiredPercentageInput').val();
 
+	$('#updateDesiredPercentageButton').click(function(event) {
+		$('#desiredGradeInput').trigger('enterKey');
+	})
 	$('.editAssignmentButton').click(function(event) {
 		originalAssignmentName = $(this).closest('.assignment').attr('assignmentName');
 	})
 	$('.editAssignmentSubmit').click(function(event) {
 		console.log('huehue');
-		$(this).closest('.gradeGivenInput').trigger('enterKey');
+		$('.gradeGivenInput[for-assignment="' + $(this).attr('for-assignment') + '"]').trigger('enterKey');
 	});
 
 	$('.deleteAssignmentButton').click(function(event) {
@@ -322,7 +328,7 @@
 	   				if(data.goal && assignmentPercentage === '') {
 	   					goal = data.goal;
 	   				} else {
-	   					goal = 'Done.'
+	   					goal = 'Completed'
 	   				}
 	   				console.log('updated assignment goal');
 	   				$('#allAssignments').append('<div assignmentName="' + assignmentName + '" class="row">\
