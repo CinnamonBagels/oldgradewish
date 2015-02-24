@@ -147,84 +147,97 @@ exports.addClass = function(req, res) {
 	var currentClasses = [];
 	var classExists = false;
 	var classObject;
+	console.log(fields.desiredGrade);
 
-	User.findOne({ email : req.session.email }, function(err, data) {
-		if(data) {
-			data.classes.forEach(function(element) {
-				if(element === newClass) {
-					classExists = true;
+	if(fields.desiredGrade.match(/\D/) || fields.desiredGrade === '') {
+		res.send({
+			err : systemMessages.status.error.nonNumeric
+		});
+	} else {
+		User.findOne({ email : req.session.email }, function(err, data) {
+			if(data) {
+				data.classes.forEach(function(element) {
+					if(element === newClass) {
+						classExists = true;
+					}
+				});
+				if(classExists === false) {
+
+					data.classes.unshift(newClass);
+					data.save(function(err) {
+						if(err) {
+							console.log(err);
+							res.send({
+								err : err
+							});
+						}
+					});
+
+					classObject = new Class({
+						className : newClass,
+						email : req.session.email,
+						desiredGrade : fields.desiredGrade
+					});
+
+					classObject.save(function(err) {
+						if(err) {
+							console.log(err);
+							res.send({
+								err : err
+							});
+						} else {
+							res.send({
+								ok : systemMessages.status.ok
+							});
+						}
+					})
+				} else {
+					res.send({
+						err : 'You cannot add duplicate classes.'
+					});
 				}
-			});
-			if(classExists === false) {
-				data.classes.unshift(newClass);
-				data.save(function(err) {
-					if(err) {
-						console.log(err);
-						res.send({
-							err : err
-						});
-					}
-				});
-
-				classObject = new Class({
-					className : newClass,
-					email : req.session.email,
-					desiredGrade : fields.desiredGrade
-				});
-
-				classObject.save(function(err) {
-					if(err) {
-						console.log(err);
-						res.send({
-							err : err
-						});
-					} else {
-						res.send({
-							ok : systemMessages.status.ok
-						});
-					}
-				})
+				
 			} else {
 				res.send({
-					err : 'You cannot add duplicate classes.'
+					err : 'User not found, please logout and log back in.'
 				});
 			}
-			
-		} else {
-			res.send({
-				err : 'User not found, please logout and log back in.'
-			});
-		}
-	});
+		});
+	}
 }
 
 exports.updateDesiredGrade = function(req, res) {
 	var fields = req.body;
-
-	Class.findOne({ email : req.session.email, className : fields.className }, function(err, data) {
-		if(err) {
-			console.log(err);
-			res.send({
-				err : systemMessages.status.error
-			});
-		} else {
-			if(data) {
-				data.desiredGrade = fields.desiredGrade;
-				data.save(function(err) {
-					if(err) {
-						console.log(err);
-						res.send({
-							err : systemMessages.status.error
-						});
-					} else {
-						res.send({
-							ok : systemMessages.status.ok
-						});
-					}
+	if(fields.desiredGrade === '' || fields.desiredGrade.match(/\D/)) {
+		res.send({
+			err : systemMessages.status.error.nonNumeric
+		});
+	} else {
+		Class.findOne({ email : req.session.email, className : fields.className }, function(err, data) {
+			if(err) {
+				console.log(err);
+				res.send({
+					err : systemMessages.status.error
 				});
+			} else {
+				if(data) {
+					data.desiredGrade = fields.desiredGrade;
+					data.save(function(err) {
+						if(err) {
+							console.log(err);
+							res.send({
+								err : systemMessages.status.error
+							});
+						} else {
+							res.send({
+								ok : systemMessages.status.ok
+							});
+						}
+					});
+				}
 			}
-		}
-	});
+		});
+	}
 }
 
 exports.deleteClass = function(req, res) {

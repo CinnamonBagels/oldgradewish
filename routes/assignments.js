@@ -11,8 +11,8 @@ exports.addAssignment = function(req, res) {
 	//email = req.session.email
 	//form fields = req.body = {}
 	console.log(req.body);
-	if((fields.assignmentPercentage.match(/\D/) || fields.assignmentPercentage.match(/\S/))
-	 && (fields.assignmentWeight.match(/\D/) || fields.assignmentWeight.match(/\S/))) {
+	if(fields.assignmentPercentage.match(/\D/)
+	 || (fields.assignmentWeight === '' || fields.assignmentWeight.match(/\D/))) {
 		res.send({
 			err : systemMessages.status.error.nonNumeric
 		});
@@ -78,7 +78,7 @@ exports.addAssignment = function(req, res) {
 							if(Math.floor(totalWeight) > 100) {
 								console.log('Weight cannot exceed 100');
 								res.send({
-									err : systemMessages.error.exceedWeight
+									err : systemMessages.status.error.exceedWeight
 								});
 							} else {
 								Class.findOne({ email : req.session.email, className : fields.className }, function(err, classDoc) {
@@ -136,7 +136,7 @@ exports.addAssignment = function(req, res) {
  */
 exports.updateAssignmentPercentage = function(req, res) {
 	var fields = req.body;
-	if(fields.assignmentPercentage.match(/\D/) || fields.assignmentPercentage.match(/\S/)) {
+	if(fields.assignmentPercentage.match(/\D/)) {
 		res.send({
 			err : systemMessages.status.error.nonNumeric
 		})
@@ -267,71 +267,76 @@ exports.updateAssignmentGoal = function(req, res) {
 /*{ assignmentName : assignment, className : className, weight : weight }*/
 exports.updateAssignmentWeight = function(req, res) {
 	var fields = req.body;
-
-	Assignment.find({ email : req.session.email, className : fields.className }, function(err, data) {
-		if(err) {
-			console.log(err);
-			res.send({
-				err : systemMessages.status.error
-			});
-		} else {
-			if(data) {
-				Assignment.findOne({email : req.session.email, assignment : fields.assignmentName, className : fields.className }, function(err, assignment) {
-					if(err) {
-						console.log(err);
-						res.send({
-							err : systemMessages.status.error
-						});
-					} else {
-						if(assignment) {
-							//calculate whether assignment + total weight > 100
-							var totalWeight = 0;
-
-							data.forEach(function(entry) {
-								console.log(entry);
-								if(entry.extraCredit === false) {
-									totalWeight = +totalWeight + +entry.weight;
-								}
-							});
-
-							totalWeight = +totalWeight - +assignment.weight;
-							totalWeight = +totalWeight + +fields.weight;
-							if(Math.floor(totalWeight) > 100) {
-								console.log('Weight cannot exceed 100');
-								res.send({
-									err : systemMessages.status.error
-								});
-							} else {
-								assignment.weight = fields.weight;
-								assignment.save(function(err) {
-									if(err) {
-										console.log(err);
-										res.send({
-											err : systemMessages.status.error
-										});
-									} else {
-										res.send({
-											ok : systemMessages.status.ok
-										});
-									}
-								});
-							}
-						} else {
-							console.log('assignment not found');
-							res.send({
-								err : systemMessages.status.error
-							});
-						}
-					}
-				});
-			} else {
-				console.log('data not found');
+	if(fields.weight === '' || fields.weight.match(/\D/)) {
+		res.send({
+			err : systemMessages.status.error.nonNumeric
+		});
+	} else {
+		Assignment.find({ email : req.session.email, className : fields.className }, function(err, data) {
+			if(err) {
+				console.log(err);
 				res.send({
 					err : systemMessages.status.error
 				});
+			} else {
+				if(data) {
+					Assignment.findOne({email : req.session.email, assignment : fields.assignmentName, className : fields.className }, function(err, assignment) {
+						if(err) {
+							console.log(err);
+							res.send({
+								err : systemMessages.status.error
+							});
+						} else {
+							if(assignment) {
+								//calculate whether assignment + total weight > 100
+								var totalWeight = 0;
+
+								data.forEach(function(entry) {
+									console.log(entry);
+									if(entry.extraCredit === false) {
+										totalWeight = +totalWeight + +entry.weight;
+									}
+								});
+
+								totalWeight = +totalWeight - +assignment.weight;
+								totalWeight = +totalWeight + +fields.weight;
+								if(Math.floor(totalWeight) > 100) {
+									console.log('Weight cannot exceed 100');
+									res.send({
+										err : systemMessages.status.error.exceedWeight
+									});
+								} else {
+									assignment.weight = fields.weight;
+									assignment.save(function(err) {
+										if(err) {
+											console.log(err);
+											res.send({
+												err : systemMessages.status.error
+											});
+										} else {
+											res.send({
+												ok : systemMessages.status.ok
+											});
+										}
+									});
+								}
+							} else {
+								console.log('assignment not found');
+								res.send({
+									err : systemMessages.status.error
+								});
+							}
+						}
+					});
+				} else {
+					console.log('data not found');
+					res.send({
+						err : systemMessages.status.error
+					});
+				}
 			}
-		}
-	})
+		})
+	}
 }
 
 /*{ assignmentName : assignment, className : className }*/
@@ -418,6 +423,45 @@ exports.updateAssignment = function(req, res) {
 					}
 				});
 			}
+		}
+	});
+}
+
+exports.updateAssignmentName = function(req, res) {
+	var fields = req.body;
+
+	Assignment.findOne({ email : req.session.email, assignment : fields.newAssignmentName, className : fields.className }, function(err, oldAssignment) {
+		if(oldAssignment) {
+			res.send({
+				err : 'Your assignments must have unique names'
+			});
+		} else {
+			Assignment.findOne({ email : req.session.email, assignment : fields.oldAssignmentName, className : fields.className }, function(err, assignment) {
+				if(err) {
+					res.send({
+						err : err
+					});
+				} else {
+					if(assignment) {
+						assignment.assignment = fields.newAssignmentName;
+						assignment.save(function(err) {
+							if(err) {
+								res.send({
+									err : err
+								});
+							} else {
+								res.send({
+									ok : 'OK'
+								})
+							}
+						});
+					} else {
+						res.send({
+							err : 'no assignment found'
+						});
+					}
+				}
+			});
 		}
 	});
 }

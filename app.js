@@ -98,6 +98,7 @@ app.post('/updateAssignmentGoal', assignmentController.updateAssignmentGoal);
 app.get('/logout', loginController.logout);
 
 app.post('/updateAssignment', assignmentController.updateAssignment);
+app.post('/updateAssignmentName', assignmentController.updateAssignmentName);
 
 // Start the server
 var port = process.env.PORT || PORT; // 80 for web, 3000 for development
