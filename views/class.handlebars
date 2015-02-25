@@ -302,7 +302,6 @@
 	   				   				$('#current-grade').text('Current Grade: ' + data.currentGrade + '%');
 	   				   				$('.goal[for-assignment="' + assignment + '"]').empty();
 	   				   				$('.goal[for-assignment="' + assignment + '"]').prepend('<span>Completed</span>');
-	   				   				updateButtons();
 	   				   				$(that).closest('.modal').modal('hide');
 	   				   			} else if(data.err) {
 	   				   				$('.alert-box[for-assignment="' + assignment + '"]').prepend('<div class="alert alert-warning alert-dismissible" role="alert">\
@@ -333,6 +332,13 @@
 			      </div>');
 		   	}
 		   });
+		});
+
+		$('#assignmentPercentageInput, #desiredPercentageInput, .gradeGivenInput').keyup(function(e){
+		    if(e.keyCode == 13)
+		    {
+		        $(this).trigger("enterKey");
+		    }
 		});
 	}
 
@@ -584,12 +590,5 @@
 
 	$('#assignmentPercentageInput').bind('enterKey', function(e) {
 		$('#addAssignmentSubmit').trigger('click');
-	});
-
-	$('#assignmentPercentageInput, #desiredPercentageInput, .gradeGivenInput').keyup(function(e){
-	    if(e.keyCode == 13)
-	    {
-	        $(this).trigger("enterKey");
-	    }
 	});
 </script>	
