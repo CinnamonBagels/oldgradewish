@@ -282,6 +282,8 @@
 								$(goals[i]).append('<span>' + data.goal + '</span>')
 							}
 						}
+
+						$('#current-grade').text('Current Grade: ' + data.currentGrade + '%');
 					});
 				}
 				$('#deleteAssignmentModal').modal('hide');
