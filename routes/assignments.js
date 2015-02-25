@@ -15,6 +15,10 @@ exports.addAssignment = function(req, res) {
 		res.send({
 			err : systemMessages.status.error.nonNumeric
 		});
+	} else if(fields.assignmentName.trim().length === 0) {
+		res.send({
+			err : 'You have inserted an invalid assignment name.'
+		})
 	} else {
 		Assignment.findOne({ email : req.session.email, className : fields.className, assignment : fields.assignmentName }, function(err, assignment) {
 			if(assignment) {
@@ -226,7 +230,7 @@ exports.updateAssignmentGoal = function(req, res) {
 							if(currentGrade < 0) {
 								currentGrade = null;
 							}
-							
+
 							if(necessaryPoints < 0) {
 								necessaryPoints = '(' + necessaryPoints + ')';
 								res.send({
@@ -433,40 +437,45 @@ exports.updateAssignment = function(req, res) {
 
 exports.updateAssignmentName = function(req, res) {
 	var fields = req.body;
-
-	Assignment.findOne({ email : req.session.email, assignment : fields.newAssignmentName, className : fields.className }, function(err, oldAssignment) {
-		if(oldAssignment && oldAssignment.assignment !== fields.newAssignmentName) {
-			res.send({
-				err : 'Your assignments must have unique names'
-			});
-		} else {
-			Assignment.findOne({ email : req.session.email, assignment : fields.oldAssignmentName, className : fields.className }, function(err, assignment) {
-				if(err) {
-					res.send({
-						err : err
-					});
-				} else {
-					if(assignment) {
-						assignment.assignment = fields.newAssignmentName;
-						assignment.save(function(err) {
-							if(err) {
-								res.send({
-									err : err
-								});
-							} else {
-								res.send({
-									ok : 'OK'
-								})
-							}
+	if(fields.newAssignmentName.trim().length === 0) {
+		res.send({
+			err : 'You have inserted an invalid assignment name.'
+		});
+	} else {
+		Assignment.findOne({ email : req.session.email, assignment : fields.newAssignmentName, className : fields.className }, function(err, oldAssignment) {
+			if(oldAssignment && oldAssignment.assignment !== fields.newAssignmentName) {
+				res.send({
+					err : 'Your assignments must have unique names'
+				});
+			} else {
+				Assignment.findOne({ email : req.session.email, assignment : fields.oldAssignmentName, className : fields.className }, function(err, assignment) {
+					if(err) {
+						res.send({
+							err : err
 						});
 					} else {
-						res.send({
-							err : 'no assignment found'
-						});
+						if(assignment) {
+							assignment.assignment = fields.newAssignmentName;
+							assignment.save(function(err) {
+								if(err) {
+									res.send({
+										err : err
+									});
+								} else {
+									res.send({
+										ok : 'OK'
+									})
+								}
+							});
+						} else {
+							res.send({
+								err : 'no assignment found'
+							});
+						}
 					}
-				}
-			});
-		}
-	});
+				});
+			}
+		});
+	}
 }
 
