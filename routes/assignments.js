@@ -358,14 +358,14 @@ exports.deleteAssignment = function(req, res) {
 				err : systemMessages.status.error
 			});
 		} else {
-			Assignment.find({ email : req.session.email, className : fields.className }, function(err, data) {
+			Assignment.find({ email : req.session.email, className : fields.className }, function(err, assignment) {
 				if(err) {
 					//console.log(err);
 					res.send({
 						err : systemMessages.status.error
 					});
 				} else {
-					if(data.length == 0) {
+					if(!assignment) {
 						Class.findOne({ email : req.session.email, className : fields.className }, function(err, data) {
 							if(err) {
 								//console.log(err);
@@ -374,7 +374,7 @@ exports.deleteAssignment = function(req, res) {
 								});
 							} else {
 								if(data) {
-									data.currentGrade = -1;
+									data.currentGrade = -100;
 									data.assignmentGoal = 0;
 									data.save(function(err) {
 										if(err) {

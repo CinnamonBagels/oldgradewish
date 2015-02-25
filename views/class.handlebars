@@ -299,7 +299,7 @@
 	   				   					}
 	   				   				}
 	   				   				$('.grade[for-assignment="' + assignment + '"]').text(percentage);
-	   				   				$('#current-grade').text('Current Grade: ' + data.currentGrade + '%');
+	   				   				$('#current-grade, #no-assignments').text('Current Grade: ' + data.currentGrade + '%');
 	   				   				$('.goal[for-assignment="' + assignment + '"]').empty();
 	   				   				$('.goal[for-assignment="' + assignment + '"]').prepend('<span>Completed</span>');
 	   				   				$(that).closest('.modal').modal('hide');
@@ -375,8 +375,8 @@
 								$(goals[i]).append('<span>' + data.goal + '</span>')
 							}
 						}
-
-						$('#current-grade').text('Current Grade: ' + data.currentGrade + '%');
+						if(data.currentGrade)
+						$('#current-grade, #no-assignments').text('Current Grade: ' + data.currentGrade + '%');
 					});
 				}
 				$('#deleteAssignmentModal').modal('hide');
@@ -436,7 +436,7 @@
 							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">\
 								<span>' + assignmentPercentage + '</span>\
 							</div>\
-							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">\
+							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 goal" for-assignment="' + assignmentName + '">\
 								' + goal + '\
 							</div>\
 						</div>\
@@ -496,8 +496,7 @@
 				console.log(data.currentGrade);
 				if(data.currentGrade) {
 					if($('#no-assignments').length > 0) {
-						$('#no-assignments').empty();
-						$('#no-assignments').append('<span id="current-grade">Current grade:' + data.currentGrade + ' %</span>')
+						$('#no-assignments').replaceWith('<span id="current-grade">Current grade:' + data.currentGrade + ' %</span>')
 					} else {
 						$('#current-grade').text(data.currentGrade);
 					}
@@ -545,6 +544,8 @@
 							$(goals[i]).append('<span>' + data.goal + '</span>')
 						}
 					}
+
+					location.reload();
 				});
 			} else {
 				$('.main-alert-box').prepend('<div class="alert alert-warning alert-dismissible" role="alert">\
