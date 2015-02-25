@@ -431,7 +431,7 @@ exports.updateAssignmentName = function(req, res) {
 	var fields = req.body;
 
 	Assignment.findOne({ email : req.session.email, assignment : fields.newAssignmentName, className : fields.className }, function(err, oldAssignment) {
-		if(oldAssignment) {
+		if(oldAssignment && oldAssignment.assignment !== fields.newAssignmentName) {
 			res.send({
 				err : 'Your assignments must have unique names'
 			});

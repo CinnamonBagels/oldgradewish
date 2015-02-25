@@ -92,7 +92,7 @@
 							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
 								<span for-assignment="{{assignment}}" class="grade">{{percentage}}</span>
 							</div>
-							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 goal">
+							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 goal" for-assignment="{{assignment}}">
 								{{#if percentage}}
 									<span>Completed</span>
 								{{else}}
@@ -187,7 +187,7 @@
 	      </div>
 	      <div class="modal-body">
 	      <div class="row">
-	      	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alert-box">
+	      	<div for-assignment="{{assignment}}" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alert-box">
 	      		
 	      	</div>
 	      </div>
@@ -237,7 +237,7 @@
 	var originalDesiredGrade = $('#desiredPercentageInput').val();
 
 	$('#updateDesiredPercentageButton').click(function(event) {
-		$('#desiredGradeInput').trigger('enterKey');
+		$('#desiredPercentageInput').trigger('enterKey');
 	})
 	$('.editAssignmentButton').click(function(event) {
 		originalAssignmentName = $(this).closest('.assignment').attr('assignmentName');
@@ -435,7 +435,7 @@
 	   var assignmentPercentages = [];
 	   var assignmentWeights = [];
 	   var newAssignmentName = $('.assignmentNameInput[for-assignment="' + assignment + '"]').val();
-	   console.log(newAssignmentName, assignmentName, assignmentWeight);
+	   console.log(newAssignmentName, assignment, assignmentWeight);
 
 	   for(var i = 0; i < $('.assignmentWeightInput').length; i++) {
 	   	assignmentWeights.push($('.assignmentWeightInput')[i].value);
@@ -468,23 +468,26 @@
    				   					}
    				   				}
    				   				$('.grade[for-assignment="' + assignment + '"]').text(percentage);
+   				   				$('#current-grade').text('Current Grade: ' + data.currentGrade + '%');
+   				   				$('.goal[for-assignment="' + assignment + '"]').empty();
+   				   				$('.goal[for-assignment="' + assignment + '"]').prepend('<span>Completed</span>');
    				   				$(that).closest('.modal').modal('hide');
    				   			} else if(data.err) {
-   				   				$(that).closest('.alert-box').prepend('<div class="alert alert-warning alert-dismissible" role="alert">\
+   				   				$('.alert-box[for-assignment="' + assignment + '"]').prepend('<div class="alert alert-warning alert-dismissible" role="alert">\
    					        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
    					      ' + data.err + '\
    					      </div>');
    				   			}
    				   		});
    		   			} else if(data.err) {
-   				   		$(that).closest('.alert-box').prepend('<div class="alert alert-warning alert-dismissible" role="alert">\
+   				   		$('.alert-box[for-assignment="' + assignment + '"]').prepend('<div class="alert alert-warning alert-dismissible" role="alert">\
    					        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
    					      ' + data.err + '\
    					      </div>');
    		   			}
    		   		});
    		   	} else if(data.err) {
-   		   		$(that).closest('.alert-box').prepend('<div class="alert alert-warning alert-dismissible" role="alert">\
+   		   		$('.alert-box[for-assignment="' + assignment + '"]').prepend('<div class="alert alert-warning alert-dismissible" role="alert">\
    			        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
    			      ' + data.err + '\
    			      </div>');
