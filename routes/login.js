@@ -12,7 +12,6 @@ exports.viewLogin = function(req, res) {
 
 exports.validateLogin = function(req, res) {
 	var fields = req.body;
-
 	User.findOne({ email : fields.email }, function(err, data) {
 		if(data) {
 			if(data.password === fields.password) {

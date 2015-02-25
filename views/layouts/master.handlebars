@@ -72,49 +72,14 @@
 	<!-- <script src="/js/modernizr.js"></script> -->
 	<!--<script src="/js/foundation.min.js"></script> -->
 	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-	(function() {
-	  $(function() {
-	  	$("body").click(function(event){
-		if ($("nav.sidebar").hasClass("sidebar-menu-expanded")) {
-	        collapseMyMenu();
-	        hideMenuTexts();
-	        $("#justify-icon").css({
-	          color: "#FFF"});
-	    	}
-		})
-	    var collapseMyMenu, expandMyMenu, hideMenuTexts, showMenuTexts;
-	    expandMyMenu = function() {
-	      return $("nav.sidebar").removeClass("sidebar-menu-collapsed").addClass("sidebar-menu-expanded");
-	    };
-	    collapseMyMenu = function() {
-	      return $("nav.sidebar").removeClass("sidebar-menu-expanded").addClass("sidebar-menu-collapsed");
-	    };
-	    showMenuTexts = function() {
-	      return $("nav.sidebar ul a span.expanded-element, nav.sidebar a span.expanded-element").show();
-	    };
-	    hideMenuTexts = function() {
-	      return $("nav.sidebar ul a span.expanded-element, nav.sidebar a span.expanded-element").hide();
-	    };
-	    return $("#justify-icon").click(function(e) {
-	      if ($(this).parent("nav.sidebar").hasClass("sidebar-menu-collapsed")) {
-	        expandMyMenu();
-	        showMenuTexts();
-	        $(this).css({
-	          color: "#000"
-	        });
-	      } else if ($(this).parent("nav.sidebar").hasClass("sidebar-menu-expanded")) {
-	        collapseMyMenu();
-	        hideMenuTexts();
-	        $(this).css({
-	          color: "#FFF"
-	        });
-	      }
-	      return false;
-	    });
-	  });
+	  ga('create', 'UA-60138234-1', 'auto');
+	  ga('send', 'pageview');
 
-	}).call(this);
 	</script>
 </body>
 </html>
