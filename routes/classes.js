@@ -16,7 +16,7 @@ exports.viewClasses = function(req, res) {
 	} else {
 		User.findOne({ email : req.session.email }, function(err, data) {
 			if(err) {
-				console.log(err);
+				//console.log(err);
 				res.end();
 			} else {
 				data.classes.forEach(function(element) {
@@ -50,7 +50,7 @@ exports.viewClass = function(req, res) {
 		assignments = [];
 		User.findOne({ email : req.session.email }, function(err, user) {
 			if(err) {
-				console.log(err);
+				//console.log(err);
 				res.send({
 					err : systemMessages.status.error
 				});
@@ -65,13 +65,13 @@ exports.viewClass = function(req, res) {
 					});
 					Assignment.find({ email : req.session.email, className : req.params.classID }, function(err, data) {
 						if(err) {
-							console.log(err);
+							//console.log(err);
 							res.send(err);
 						} else {
 							assignments = data;
 							Class.findOne({ email : req.session.email, className : req.params.classID }, function(err, classObj) {
 								if(err) {
-									console.log(err);
+									//console.log(err);
 									res.send(err);
 								} else {
 									if(classObj) {
@@ -131,7 +131,7 @@ exports.viewClass = function(req, res) {
 						}
 					});
 				} else {
-					console.log('cannot find user');
+					//console.log('cannot find user');
 					res.send({
 						err : systemMessages.status.error
 					});
@@ -147,7 +147,7 @@ exports.addClass = function(req, res) {
 	var currentClasses = [];
 	var classExists = false;
 	var classObject;
-	console.log(fields.desiredGrade);
+	//console.log(fields.desiredGrade);
 
 	if(fields.desiredGrade.match(/\D/) || fields.desiredGrade === '') {
 		res.send({
@@ -166,7 +166,7 @@ exports.addClass = function(req, res) {
 					data.classes.unshift(newClass);
 					data.save(function(err) {
 						if(err) {
-							console.log(err);
+							//console.log(err);
 							res.send({
 								err : err
 							});
@@ -181,7 +181,7 @@ exports.addClass = function(req, res) {
 
 					classObject.save(function(err) {
 						if(err) {
-							console.log(err);
+							//console.log(err);
 							res.send({
 								err : err
 							});
@@ -215,7 +215,7 @@ exports.updateDesiredGrade = function(req, res) {
 	} else {
 		Class.findOne({ email : req.session.email, className : fields.className }, function(err, data) {
 			if(err) {
-				console.log(err);
+				//console.log(err);
 				res.send({
 					err : systemMessages.status.error
 				});
@@ -224,7 +224,7 @@ exports.updateDesiredGrade = function(req, res) {
 					data.desiredGrade = fields.desiredGrade;
 					data.save(function(err) {
 						if(err) {
-							console.log(err);
+							//console.log(err);
 							res.send({
 								err : systemMessages.status.error
 							});
@@ -246,21 +246,21 @@ exports.deleteClass = function(req, res) {
 
 	Class.remove({ email : req.session.email, className : fields.className }, function(err) {
 		if(err) {
-			console.log(err);
+			//console.log(err);
 			res.send({
 				err : systemMessages.status.error
 			});
 		} else {
 			Assignment.remove( { email : req.session.email, className : fields.className}, function(err) {
 				if(err) {
-					console.log(err);
+					//console.log(err);
 					res.send({
 						err : systemMessages.status.error
 					});
 				} else {
 					User.findOne({ email : req.session.email }, function(err, data) {
 						if(err) {
-							console.log(err);
+							//console.log(err);
 							res.send({
 								err : systemMessages.status.error
 							});
@@ -275,7 +275,7 @@ exports.deleteClass = function(req, res) {
 								data.classes = classes;
 								data.save(function(err) {
 									if(err) {
-										console.log(err);
+										//console.log(err);
 										res.send({
 											err : systemMessages.status.error
 										});

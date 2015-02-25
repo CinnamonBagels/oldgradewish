@@ -12,10 +12,8 @@ exports.viewLogin = function(req, res) {
 
 exports.validateLogin = function(req, res) {
 	var fields = req.body;
-	console.log(fields);
 
 	User.findOne({ email : fields.email }, function(err, data) {
-		console.log(data, data.email, fields.email, data.email === fields.email, data.password === fields.password);
 		if(data.email === fields.email) {
 			if(data.password === fields.password) {
 				req.session.email = data.email;
@@ -35,7 +33,6 @@ exports.validateLogin = function(req, res) {
 }
 
 exports.logout = function(req, res) {
-	console.log('huehue');
 	req.session.email = null;
 	res.redirect('/');
 }

@@ -243,7 +243,7 @@
 		originalAssignmentName = $(this).closest('.assignment').attr('assignmentName');
 	})
 	$('.editAssignmentSubmit').click(function(event) {
-		console.log('huehue');
+
 		$('.gradeGivenInput[for-assignment="' + $(this).attr('for-assignment') + '"]').trigger('enterKey');
 	});
 
@@ -269,12 +269,10 @@
 		$.post('/deleteAssignment', { assignmentName : assignmentToBeDeleted, className : forClass }, function(data) {
 			if(data.ok) {
 				$('.assignment[assignmentName="' + assignmentToBeDeleted + '"]').remove();
-				console.log($('.assignment'));
 				if($('.assignment').length === 0) {
 					$('#current-grade').replaceWith('<span id="no-assignments">Add assignments below to calculate your grade. At least one assignment must be graded for us to update your score.</span>');
 				} else {
 					$.post('/updateAssignmentGoal', { className : className, assignmentPercentages : assignmentPercentages, assignmentWeights : assignmentWeights, desiredGrade : desiredGrade }, function(data) {
-						console.log(data);
 						var grades = $('.grade');
 						var goals = $('.goal');
 
@@ -313,7 +311,7 @@
 			   var assignmentWeights = [];
 			   assignmentPercentages.push(assignmentPercentage);
 			   assignmentWeights.push(assignmentWeight);
-			   console.log(assignmentPercentages);
+
 			   for(var i = 0; i < $('.assignmentWeightInput').length; i++) {
 			   	assignmentWeights.push($('.assignmentWeightInput')[i].value);
 			   }
@@ -323,7 +321,7 @@
 			   }
 				$.post('/updateAssignmentGoal', { className : className, assignmentPercentages : assignmentPercentages, assignmentWeights : assignmentWeights, desiredGrade : desiredGrade }, function(data) {
 	   			if(data.ok) {
-	   				console.log(data);
+
 	   				var goal;
 	   				if(data.goal && assignmentPercentage === '') {
 	   					goal = data.goal;
@@ -435,7 +433,7 @@
 	   var assignmentPercentages = [];
 	   var assignmentWeights = [];
 	   var newAssignmentName = $('.assignmentNameInput[for-assignment="' + assignment + '"]').val();
-	   console.log(newAssignmentName, assignment, assignmentWeight);
+
 
 	   for(var i = 0; i < $('.assignmentWeightInput').length; i++) {
 	   	assignmentWeights.push($('.assignmentWeightInput')[i].value);
@@ -452,7 +450,7 @@
    		   	if(data.ok) {
    		   		console.log('Updated assignment Percentage!');
    		   		textbox.val(percentage);
-   		   		console.log(assignmentWeight);
+
    		   		$.post('/updateAssignmentWeight', { className : className, weight : assignmentWeight, assignmentName : newAssignmentName }, function(data) {
    		   			if(data.ok) {
    		   				console.log('Updated assignment weight!');
@@ -520,7 +518,7 @@
 			if(data.ok) {
 				console.log('update desired grade');
 				$.post('/updateAssignmentGoal', { className : $('#className').text(), assignmentPercentages : assignmentPercentages, assignmentWeights : assignmentWeights, desiredGrade : desiredGrade }, function(data) {
-					console.log(data);
+
 					var grades = $('.grade');
 					var goals = $('.goal');
 
