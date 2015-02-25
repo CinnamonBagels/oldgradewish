@@ -222,6 +222,11 @@ exports.updateAssignmentGoal = function(req, res) {
 								err : systemMessages.status.error
 							});
 						} else {
+
+							if(currentGrade < 0) {
+								currentGrade = null;
+							}
+							
 							if(necessaryPoints < 0) {
 								necessaryPoints = '(' + necessaryPoints + ')';
 								res.send({

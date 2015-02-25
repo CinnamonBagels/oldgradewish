@@ -238,19 +238,105 @@
 
 	$('#updateDesiredPercentageButton').click(function(event) {
 		$('#desiredPercentageInput').trigger('enterKey');
-	})
-	$('.editAssignmentButton').click(function(event) {
-		originalAssignmentName = $(this).closest('.assignment').attr('assignmentName');
-	})
-	$('.editAssignmentSubmit').click(function(event) {
-
-		$('.gradeGivenInput[for-assignment="' + $(this).attr('for-assignment') + '"]').trigger('enterKey');
 	});
 
-	$('.deleteAssignmentButton').click(function(event) {
-		assignmentToBeDeleted = $(this).attr('for-assignment');
-		forClass = $(this).attr('for-class');
-	});
+	function updateButtons() {
+		$('.editAssignmentButton').click(function(event) {
+			originalAssignmentName = $(this).closest('.assignment').attr('assignmentName');
+		});
+
+		$('.editAssignmentSubmit').click(function(event) {
+
+			$('.gradeGivenInput[for-assignment="' + $(this).attr('for-assignment') + '"]').trigger('enterKey');
+		});
+
+		$('.deleteAssignmentButton').click(function(event) {
+			assignmentToBeDeleted = $(this).attr('for-assignment');
+			forClass = $(this).attr('for-class');
+		});
+
+		$('.gradeGivenInput').bind("enterKey", function(e) {
+			var that = $(this);
+		   var percentage = $(this).val();
+		   var assignment = $(this).attr('for-assignment');
+		   var className = $(this).attr('for-class');
+		   var textbox = $(this);
+		   var assignmentWeight = $('.assignmentWeightInput[for-assignment="' + assignment + '"]').val();
+		   var desiredGrade = $('#desiredPercentageInput').val();
+		   var assignmentPercentages = [];
+		   var assignmentWeights = [];
+		   var newAssignmentName = $('.assignmentNameInput[for-assignment="' + assignment + '"]').val();
+
+
+		   for(var i = 0; i < $('.assignmentWeightInput').length; i++) {
+		   	assignmentWeights.push($('.assignmentWeightInput')[i].value);
+		   }
+
+		   for(var i = 0; i < $('.gradeGivenInput').length; i++) {
+			assignmentPercentages.push($('.gradeGivenInput')[i].value);
+		   }
+
+		   $.post('/updateAssignmentName', { className : className, oldAssignmentName : assignment, newAssignmentName : newAssignmentName }, function(data) {
+		   	if(data.ok) {
+		   		console.log('Updated assignment Name!');
+	   		   $.post('/updateAssignmentPercentage', { className : className, assignmentPercentage: percentage, assignmentName : newAssignmentName }, function(data) {
+	   		   	if(data.ok) {
+	   		   		console.log('Updated assignment Percentage!');
+	   		   		textbox.val(percentage);
+
+	   		   		$.post('/updateAssignmentWeight', { className : className, weight : assignmentWeight, assignmentName : newAssignmentName }, function(data) {
+	   		   			if(data.ok) {
+	   		   				console.log('Updated assignment weight!');
+	   				   		$.post('/updateAssignmentGoal', { className : className, assignmentPercentages : assignmentPercentages, assignmentWeights : assignmentWeights, desiredGrade : desiredGrade }, function(data) {
+	   				   			if(data.ok) {
+	   				   				var grades = $('.grade');
+	   				   				var goals = $('.goal');
+
+	   				   				for(var i = 0; i < grades.length; i++) {
+	   				   					if($(grades[i]).text() === '') {
+	   				   						$(goals[i]).empty();
+	   				   						$(goals[i]).append('<span>' + data.goal + '</span>')
+	   				   					}
+	   				   				}
+	   				   				$('.grade[for-assignment="' + assignment + '"]').text(percentage);
+	   				   				$('#current-grade').text('Current Grade: ' + data.currentGrade + '%');
+	   				   				$('.goal[for-assignment="' + assignment + '"]').empty();
+	   				   				$('.goal[for-assignment="' + assignment + '"]').prepend('<span>Completed</span>');
+	   				   				updateButtons();
+	   				   				$(that).closest('.modal').modal('hide');
+	   				   			} else if(data.err) {
+	   				   				$('.alert-box[for-assignment="' + assignment + '"]').prepend('<div class="alert alert-warning alert-dismissible" role="alert">\
+	   					        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
+	   					      ' + data.err + '\
+	   					      </div>');
+	   				   			}
+	   				   		});
+	   		   			} else if(data.err) {
+	   				   		$('.alert-box[for-assignment="' + assignment + '"]').prepend('<div class="alert alert-warning alert-dismissible" role="alert">\
+	   					        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
+	   					      ' + data.err + '\
+	   					      </div>');
+	   		   			}
+	   		   		});
+	   		   	} else if(data.err) {
+	   		   		$('.alert-box[for-assignment="' + assignment + '"]').prepend('<div class="alert alert-warning alert-dismissible" role="alert">\
+	   			        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
+	   			      ' + data.err + '\
+	   			      </div>');
+	   		   	}
+	   		   });
+		   	} else {
+		   		console.log('failed');
+		   		$(that).closest('.alert-box').prepend('<div class="alert alert-warning alert-dismissible" role="alert">\
+			        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
+			      ' + data.err + '\
+			      </div>');
+		   	}
+		   });
+		});
+	}
+
+	updateButtons();
 
 	$('#confirmDeleteAssignmentButton').click(function(event) {
 		var desiredGrade = $('#desiredPercentageInput').val();
@@ -268,7 +354,8 @@
 
 		$.post('/deleteAssignment', { assignmentName : assignmentToBeDeleted, className : forClass }, function(data) {
 			if(data.ok) {
-				$('.assignment[assignmentName="' + assignmentToBeDeleted + '"]').remove();
+				console.log($('.assignment[assignmentname="' + assignmentToBeDeleted + '"]'));
+				$('.assignment[assignmentname="' + assignmentToBeDeleted + '"]').remove();
 				if($('.assignment').length === 0) {
 					$('#current-grade').replaceWith('<span id="no-assignments">Add assignments below to calculate your grade. At least one assignment must be graded for us to update your score.</span>');
 				} else {
@@ -289,7 +376,7 @@
 				$('#deleteAssignmentModal').modal('hide');
 			}
 		});
-	})
+	});
 
 	$('#addAssignmentSubmit').click(function(event) {
 		var modal = $(this);
@@ -331,7 +418,7 @@
 	   					goal = 'Completed'
 	   				}
 	   				console.log('updated assignment goal');
-	   				$('#allAssignments').append('<div assignmentName="' + assignmentName + '" class="row">\
+	   				$('#allAssignments').append('<div assignmentName="' + assignmentName + '" class="row assignment">\
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">\
 						<div class="row">\
 							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">\
@@ -400,6 +487,7 @@
 	    </div>\
 	  </div>\
 	</div>');
+				console.log(data.currentGrade);
 				if(data.currentGrade) {
 					if($('#no-assignments').length > 0) {
 						$('#no-assignments').empty();
@@ -410,7 +498,7 @@
 				}	
 	   			$('#addAssignmentForm').get(0).reset();
 	   			$('#addAssignmentModal').modal('hide');
-				
+				updateButtons();
 	   			} //end if(data)
 
 	   		}); //end $.post()
@@ -422,85 +510,6 @@
 		      </div>');
 			}
 		});
-	});
-
-	$('.gradeGivenInput').bind("enterKey", function(e) {
-		var that = $(this);
-	   var percentage = $(this).val();
-	   var assignment = $(this).attr('for-assignment');
-	   var className = $(this).attr('for-class');
-	   var textbox = $(this);
-	   var assignmentWeight = $('.assignmentWeightInput[for-assignment="' + assignment + '"]').val();
-	   var desiredGrade = $('#desiredPercentageInput').val();
-	   var assignmentPercentages = [];
-	   var assignmentWeights = [];
-	   var newAssignmentName = $('.assignmentNameInput[for-assignment="' + assignment + '"]').val();
-
-
-	   for(var i = 0; i < $('.assignmentWeightInput').length; i++) {
-	   	assignmentWeights.push($('.assignmentWeightInput')[i].value);
-	   }
-
-	   for(var i = 0; i < $('.gradeGivenInput').length; i++) {
-		assignmentPercentages.push($('.gradeGivenInput')[i].value);
-	   }
-
-	   $.post('/updateAssignmentName', { className : className, oldAssignmentName : assignment, newAssignmentName : newAssignmentName }, function(data) {
-	   	if(data.ok) {
-	   		console.log('Updated assignment Name!');
-   		   $.post('/updateAssignmentPercentage', { className : className, assignmentPercentage: percentage, assignmentName : newAssignmentName }, function(data) {
-   		   	if(data.ok) {
-   		   		console.log('Updated assignment Percentage!');
-   		   		textbox.val(percentage);
-
-   		   		$.post('/updateAssignmentWeight', { className : className, weight : assignmentWeight, assignmentName : newAssignmentName }, function(data) {
-   		   			if(data.ok) {
-   		   				console.log('Updated assignment weight!');
-   				   		$.post('/updateAssignmentGoal', { className : className, assignmentPercentages : assignmentPercentages, assignmentWeights : assignmentWeights, desiredGrade : desiredGrade }, function(data) {
-   				   			if(data.ok) {
-   				   				var grades = $('.grade');
-   				   				var goals = $('.goal');
-
-   				   				for(var i = 0; i < grades.length; i++) {
-   				   					if($(grades[i]).text() === '') {
-   				   						$(goals[i]).empty();
-   				   						$(goals[i]).append('<span>' + data.goal + '</span>')
-   				   					}
-   				   				}
-   				   				$('.grade[for-assignment="' + assignment + '"]').text(percentage);
-   				   				$('#current-grade').text('Current Grade: ' + data.currentGrade + '%');
-   				   				$('.goal[for-assignment="' + assignment + '"]').empty();
-   				   				$('.goal[for-assignment="' + assignment + '"]').prepend('<span>Completed</span>');
-   				   				$(that).closest('.modal').modal('hide');
-   				   			} else if(data.err) {
-   				   				$('.alert-box[for-assignment="' + assignment + '"]').prepend('<div class="alert alert-warning alert-dismissible" role="alert">\
-   					        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
-   					      ' + data.err + '\
-   					      </div>');
-   				   			}
-   				   		});
-   		   			} else if(data.err) {
-   				   		$('.alert-box[for-assignment="' + assignment + '"]').prepend('<div class="alert alert-warning alert-dismissible" role="alert">\
-   					        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
-   					      ' + data.err + '\
-   					      </div>');
-   		   			}
-   		   		});
-   		   	} else if(data.err) {
-   		   		$('.alert-box[for-assignment="' + assignment + '"]').prepend('<div class="alert alert-warning alert-dismissible" role="alert">\
-   			        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
-   			      ' + data.err + '\
-   			      </div>');
-   		   	}
-   		   });
-	   	} else {
-	   		console.log('failed');
-	   		$(that).closest('.alert-box').prepend('<div class="alert alert-warning alert-dismissible" role="alert">\
-		        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
-		      ' + data.err + '\
-		      </div>');
-	   	}
-	   });
 	});
 
 	$('#desiredPercentageInput').bind('enterKey', function(e) {
