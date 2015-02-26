@@ -19,7 +19,7 @@
 				<div class="row">
 					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
 						{{#if currentGrade}}
-							<span id="current-grade">Current grade: {{currentGrade}} %</span>
+							<span id="current-grade">Current Grade ≈ {{currentGrade}} %</span>
 						{{else}}
 							<span id="no-assignments">Add assignments below to calculate your grade. At least one assignment must be graded for us to update your score.</span>
 						{{/if}}
@@ -302,7 +302,7 @@
 	   				   				}
 	   				   				$('.grade[for-assignment="' + assignment + '"]').text(percentage);
 	   				   				if(data.currentGrade) {
-	   				   					$('#current-grade, #no-assignments').text('Current Grade: ' + data.currentGrade + '%');
+	   				   					$('#current-grade, #no-assignments').text('Current Grade ≈ ' + data.currentGrade + '%');
 	   				   				} else {
 	   				   					$('#current-grade, #no-assignments').text('Add assignments below to calculate your grade. At least one assignment must be graded for us to update your score.');
 	   				   				}
@@ -312,6 +312,7 @@
 	   				   					$('.goal[for-assignment="' + assignment + '"]>span').replaceWith('<span>Completed</span>');
 	   				   				}
 	   				   				$(that).closest('.modal').modal('hide');
+	   				   				location.reload();
 	   				   			} else if(data.err) {
 	   				   				$('.alert-box[for-assignment="' + assignment + '"]').prepend('<div class="alert alert-warning alert-dismissible" role="alert">\
 	   					        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
@@ -385,7 +386,7 @@
 							}
 						}
 						if(data.currentGrade)
-						$('#current-grade, #no-assignments').text('Current Grade: ' + data.currentGrade + '%');
+						$('#current-grade, #no-assignments').text('Current Grade ≈ ' + data.currentGrade + '%');
 					});
 				}
 				$('#deleteAssignmentModal').modal('hide');
@@ -505,7 +506,7 @@
 				console.log(data.currentGrade);
 				if(data.currentGrade) {
 					if($('#no-assignments').length > 0) {
-						$('#no-assignments').replaceWith('<span id="current-grade">Current grade:' + data.currentGrade + ' %</span>')
+						$('#no-assignments').replaceWith('<span id="current-grade">Current Grade ≈' + data.currentGrade + ' %</span>')
 					} else {
 						$('#current-grade').text(data.currentGrade);
 					}
