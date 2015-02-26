@@ -266,6 +266,7 @@
 		   var assignmentPercentages = [];
 		   var assignmentWeights = [];
 		   var newAssignmentName = $('.assignmentNameInput[for-assignment="' + assignment + '"]').val();
+		   var emptyPercentage = percentage.trim().length === 0;
 
 
 		   for(var i = 0; i < $('.assignmentWeightInput').length; i++) {
@@ -300,8 +301,11 @@
 	   				   				}
 	   				   				$('.grade[for-assignment="' + assignment + '"]').text(percentage);
 	   				   				$('#current-grade, #no-assignments').text('Current Grade: ' + data.currentGrade + '%');
-	   				   				$('.goal[for-assignment="' + assignment + '"]').empty();
-	   				   				$('.goal[for-assignment="' + assignment + '"]').prepend('<span>Completed</span>');
+	   				   				if(emptyPercentage) {
+	   				   					$('.goal[for-assignment="' + assignment + '"]').replaceWith('<span>' + data.goal + '</span>')
+	   				   				} else {
+	   				   					$('.goal[for-assignment="' + assignment + '"]').replaceWith('<span>Completed</span>');
+	   				   				}
 	   				   				$(that).closest('.modal').modal('hide');
 	   				   			} else if(data.err) {
 	   				   				$('.alert-box[for-assignment="' + assignment + '"]').prepend('<div class="alert alert-warning alert-dismissible" role="alert">\
