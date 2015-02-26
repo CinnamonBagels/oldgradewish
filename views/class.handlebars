@@ -160,7 +160,7 @@
    				<input id="assignmentWeightInput" class="form-control" type="text" name="assignmentWeight" placeholder="Assignment Weight">	
 				<span class="input-group-addon">%</span>
 			</div>
-				<label for="assignmentPercentage">Percentage Given (Optional)</label>
+				<label for="assignmentPercentage">Percentage Given (Leave blank if not yet graded)</label>
 			<div class="input-group">
 				<input id="assignmentPercentageInput" class="form-control" type="text" name="assignmentPercentage" placeholder="Percentage Given">
 				<span class="input-group-addon">%</span>
@@ -210,7 +210,7 @@
 			</div>
 			<div class="row">
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-					<label for="gradeGivenInput">Percentage Given</label>
+					<label for="gradeGivenInput">Percentage Given (Leave blank if not yet graded)</label>
 					<div class="input-group">
 						<input class="gradeGivenInput form-control" type="text" Placeholder="Percentage Given" for-assignment="{{assignment}}" for-class="{{className}}" value="{{percentage}}">
 						<span class="input-group-addon">%</span>
@@ -267,6 +267,7 @@
 		   var assignmentWeights = [];
 		   var newAssignmentName = $('.assignmentNameInput[for-assignment="' + assignment + '"]').val();
 		   var emptyPercentage = percentage.trim().length === 0;
+		   console.log(emptyPercentage);
 
 
 		   for(var i = 0; i < $('.assignmentWeightInput').length; i++) {
@@ -300,11 +301,15 @@
 	   				   					}
 	   				   				}
 	   				   				$('.grade[for-assignment="' + assignment + '"]').text(percentage);
-	   				   				$('#current-grade, #no-assignments').text('Current Grade: ' + data.currentGrade + '%');
-	   				   				if(emptyPercentage) {
-	   				   					$('.goal[for-assignment="' + assignment + '"]').replaceWith('<span>' + data.goal + '</span>')
+	   				   				if(data.currentGrade) {
+	   				   					$('#current-grade, #no-assignments').text('Current Grade: ' + data.currentGrade + '%');
 	   				   				} else {
-	   				   					$('.goal[for-assignment="' + assignment + '"]').replaceWith('<span>Completed</span>');
+	   				   					$('#current-grade, #no-assignments').text('Add assignments below to calculate your grade. At least one assignment must be graded for us to update your score.');
+	   				   				}
+	   				   				if(emptyPercentage) {
+	   				   					$('.goal[for-assignment="' + assignment + '"]>span').replaceWith('<span>' + data.goal + '</span>');
+	   				   				} else {
+	   				   					$('.goal[for-assignment="' + assignment + '"]>span').replaceWith('<span>Completed</span>');
 	   				   				}
 	   				   				$(that).closest('.modal').modal('hide');
 	   				   			} else if(data.err) {
